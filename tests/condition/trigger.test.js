@@ -182,3 +182,46 @@ describe('an unknown trigger', () => {
     );
   });
 });
+
+describe('a trigger fires on the reading that crossed it, not on the next one', () => {
+  it('closes the area at the moment the gauge tips over the threshold', () => {
+    const trigger = rainfallTrigger({ gauge: 'BRD', inches: 1, overHours: 24 });
+    const feed = [reading({ gauge: 'BRD', at: at('2025-06-10 02:00'), value: 1.2 })];
+    expect(evaluateTrigger(trigger, { at: at('2025-06-10 02:00'), readings: feed }).fired).toBe(
+      true,
+    );
+  });
+
+  it('does not fire a second before the reading landed', () => {
+    const trigger = rainfallTrigger({ gauge: 'BRD', inches: 1, overHours: 24 });
+    const feed = [reading({ gauge: 'BRD', at: at('2025-06-10 02:00'), value: 1.2 })];
+    expect(evaluateTrigger(trigger, { at: at('2025-06-10 01:59'), readings: feed }).fired).toBe(
+      false,
+    );
+  });
+
+  it('drops the reading the moment it is a full period behind', () => {
+    const trigger = rainfallTrigger({ gauge: 'BRD', inches: 1, overHours: 24 });
+    const feed = [reading({ gauge: 'BRD', at: at('2025-06-10 02:00'), value: 1.2 })];
+    expect(evaluateTrigger(trigger, { at: at('2025-06-11 01:59'), readings: feed }).fired).toBe(
+      true,
+    );
+    expect(evaluateTrigger(trigger, { at: at('2025-06-11 02:00'), readings: feed }).fired).toBe(
+      false,
+    );
+  });
+
+  it('does the same on the stage side', () => {
+    const trigger = stageTrigger({ gauge: 'PPR', feet: 8 });
+    expect(evaluateTrigger(trigger, { at: at('2025-06-10 04:00'), readings: READINGS }).fired).toBe(
+      true,
+    );
+  });
+
+  it('and on the bypass side', () => {
+    const trigger = bypassTrigger({ facility: 'WWTP-3', withinHours: 48 });
+    expect(evaluateTrigger(trigger, { at: at('2025-06-10 03:00'), bypasses: BYPASSES }).fired).toBe(
+      true,
+    );
+  });
+});

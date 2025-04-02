@@ -18,7 +18,7 @@
 
 import { InputError } from '../core/errors.js';
 import { requireString } from '../core/assert.js';
-import { accumulation, peak, peakReading } from '../weather/gauge.js';
+import { trailingAccumulation, trailingPeak, trailingPeakReading } from '../weather/gauge.js';
 import { compareCivilDate, parseCivilDate } from '../time/civil.js';
 import { windowEndingAt } from '../time/window.js';
 import { civilDateAt } from '../time/instant.js';
@@ -88,8 +88,9 @@ export function evaluateTrigger(trigger, { at, readings = [], bypasses = [], zon
 }
 
 function evaluateRainfall(trigger, at, readings) {
-  const span = windowEndingAt(at, trigger.overHours * 3600);
-  const total = accumulation(readings, trigger.gauge, span);
+  const seconds = trigger.overHours * 3600;
+  const span = windowEndingAt(at, seconds);
+  const total = trailingAccumulation(readings, trigger.gauge, at, seconds);
   return Object.freeze({
     kind: RAINFALL,
     fired: total >= trigger.inches,
@@ -103,8 +104,9 @@ function evaluateRainfall(trigger, at, readings) {
 }
 
 function evaluateStage(trigger, at, readings) {
-  const span = windowEndingAt(at, trigger.overHours * 3600);
-  const highest = peak(readings, trigger.gauge, span);
+  const seconds = trigger.overHours * 3600;
+  const span = windowEndingAt(at, seconds);
+  const highest = trailingPeak(readings, trigger.gauge, at, seconds);
   return Object.freeze({
     kind: STAGE_CROSSING,
     fired: highest !== null && highest >= trigger.feet,
@@ -113,18 +115,19 @@ function evaluateStage(trigger, at, readings) {
     unit: 'feet',
     gauge: trigger.gauge,
     span,
-    cited: peakReading(readings, trigger.gauge, span),
+    cited: trailingPeakReading(readings, trigger.gauge, at, seconds),
     unmeasured: highest === null,
   });
 }
 
 function evaluateBypass(trigger, at, bypasses) {
-  const span = windowEndingAt(at, trigger.withinHours * 3600);
+  const seconds = trigger.withinHours * 3600;
+  const span = windowEndingAt(at, seconds);
   const reported = bypasses.filter(
     (event) =>
       event.facility.trim().toUpperCase() === trigger.facility &&
-      event.at.epochSecond >= span.start.epochSecond &&
-      event.at.epochSecond < span.end.epochSecond,
+      event.at.epochSecond > at.epochSecond - seconds &&
+      event.at.epochSecond <= at.epochSecond,
   );
   return Object.freeze({
     kind: BYPASS,

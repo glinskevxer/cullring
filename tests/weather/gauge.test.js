@@ -13,6 +13,10 @@ import {
   reading,
   readingsFor,
   readingsWithin,
+  trailing,
+  trailingAccumulation,
+  trailingPeak,
+  trailingPeakReading,
 } from '../../src/weather/gauge.js';
 import { parseInstant } from '../../src/time/instant.js';
 import { window } from '../../src/time/window.js';
@@ -155,5 +159,41 @@ describe('the two kinds are read differently on purpose', () => {
     const quiet = span('2025-07-01 00:00', '2025-07-02 00:00');
     expect(accumulation(FEED, 'BRD', quiet)).toBe(0);
     expect(peak(FEED, 'BRD', quiet)).toBeNull();
+  });
+});
+
+describe('the trailing period, which is closed at the near end', () => {
+  it('counts a reading taken at the very moment asked about', () => {
+    const total = trailingAccumulation(FEED, 'BRD', at('2025-06-10 05:00'), 24 * 3600);
+    expect(total).toBeCloseTo(1.3, 9);
+  });
+
+  it('is what the ordinary window would have missed', () => {
+    const window24 = span('2025-06-09 05:00', '2025-06-10 05:00');
+    expect(accumulation(FEED, 'BRD', window24)).toBeCloseTo(0.4, 9);
+    expect(trailingAccumulation(FEED, 'BRD', at('2025-06-10 05:00'), 24 * 3600)).toBeCloseTo(
+      1.3,
+      9,
+    );
+  });
+
+  it('excludes a reading exactly at the far end, so two periods cannot both claim it', () => {
+    const total = trailingAccumulation(FEED, 'BRD', at('2025-06-11 02:00'), 24 * 3600);
+    expect(total).toBeCloseTo(2.3, 9);
+  });
+
+  it('peaks the same period, and answers with nothing where nobody looked', () => {
+    expect(trailingPeak(FEED, 'BRD', at('2025-06-11 02:00'), 24 * 3600)).toBe(1.1);
+    expect(trailingPeak(FEED, 'BRD', at('2025-07-01 04:00'), 24 * 3600)).toBeNull();
+    expect(trailingPeakReading(FEED, 'BRD', at('2025-07-01 04:00'), 24 * 3600)).toBeNull();
+  });
+
+  it('names the reading that carried the peak', () => {
+    const found = trailingPeakReading(FEED, 'BRD', at('2025-06-10 05:00'), 24 * 3600);
+    expect(found.value).toBe(0.9);
+  });
+
+  it('reads only its own gauge', () => {
+    expect(trailing(FEED, 'MLC', at('2025-06-10 05:00'), 24 * 3600)).toHaveLength(1);
   });
 });
