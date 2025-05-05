@@ -149,9 +149,15 @@ export function exposureWindows(table, station, elevation, span) {
   return windows;
 }
 
+/**
+ * Whether the bed stands clear of the water at that moment. The water being
+ * exactly at the elevation counts as exposed, which matches the windows: an
+ * exposure includes the instant it began, the way every window here includes
+ * its own start.
+ */
 function below(table, station, at, elevation) {
   const height = heightAt(table, station, at);
-  return height !== null && height < elevation;
+  return height !== null && height <= elevation;
 }
 
 /**
@@ -165,7 +171,7 @@ export function lastExposureStart(table, station, elevation, at) {
     return null;
   }
   const height = heightAt(table, station, at);
-  if (height === null || height >= elevation) {
+  if (height === null || height > elevation) {
     return null;
   }
   let best = null;

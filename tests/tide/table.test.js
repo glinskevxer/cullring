@@ -198,3 +198,20 @@ describe('when the falling tide last uncovered the bed', () => {
     expect(lastExposureStart(thin, 'BFT', 1.8, at('2025-08-14 10:00'))).toBeNull();
   });
 });
+
+describe('the instant the water reaches the elevation counts as exposed', () => {
+  it('reads the crossing moment itself as the start of an exposure', () => {
+    expect(stamp(lastExposureStart(TABLE, 'BFT', 1.8, at('2025-08-14 05:21')))).toBe(
+      '2025-08-14T05:21:00-04:00',
+    );
+  });
+
+  it('still reads a second earlier as under water', () => {
+    expect(lastExposureStart(TABLE, 'BFT', 1.8, at('2025-08-14 05:20:59'))).toBeNull();
+  });
+
+  it('matches the window, which includes its own start', () => {
+    const windows = exposureWindows(TABLE, 'BFT', 1.8, DAY);
+    expect(stamp(windows[0].start)).toBe('2025-08-14T05:21:00-04:00');
+  });
+});
