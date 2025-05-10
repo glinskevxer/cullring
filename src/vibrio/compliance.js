@@ -33,7 +33,15 @@ export function vibrioCheck({ record, bed, tides = [], underControlAt = null, zo
     return sealed({ record, bed, start, problems });
   }
   const day = civilDateAt(keptIn, start.at);
-  const region = temperatureRegion(parseAreaId(record.areaId).region);
+  const region = regionOrNull(record.areaId);
+  if (region === null) {
+    problems.error(
+      'vibrio.noRegion',
+      `${record.areaId} sits in no temperature region, so no limit can be read`,
+      { lot: record.lot, area: record.areaId },
+    );
+    return sealed({ record, bed, start, day, problems });
+  }
   if (!inControlSeason(region, day.month)) {
     problems.note(
       'vibrio.outOfSeason',
@@ -77,6 +85,19 @@ export function vibrioCheck({ record, bed, tides = [], underControlAt = null, zo
     );
   }
   return sealed({ record, bed, start, region, day, problems, limitHours, elapsed, underControlAt });
+}
+
+/**
+ * The temperature region, or nothing where the area letter is not one this
+ * program keeps. A check reports, so an unknown area has to come back as a
+ * finding rather than as a thrown error taking the other checks down with it.
+ */
+function regionOrNull(areaId) {
+  try {
+    return temperatureRegion(parseAreaId(areaId).region);
+  } catch {
+    return null;
+  }
 }
 
 function sealed({

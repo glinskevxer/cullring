@@ -141,3 +141,18 @@ describe('describing the answer', () => {
     expect(describeVibrio(missing)).toMatch(/nothing recorded/);
   });
 });
+
+describe('an area the temperature table does not know', () => {
+  it('reports a finding rather than throwing, because a check reports', () => {
+    const record = { ...tonged(), areaId: 'Z-9' };
+    const answer = vibrioCheck({
+      record,
+      bed: CHANNEL,
+      tides: TIDES,
+      underControlAt: at('2025-08-14 12:00'),
+    });
+    expect(answer.compliant).toBe(false);
+    expect(answer.problems.has('vibrio.noRegion')).toBe(true);
+    expect(answer.limitHours).toBeNull();
+  });
+});
