@@ -6,5 +6,6 @@ export * as licence from './licence/index.js';
 export * as survey from './survey/index.js';
 export * as tide from './tide/index.js';
 export * as time from './time/index.js';
+export * as treatment from './treatment/index.js';
 export * as vibrio from './vibrio/index.js';
 export * as weather from './weather/index.js';
