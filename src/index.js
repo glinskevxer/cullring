@@ -4,6 +4,7 @@ export * as core from './core/index.js';
 export * as harvest from './harvest/index.js';
 export * as io from './io/index.js';
 export * as licence from './licence/index.js';
+export * as report from './report/index.js';
 export * as survey from './survey/index.js';
 export * as text from './text/index.js';
 export * as tide from './tide/index.js';
