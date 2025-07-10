@@ -117,6 +117,10 @@ export function buildReopening(spec) {
 function loadList(source, field, build) {
   const problems = findings();
   const entries = Array.isArray(source) ? source : (source ?? {})[field];
+  if (entries === undefined) {
+    problems.note('load.absent', `the register carries no ${field}`, { field });
+    return Object.freeze({ built: Object.freeze([]), problems });
+  }
   if (!Array.isArray(entries)) {
     problems.error('load.shape', `${field} is not a list`, { field });
     return Object.freeze({ built: Object.freeze([]), problems });

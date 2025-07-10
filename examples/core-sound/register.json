@@ -1,0 +1,206 @@
+{
+  "programme": "Core Sound shellfish sanitation",
+  "zone": "eastern",
+  "areas": [
+    {
+      "id": "B-12",
+      "name": "Broad Creek",
+      "acres": 412,
+      "history": [
+        { "classification": "approved", "from": "2018-01-01", "to": "2021-12-31" },
+        {
+          "classification": "conditionally approved",
+          "from": "2022-01-01",
+          "basis": "shoreline",
+          "note": "marina expansion at the head of the creek"
+        }
+      ]
+    },
+    {
+      "id": "B-14",
+      "name": "Cedar Bay",
+      "acres": 260,
+      "history": [
+        { "classification": "conditionally restricted", "from": "2019-01-01", "basis": "survey" }
+      ]
+    },
+    {
+      "id": "C-3",
+      "name": "Middle Sound",
+      "acres": 980,
+      "history": [{ "classification": "approved", "from": "2015-01-01" }]
+    },
+    {
+      "id": "D-2",
+      "name": "Turnagain Bight",
+      "acres": 145,
+      "history": [{ "classification": "restricted", "from": "2020-01-01", "basis": "survey" }]
+    },
+    {
+      "id": "D-9",
+      "name": "Outfall Reach",
+      "acres": 61,
+      "history": [
+        {
+          "classification": "prohibited",
+          "from": "2005-01-01",
+          "basis": "order",
+          "note": "within the outfall zone"
+        }
+      ]
+    }
+  ],
+  "plans": [
+    {
+      "area": "B-12",
+      "trigger": { "kind": "rainfall", "gauge": "BRD", "inches": 1, "overHours": 24 },
+      "reopening": { "kind": "after hours", "hours": 72 },
+      "effectiveFrom": "2022-01-01",
+      "reference": "15A NCAC 18A .0910"
+    },
+    {
+      "area": "B-14",
+      "trigger": { "kind": "rainfall", "gauge": "MLC", "inches": 0.75, "overHours": 24 },
+      "reopening": { "kind": "after samples", "count": 2 },
+      "effectiveFrom": "2019-01-01",
+      "reference": "15A NCAC 18A .0911"
+    }
+  ],
+  "stations": [
+    {
+      "id": "B12-01",
+      "latitude": 34.7112,
+      "longitude": -76.6841,
+      "openedOn": "2018-04-01",
+      "description": "off the point"
+    },
+    { "id": "B12-02", "latitude": 34.7203, "longitude": -76.7012, "openedOn": "2018-04-01" },
+    {
+      "id": "B12-03",
+      "latitude": 34.7288,
+      "longitude": -76.7154,
+      "openedOn": "2018-04-01",
+      "depth": "bottom"
+    },
+    { "id": "B14-01", "latitude": 34.7501, "longitude": -76.6602, "openedOn": "2019-01-01" },
+    { "id": "B14-02", "latitude": 34.7554, "longitude": -76.6688, "openedOn": "2019-01-01" },
+    { "id": "C3-01", "latitude": 34.9012, "longitude": -76.9021, "openedOn": "2015-01-01" },
+    { "id": "C3-02", "latitude": 34.9104, "longitude": -76.9133, "openedOn": "2015-01-01" },
+    { "id": "D2-01", "latitude": 34.6604, "longitude": -76.5511, "openedOn": "2020-01-01" }
+  ],
+  "beds": [
+    {
+      "id": "B12-BCK",
+      "name": "Broad Creek flat",
+      "tideStation": "BFT",
+      "elevation": 1.8,
+      "acres": 22
+    },
+    {
+      "id": "B12-CHN",
+      "name": "the channel edge",
+      "tideStation": "BFT",
+      "elevation": -1.2,
+      "acres": 40
+    },
+    {
+      "id": "B14-CDR",
+      "name": "Cedar Bay rocks",
+      "tideStation": "BFT",
+      "elevation": 0.9,
+      "acres": 18
+    },
+    {
+      "id": "C3-MSL",
+      "name": "Middle Sound lease",
+      "tideStation": "HAT",
+      "elevation": 0.4,
+      "tenure": "lease",
+      "holder": "SH-2025-04412",
+      "acres": 12
+    },
+    {
+      "id": "D2-TGB",
+      "name": "Turnagain lease",
+      "tideStation": "BFT",
+      "elevation": 0.6,
+      "tenure": "lease",
+      "holder": "SH-2025-04412",
+      "acres": 9
+    },
+    {
+      "id": "D9-OFL",
+      "name": "Outfall Reach bottom",
+      "tideStation": "BFT",
+      "elevation": -0.5,
+      "acres": 30
+    }
+  ],
+  "harvesters": [
+    {
+      "id": "SH-2025-04412",
+      "name": "Wade Ollis",
+      "gears": ["hand", "rake"],
+      "issuedOn": "2025-01-01",
+      "expiresOn": "2025-12-31"
+    },
+    {
+      "id": "SH-2025-00877",
+      "name": "Della Pruitt",
+      "gears": ["tongs", "dredge"],
+      "issuedOn": "2025-01-01",
+      "expiresOn": "2025-12-31",
+      "suspensions": [{ "from": "2025-07-01", "to": "2025-07-31", "reason": "untagged lot" }]
+    },
+    {
+      "id": "SH-2025-01120",
+      "name": "Ida Salter",
+      "gears": ["tongs", "hand"],
+      "issuedOn": "2025-01-01",
+      "expiresOn": "2025-12-31"
+    },
+    {
+      "id": "SH-2024-03310",
+      "name": "Roscoe Gaskill",
+      "gears": ["tongs"],
+      "issuedOn": "2024-05-01",
+      "expiresOn": "2025-04-30"
+    }
+  ],
+  "dealers": [
+    {
+      "id": "SS-042",
+      "name": "Beaufort Oyster",
+      "address": "12 Front Street, Beaufort",
+      "certifiedOn": "2025-01-01",
+      "expiresOn": "2025-12-31"
+    },
+    {
+      "id": "SP-118",
+      "name": "Core Sound Packing",
+      "address": "8 Bay Street, Sea Level",
+      "certifiedOn": "2025-01-01",
+      "expiresOn": "2025-12-31"
+    },
+    {
+      "id": "RP-007",
+      "name": "Harkers Island Repack",
+      "address": "3 Island Road",
+      "certifiedOn": "2025-01-01",
+      "expiresOn": "2025-12-31"
+    },
+    {
+      "id": "DP-003",
+      "name": "Newport River Depuration",
+      "address": "44 Mill Creek Road",
+      "certifiedOn": "2025-01-01",
+      "expiresOn": "2025-12-31"
+    },
+    {
+      "id": "SS-099",
+      "name": "Gone Concern",
+      "certifiedOn": "2024-01-01",
+      "expiresOn": "2024-12-31"
+    }
+  ]
+}

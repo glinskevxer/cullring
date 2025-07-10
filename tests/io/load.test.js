@@ -47,9 +47,13 @@ describe('loading the areas', () => {
     expect(loadAreas(source.areas.slice(0, 1)).built).toHaveLength(1);
   });
 
-  it('reports a bundle with no list at all', () => {
-    expect(loadAreas({}).problems.has('load.shape')).toBe(true);
-    expect(loadAreas(null).problems.has('load.shape')).toBe(true);
+  it('notes a bundle that carries no list at all', () => {
+    expect(loadAreas({}).problems.has('load.absent')).toBe(true);
+    expect(loadAreas(null).problems.has('load.absent')).toBe(true);
+  });
+
+  it('reports a list that is there and is not a list', () => {
+    expect(loadAreas({ areas: 'B-12' }).problems.has('load.shape')).toBe(true);
   });
 });
 
@@ -214,5 +218,24 @@ describe('reading a flag off a sheet', () => {
 
   it.each(['n', 'no', '', '0', 'false', undefined, null])('reads %s as not iced', (text) => {
     expect(readFlag(text)).toBe(false);
+  });
+});
+
+describe('a register that leaves a list out entirely', () => {
+  it('notes it rather than calling it malformed', () => {
+    const answer = loadDealers({ areas: [] });
+    expect(answer.problems.has('load.absent')).toBe(true);
+    expect(answer.problems.hasError()).toBe(false);
+    expect(answer.built).toEqual([]);
+  });
+
+  it('still calls a list that is there and is not a list an error', () => {
+    const answer = loadDealers({ dealers: 'SP-118' });
+    expect(answer.problems.has('load.shape')).toBe(true);
+    expect(answer.problems.hasError()).toBe(true);
+  });
+
+  it('reads a null register as absent throughout', () => {
+    expect(loadAreas(null).problems.has('load.absent')).toBe(true);
   });
 });
