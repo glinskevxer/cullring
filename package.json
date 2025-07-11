@@ -26,8 +26,11 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint .",
+    "notice": "node bin/cullring.js notice B-12 -c examples/core-sound -a \"2025-06-20 09:00\" -f 2025-06-01",
+    "standing": "node bin/cullring.js standing -c examples/core-sound -a \"2025-06-11 09:00\" -f 2025-06-01",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "validate": "node bin/cullring.js validate -c examples/core-sound"
   },
   "dependencies": {
     "commander": "13.1.0"

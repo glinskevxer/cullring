@@ -33,9 +33,17 @@ import {
 } from '../io/load.js';
 import { ledger } from '../trace/ledger.js';
 import { parseCsv } from '../io/csv.js';
-import { parseInstant } from '../time/instant.js';
+import { instantFromCivil, parseInstant } from '../time/instant.js';
+import { MIDNIGHT } from '../time/civil.js';
+import { LOW } from '../tide/table.js';
+import { limitsFor } from '../survey/standard.js';
+import { APPROVED } from '../area/classification.js';
+import { FECAL_COLIFORM } from '../survey/standard.js';
 
 export const REGISTER_FILE = 'register.json';
+
+/** A single result is conforming at or under the approved upper limit. */
+export const SINGLE_SAMPLE_LIMIT = limitsFor(APPROVED, FECAL_COLIFORM).ninetieth;
 
 export const FEEDS = Object.freeze({
   readings: 'gauge.csv',
@@ -101,10 +109,47 @@ export function loadCase(directory, { zone = 'eastern' } = {}) {
     records: landings,
     book: ledger(movements),
     underControl: control,
-    feed: Object.freeze({ readings, bypasses, tides, samples }),
+    feed: Object.freeze({
+      readings,
+      bypasses,
+      tides: tideTurns(tides),
+      samples: conformingSamples(samples, zone),
+    }),
     tides,
     problems,
   });
+}
+
+/**
+ * The closure walk reads a different feed from the survey.
+ *
+ * Both are called samples and they are not the same thing. The survey wants
+ * every result with the station and the day it was collected on. A reopening
+ * rule counted in conforming samples wants an instant and a yes or no, and
+ * a result is conforming when it is at or under the single sample limit for
+ * approved water. Handing the survey list to the closure walk put a record
+ * with no instant on it into a list of instants, which is exactly the kind of
+ * thing two fields with the same name do.
+ */
+export function conformingSamples(samples, zone) {
+  return samples.map((one) =>
+    Object.freeze({
+      at: instantFromCivil(zone, one.collectedOn, MIDNIGHT),
+      conforming: one.result.value <= SINGLE_SAMPLE_LIMIT,
+      station: one.station,
+    }),
+  );
+}
+
+/**
+ * A tide cycle turns at low water, so the reopening rules counted in tide
+ * cycles read the low waters out of the published table.
+ */
+export function tideTurns(table) {
+  return table
+    .filter((one) => one.kind === LOW)
+    .map((one) => one.at)
+    .sort((left, right) => left.epochSecond - right.epochSecond);
 }
 
 /**
