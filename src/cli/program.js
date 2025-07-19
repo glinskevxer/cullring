@@ -10,6 +10,7 @@
 import { Command } from 'commander';
 
 import { validate } from './commands/case.js';
+import { survey } from './commands/survey.js';
 import { closures, notice, standing } from './commands/water.js';
 import { REFUSED, guard, makeConsole } from './output.js';
 
@@ -60,6 +61,18 @@ export function build(io) {
     .option('-o, --on <date>', 'the day the plan is read as in force on')
     .action((area, options) => {
       exit(io, () => notice({ ...options, area }, io));
+    });
+
+  common(program.command('survey'))
+    .description('score the results for an area and propose a classification')
+    .argument('<area>', 'the area number')
+    .requiredOption('-o, --on <date>', 'the day the survey is scored as at')
+    .option('-s, --strategy <name>', 'systematic random or adverse pollution condition')
+    .option('-n, --analysis <name>', 'fecal coliform or total coliform')
+    .option('-t, --held-to <class>', 'the class to score against, if not the register one')
+    .option('-b, --both', 'print the same results under both strategies')
+    .action((area, options) => {
+      exit(io, () => survey({ ...options, area }, io));
     });
 
   return program;
