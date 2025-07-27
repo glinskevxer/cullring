@@ -10,6 +10,7 @@
 import { Command } from 'commander';
 
 import { validate } from './commands/case.js';
+import { landings, lot } from './commands/landings.js';
 import { survey } from './commands/survey.js';
 import { closures, notice, standing } from './commands/water.js';
 import { REFUSED, guard, makeConsole } from './output.js';
@@ -73,6 +74,22 @@ export function build(io) {
     .option('-b, --both', 'print the same results under both strategies')
     .action((area, options) => {
       exit(io, () => survey({ ...options, area }, io));
+    });
+
+  common(program.command('landings'))
+    .description('every lot landed on a day, checked against every register')
+    .requiredOption('-o, --on <date>', 'the day to look at')
+    .option('-f, --from <date>', 'the day the walk over the feed starts')
+    .action((options) => {
+      exit(io, () => landings(options, io));
+    });
+
+  common(program.command('lot'))
+    .description('everything the programme knows about one lot')
+    .argument('<lot>', 'the lot number')
+    .option('-f, --from <date>', 'the day the walk over the feed starts')
+    .action((number, options) => {
+      exit(io, () => lot({ ...options, lot: number }, io));
     });
 
   return program;
