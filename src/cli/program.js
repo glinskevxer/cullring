@@ -12,6 +12,7 @@ import { Command } from 'commander';
 import { validate } from './commands/case.js';
 import { landings, lot } from './commands/landings.js';
 import { survey } from './commands/survey.js';
+import { forward, recallCommand, trace } from './commands/trace.js';
 import { closures, notice, standing } from './commands/water.js';
 import { REFUSED, guard, makeConsole } from './output.js';
 
@@ -90,6 +91,29 @@ export function build(io) {
     .option('-f, --from <date>', 'the day the walk over the feed starts')
     .action((number, options) => {
       exit(io, () => lot({ ...options, lot: number }, io));
+    });
+
+  common(program.command('trace'))
+    .description('walk back from a lot number to the water it came out of')
+    .argument('<lot>', 'the lot number')
+    .action((number, options) => {
+      exit(io, () => trace({ ...options, lot: number }, io));
+    });
+
+  common(program.command('forward'))
+    .description('walk forward from a lot number to everywhere it went')
+    .argument('<lot>', 'the lot number')
+    .action((number, options) => {
+      exit(io, () => forward({ ...options, lot: number }, io));
+    });
+
+  common(program.command('recall'))
+    .description('everything landed out of an area in a period, and where it went')
+    .argument('<area>', 'the area number')
+    .requiredOption('-o, --on <date>', 'the first day of the period')
+    .option('-t, --to <date>', 'the last day of the period')
+    .action((area, options) => {
+      exit(io, () => recallCommand({ ...options, area }, io));
     });
 
   return program;
