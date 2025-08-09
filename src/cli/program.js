@@ -11,6 +11,7 @@ import { Command } from 'commander';
 
 import { validate } from './commands/case.js';
 import { landings, lot } from './commands/landings.js';
+import { bedsCommand, dealerCommand, harvesterCommand } from './commands/registers.js';
 import { survey } from './commands/survey.js';
 import { forward, recallCommand, trace } from './commands/trace.js';
 import { closures, notice, standing } from './commands/water.js';
@@ -114,6 +115,29 @@ export function build(io) {
     .option('-t, --to <date>', 'the last day of the period')
     .action((area, options) => {
       exit(io, () => recallCommand({ ...options, area }, io));
+    });
+
+  common(program.command('dealer'))
+    .description('a dealer certification and what it permits on a day')
+    .argument('<dealer>', 'the certification number')
+    .requiredOption('-o, --on <date>', 'the day to ask about')
+    .action((number, options) => {
+      exit(io, () => dealerCommand({ ...options, dealer: number }, io));
+    });
+
+  common(program.command('harvester'))
+    .description('a harvester licence and what it permits on a day')
+    .argument('<harvester>', 'the licence number')
+    .requiredOption('-o, --on <date>', 'the day to ask about')
+    .action((number, options) => {
+      exit(io, () => harvesterCommand({ ...options, harvester: number }, io));
+    });
+
+  common(program.command('beds'))
+    .description('the beds in an area, with the tide station each is read against')
+    .argument('<area>', 'the area number')
+    .action((area, options) => {
+      exit(io, () => bedsCommand({ ...options, area }, io));
     });
 
   return program;
