@@ -13,6 +13,7 @@ import { validate } from './commands/case.js';
 import { landings, lot } from './commands/landings.js';
 import { bedsCommand, dealerCommand, harvesterCommand } from './commands/registers.js';
 import { survey } from './commands/survey.js';
+import { tideCommand, vibrioCommand } from './commands/tide.js';
 import { forward, recallCommand, trace } from './commands/trace.js';
 import { closures, notice, standing } from './commands/water.js';
 import { REFUSED, guard, makeConsole } from './output.js';
@@ -138,6 +139,21 @@ export function build(io) {
     .argument('<area>', 'the area number')
     .action((area, options) => {
       exit(io, () => bedsCommand({ ...options, area }, io));
+    });
+
+  common(program.command('tide'))
+    .description('when a bed comes out of the water on a day')
+    .argument('<bed>', 'the bed number')
+    .requiredOption('-o, --on <date>', 'the day to ask about')
+    .action((bed, options) => {
+      exit(io, () => tideCommand({ ...options, bed }, io));
+    });
+
+  common(program.command('vibrio'))
+    .description('the time to temperature table for the region an area sits in')
+    .argument('<area>', 'the area number')
+    .action((area, options) => {
+      exit(io, () => vibrioCommand({ ...options, area }, io));
     });
 
   return program;
