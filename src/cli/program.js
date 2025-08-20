@@ -12,6 +12,7 @@ import { Command } from 'commander';
 import { validate } from './commands/case.js';
 import { landings, lot } from './commands/landings.js';
 import { bedsCommand, dealerCommand, harvesterCommand } from './commands/registers.js';
+import { month, walk } from './commands/month.js';
 import { survey } from './commands/survey.js';
 import { tideCommand, vibrioCommand } from './commands/tide.js';
 import { forward, recallCommand, trace } from './commands/trace.js';
@@ -154,6 +155,21 @@ export function build(io) {
     .argument('<area>', 'the area number')
     .action((area, options) => {
       exit(io, () => vibrioCommand({ ...options, area }, io));
+    });
+
+  common(program.command('month'))
+    .description('the monthly programme report')
+    .requiredOption('-o, --on <date>', 'any day in the month')
+    .action((options) => {
+      exit(io, () => month(options, io));
+    });
+
+  common(program.command('walk'))
+    .description('every report over one case, with a seal at the end')
+    .requiredOption('-o, --on <date>', 'the day the walk is run as at')
+    .option('--digest-only', 'print only the seal')
+    .action((options) => {
+      exit(io, () => walk(options, io));
     });
 
   return program;
