@@ -16,21 +16,27 @@
     "cullring": "./bin/cullring.js"
   },
   "files": [
+    "README.md",
     "bin/",
-    "src/",
+    "docs/",
     "examples/",
-    "README.md"
+    "src/",
+    "tools/"
   ],
   "scripts": {
+    "check:commands": "node tools/check_commands.js",
     "coverage": "vitest run --coverage",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint .",
+    "month": "node bin/cullring.js month -c examples/core-sound -o 2025-08-14",
     "notice": "node bin/cullring.js notice B-12 -c examples/core-sound -a \"2025-06-20 09:00\" -f 2025-06-01",
     "standing": "node bin/cullring.js standing -c examples/core-sound -a \"2025-06-11 09:00\" -f 2025-06-01",
     "test": "vitest run",
     "test:watch": "vitest",
-    "validate": "node bin/cullring.js validate -c examples/core-sound"
+    "validate": "node bin/cullring.js validate -c examples/core-sound",
+    "walk": "node bin/cullring.js walk -c examples/core-sound -o 2025-08-31",
+    "write:commands": "node tools/write_commands.js"
   },
   "dependencies": {
     "commander": "13.1.0"
