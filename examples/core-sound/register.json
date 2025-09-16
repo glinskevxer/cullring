@@ -7,7 +7,11 @@
       "name": "Broad Creek",
       "acres": 412,
       "history": [
-        { "classification": "approved", "from": "2018-01-01", "to": "2021-12-31" },
+        {
+          "classification": "approved",
+          "from": "2018-01-01",
+          "to": "2021-12-31"
+        },
         {
           "classification": "conditionally approved",
           "from": "2022-01-01",
@@ -21,20 +25,35 @@
       "name": "Cedar Bay",
       "acres": 260,
       "history": [
-        { "classification": "conditionally restricted", "from": "2019-01-01", "basis": "survey" }
+        {
+          "classification": "conditionally restricted",
+          "from": "2019-01-01",
+          "basis": "survey"
+        }
       ]
     },
     {
       "id": "C-3",
       "name": "Middle Sound",
       "acres": 980,
-      "history": [{ "classification": "approved", "from": "2015-01-01" }]
+      "history": [
+        {
+          "classification": "approved",
+          "from": "2015-01-01"
+        }
+      ]
     },
     {
       "id": "D-2",
       "name": "Turnagain Bight",
       "acres": 145,
-      "history": [{ "classification": "restricted", "from": "2020-01-01", "basis": "survey" }]
+      "history": [
+        {
+          "classification": "restricted",
+          "from": "2020-01-01",
+          "basis": "survey"
+        }
+      ]
     },
     {
       "id": "D-9",
@@ -53,15 +72,31 @@
   "plans": [
     {
       "area": "B-12",
-      "trigger": { "kind": "rainfall", "gauge": "BRD", "inches": 1, "overHours": 24 },
-      "reopening": { "kind": "after hours", "hours": 72 },
+      "trigger": {
+        "kind": "rainfall",
+        "gauge": "BRD",
+        "inches": 1,
+        "overHours": 24
+      },
+      "reopening": {
+        "kind": "after hours",
+        "hours": 72
+      },
       "effectiveFrom": "2022-01-01",
       "reference": "15A NCAC 18A .0910"
     },
     {
       "area": "B-14",
-      "trigger": { "kind": "rainfall", "gauge": "MLC", "inches": 0.75, "overHours": 24 },
-      "reopening": { "kind": "after samples", "count": 2 },
+      "trigger": {
+        "kind": "rainfall",
+        "gauge": "MLC",
+        "inches": 0.75,
+        "overHours": 24
+      },
+      "reopening": {
+        "kind": "after samples",
+        "count": 2
+      },
       "effectiveFrom": "2019-01-01",
       "reference": "15A NCAC 18A .0911"
     }
@@ -74,7 +109,12 @@
       "openedOn": "2018-04-01",
       "description": "off the point"
     },
-    { "id": "B12-02", "latitude": 34.7203, "longitude": -76.7012, "openedOn": "2018-04-01" },
+    {
+      "id": "B12-02",
+      "latitude": 34.7203,
+      "longitude": -76.7012,
+      "openedOn": "2018-04-01"
+    },
     {
       "id": "B12-03",
       "latitude": 34.7288,
@@ -82,11 +122,36 @@
       "openedOn": "2018-04-01",
       "depth": "bottom"
     },
-    { "id": "B14-01", "latitude": 34.7501, "longitude": -76.6602, "openedOn": "2019-01-01" },
-    { "id": "B14-02", "latitude": 34.7554, "longitude": -76.6688, "openedOn": "2019-01-01" },
-    { "id": "C3-01", "latitude": 34.9012, "longitude": -76.9021, "openedOn": "2015-01-01" },
-    { "id": "C3-02", "latitude": 34.9104, "longitude": -76.9133, "openedOn": "2015-01-01" },
-    { "id": "D2-01", "latitude": 34.6604, "longitude": -76.5511, "openedOn": "2020-01-01" }
+    {
+      "id": "B14-01",
+      "latitude": 34.7501,
+      "longitude": -76.6602,
+      "openedOn": "2019-01-01"
+    },
+    {
+      "id": "B14-02",
+      "latitude": 34.7554,
+      "longitude": -76.6688,
+      "openedOn": "2019-01-01"
+    },
+    {
+      "id": "C3-01",
+      "latitude": 34.9012,
+      "longitude": -76.9021,
+      "openedOn": "2015-01-01"
+    },
+    {
+      "id": "C3-02",
+      "latitude": 34.9104,
+      "longitude": -76.9133,
+      "openedOn": "2015-01-01"
+    },
+    {
+      "id": "D2-01",
+      "latitude": 34.6604,
+      "longitude": -76.5511,
+      "openedOn": "2020-01-01"
+    }
   ],
   "beds": [
     {
@@ -150,7 +215,13 @@
       "gears": ["tongs", "dredge"],
       "issuedOn": "2025-01-01",
       "expiresOn": "2025-12-31",
-      "suspensions": [{ "from": "2025-07-01", "to": "2025-07-31", "reason": "untagged lot" }]
+      "suspensions": [
+        {
+          "from": "2025-07-01",
+          "to": "2025-07-31",
+          "reason": "untagged lot"
+        }
+      ]
     },
     {
       "id": "SH-2025-01120",
@@ -201,6 +272,45 @@
       "name": "Gone Concern",
       "certifiedOn": "2024-01-01",
       "expiresOn": "2024-12-31"
+    }
+  ],
+  "sources": [
+    {
+      "id": "WWTP-3",
+      "kind": "wastewater outfall",
+      "areaId": "D-9",
+      "latitude": 34.6612,
+      "longitude": -76.5495,
+      "size": 750000,
+      "surveyedOn": "2024-06-01",
+      "note": "the reach is named for it"
+    },
+    {
+      "id": "MAR-1",
+      "kind": "marina",
+      "areaId": "B-12",
+      "latitude": 34.7295,
+      "longitude": -76.7168,
+      "size": 64,
+      "surveyedOn": "2024-06-01",
+      "note": "at the head of the creek"
+    },
+    {
+      "id": "BY-2",
+      "kind": "boatyard",
+      "areaId": "B-14",
+      "latitude": 34.7549,
+      "longitude": -76.6681,
+      "surveyedOn": "2024-06-01"
+    },
+    {
+      "id": "SW-7",
+      "kind": "stormwater outfall",
+      "areaId": "C-3",
+      "latitude": 34.95,
+      "longitude": -76.95,
+      "surveyedOn": "2024-06-01",
+      "note": "well clear of every station"
     }
   ]
 }

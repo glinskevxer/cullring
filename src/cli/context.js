@@ -28,6 +28,7 @@ import {
   loadPlans,
   loadReadings,
   loadSamples,
+  loadSources,
   loadStations,
   loadTides,
 } from '../io/load.js';
@@ -79,6 +80,7 @@ export function loadCase(directory, { zone = 'eastern' } = {}) {
   const beds = absorb(problems, loadBeds(register));
   const harvesters = absorb(problems, loadHarvesters(register));
   const dealers = absorb(problems, loadDealers(register));
+  const sources = absorb(problems, loadSources(register));
 
   const readings = feed(problems, directory, FEEDS.readings, (text) =>
     loadReadings(text, { zone }),
@@ -105,6 +107,7 @@ export function loadCase(directory, { zone = 'eastern' } = {}) {
     beds,
     harvesters,
     dealers,
+    sources,
     samples,
     records: landings,
     book: ledger(movements),
@@ -202,6 +205,7 @@ export function contextOf(loaded, { from = null } = {}) {
     feed: { readings: loaded.feed.readings, bypasses: loaded.feed.bypasses },
     harvesters: loaded.harvesters,
     dealers: loaded.dealers,
+    sources: loaded.sources,
     tides: loaded.tides,
     beds: loaded.beds,
     from,

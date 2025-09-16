@@ -100,6 +100,7 @@ export function walk(options, io) {
           heldTo,
           samples: selected,
           stations: loaded.stations,
+          sources: loaded.sources,
           on,
         }),
       ),

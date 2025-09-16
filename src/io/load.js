@@ -30,6 +30,7 @@ import { harvestRecord } from '../harvest/record.js';
 import { dealer } from '../licence/dealer.js';
 import { harvester, suspension } from '../licence/harvester.js';
 import { sample } from '../survey/result.js';
+import { pollutionSource } from '../survey/shoreline.js';
 import { extreme } from '../tide/table.js';
 import { movement } from '../trace/ledger.js';
 import { reading } from '../weather/gauge.js';
@@ -64,6 +65,10 @@ export function loadHarvesters(source) {
 
 export function loadDealers(source) {
   return loadList(source, 'dealers', (entry) => dealer(entry));
+}
+
+export function loadSources(source) {
+  return loadList(source, 'sources', (entry) => pollutionSource(entry));
 }
 
 export function loadPlans(source) {

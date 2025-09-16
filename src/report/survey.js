@@ -15,6 +15,7 @@
 import { compareClassification } from '../area/classification.js';
 import { countsByStation, unvisited } from '../area/station.js';
 import { evaluateSurvey } from '../survey/evaluate.js';
+import { areaCap, capped, describeSource, sourcesIn } from '../survey/shoreline.js';
 import { FECAL_COLIFORM } from '../survey/standard.js';
 import { SYSTEMATIC_RANDOM, shortNameOf } from '../survey/strategy.js';
 import { formatCivilDate } from '../time/civil.js';
@@ -36,11 +37,18 @@ export function surveyReport({
   strategy = SYSTEMATIC_RANDOM,
   samples = [],
   stations = [],
+  sources = [],
   on,
 }) {
   const perStation = samples.length > 0 ? countsByStation(samples) : {};
   const verdict = evaluateSurvey({ results, heldTo, analysis, strategy, perStation });
   const missed = stations.length > 0 ? unvisited(stations, area.id, samples, on) : [];
+  const reaching = sourcesIn(sources, area.id);
+  const cap = areaCap(
+    reaching,
+    stations.filter((one) => one.areaId === area.id),
+  );
+  const supported = verdict.supported === null ? null : capped(verdict.supported, cap);
   return Object.freeze({
     area: area.id,
     name: area.name,
@@ -51,15 +59,25 @@ export function surveyReport({
     verdict,
     perStation,
     unvisited: Object.freeze(missed),
-    proposal: proposalOf(verdict, heldTo),
+    sources: Object.freeze(reaching),
+    cap,
+    supported,
+    proposal: proposalOf(supported, heldTo),
   });
 }
 
-function proposalOf(verdict, heldTo) {
-  if (verdict.supported === null) {
+/**
+ * The proposal is built from the CAPPED class rather than from the
+ * bacteriological one, because the shoreline evidence is evidence. An area
+ * whose numbers support approved and whose stations sit inside an outfall zone
+ * is not a candidate for approved, and a proposal that said otherwise would be
+ * the office arguing against its own survey.
+ */
+function proposalOf(supported, heldTo) {
+  if (supported === null) {
     return Object.freeze({ kind: 'none', reason: 'the set is too thin to support anything' });
   }
-  const direction = compareClassification(verdict.supported, heldTo);
+  const direction = compareClassification(supported, heldTo);
   if (direction === 0) {
     return Object.freeze({
       kind: 'hold',
@@ -69,11 +87,9 @@ function proposalOf(verdict, heldTo) {
   }
   return Object.freeze({
     kind: direction > 0 ? 'downgrade' : 'upgrade',
-    to: verdict.supported,
+    to: supported,
     reason:
-      direction > 0
-        ? `the water no longer supports ${heldTo}`
-        : `the water supports ${verdict.supported}`,
+      direction > 0 ? `the water no longer supports ${heldTo}` : `the water supports ${supported}`,
   });
 }
 
@@ -113,7 +129,14 @@ export function renderSurvey(report) {
       })),
     ),
   );
-  out.push('', `Supported: ${report.verdict.supported}`);
+  out.push('', `Supported by the samples: ${report.verdict.supported}`);
+  if (report.cap !== null) {
+    out.push(`Capped by the shoreline at: ${report.cap}`);
+    for (const one of report.sources) {
+      out.push(`  ${describeSource(one)}`);
+    }
+  }
+  out.push(`Supported: ${report.supported}`);
   out.push(`Proposal: ${report.proposal.kind}, ${report.proposal.reason}.`);
   pushUnvisited(out, report);
   return out.join('\n');
