@@ -35,6 +35,7 @@ import { extreme } from '../tide/table.js';
 import { movement } from '../trace/ledger.js';
 import { reading } from '../weather/gauge.js';
 import { parseInstant } from '../time/instant.js';
+import { parseCivilDate } from '../time/civil.js';
 import { parseCsv, readRows } from './csv.js';
 
 export function loadAreas(source) {
@@ -65,6 +66,43 @@ export function loadHarvesters(source) {
 
 export function loadDealers(source) {
   return loadList(source, 'dealers', (entry) => dealer(entry));
+}
+
+/**
+ * The review dates, which are a record keyed by area rather than a list. They
+ * are the one part of the register that is optional in full: an office that
+ * has never written them down still gets a schedule worked out from the last
+ * reclassification, and the report prints the date it used.
+ */
+export function loadReviewHistory(source) {
+  const problems = findings();
+  const held = (source ?? {}).reviewHistory;
+  if (held === undefined) {
+    problems.note('load.absent', 'the register carries no reviewHistory', {
+      field: 'reviewHistory',
+    });
+    return Object.freeze({ built: Object.freeze({}), problems });
+  }
+  if (typeof held !== 'object' || Array.isArray(held)) {
+    problems.error('load.shape', 'reviewHistory is not a record', { field: 'reviewHistory' });
+    return Object.freeze({ built: Object.freeze({}), problems });
+  }
+  const out = {};
+  for (const [area, dates] of Object.entries(held)) {
+    try {
+      out[area] = Object.freeze({
+        lastReview: parseCivilDate(dates.lastReview, 'lastReview'),
+        lastSurvey: parseCivilDate(dates.lastSurvey, 'lastSurvey'),
+        lastPlanReview:
+          dates.lastPlanReview === undefined || dates.lastPlanReview === null
+            ? null
+            : parseCivilDate(dates.lastPlanReview, 'lastPlanReview'),
+      });
+    } catch (error) {
+      problems.error('load.entry', `reviewHistory[${area}]: ${error.message}`, { area });
+    }
+  }
+  return Object.freeze({ built: Object.freeze(out), problems });
 }
 
 export function loadSources(source) {

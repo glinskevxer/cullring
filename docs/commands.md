@@ -246,3 +246,14 @@ Options:
 - `--json` print the answer as JSON
 - `-o, --on <date>` the day the walk is run as at (required)
 - `--digest-only` print only the seal
+
+## programme
+
+which reviews are overdue and which stations are due a visit
+
+Options:
+
+- `-c, --case <directory>` the case directory to read (required)
+- `-z, --zone <zone>` the zone the office keeps (default eastern)
+- `--json` print the answer as JSON
+- `-o, --on <date>` the day to ask about (required)

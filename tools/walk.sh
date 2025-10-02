@@ -52,6 +52,7 @@ expect_out "harvester" "Suspended" $RUN harvester SH-2025-00877 -c "$CASE" -o 20
 expect_out "beds" "B12-BCK" $RUN beds B-12 -c "$CASE"
 expect_out "tide" "Tide station" $RUN tide B12-BCK -c "$CASE" -o 2025-08-14
 expect_out "vibrio" "Time to temperature" $RUN vibrio B-12 -c "$CASE"
+expect_out "programme" "Programme standing" $RUN programme -c "$CASE" -o 2025-09-30
 expect_out "month" "Programme report" $RUN month -c "$CASE" -o 2025-08-14
 expect_out "walk" "sha256" $RUN walk -c "$CASE" -o 2025-08-31
 

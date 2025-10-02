@@ -13,6 +13,7 @@ import { validate } from './commands/case.js';
 import { landings, lot } from './commands/landings.js';
 import { bedsCommand, dealerCommand, harvesterCommand } from './commands/registers.js';
 import { month, walk } from './commands/month.js';
+import { programme } from './commands/programme.js';
 import { survey } from './commands/survey.js';
 import { tideCommand, vibrioCommand } from './commands/tide.js';
 import { forward, recallCommand, trace } from './commands/trace.js';
@@ -170,6 +171,13 @@ export function build(io) {
     .option('--digest-only', 'print only the seal')
     .action((options) => {
       exit(io, () => walk(options, io));
+    });
+
+  common(program.command('programme'))
+    .description('which reviews are overdue and which stations are due a visit')
+    .requiredOption('-o, --on <date>', 'the day to ask about')
+    .action((options) => {
+      exit(io, () => programme(options, io));
     });
 
   return program;

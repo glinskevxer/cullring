@@ -312,5 +312,28 @@
       "surveyedOn": "2024-06-01",
       "note": "well clear of every station"
     }
-  ]
+  ],
+  "reviewHistory": {
+    "B-12": {
+      "lastReview": "2025-03-14",
+      "lastSurvey": "2023-05-02",
+      "lastPlanReview": "2025-03-14"
+    },
+    "B-14": {
+      "lastReview": "2025-02-11",
+      "lastSurvey": "2024-09-19"
+    },
+    "C-3": {
+      "lastReview": "2024-11-06",
+      "lastSurvey": "2022-04-18"
+    },
+    "D-2": {
+      "lastReview": "2025-05-21",
+      "lastSurvey": "2024-03-07"
+    },
+    "D-9": {
+      "lastReview": "2021-08-30",
+      "lastSurvey": "2019-10-15"
+    }
+  }
 }
