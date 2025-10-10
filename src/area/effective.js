@@ -18,6 +18,12 @@
  * A plan attached to an area that is not conditionally classified is also a
  * defect, but a harmless one: the class already says what may be taken and the
  * plan has nothing to add. It is reported and ignored.
+ *
+ * An emergency order beats both. It is consulted first and it stops the
+ * function: while an order is in force the area is prohibited and neither the
+ * register nor the plan has anything left to say. Taking the stricter of the
+ * order and the plan would give the same answer today and cite the wrong
+ * reason, and the reason is what goes on the notice.
  */
 
 import { findings } from '../core/finding.js';
@@ -25,10 +31,18 @@ import { PROHIBITED, isConditional, whenPlanClosed, whenPlanOpen } from './class
 import { classificationOn, periodOn } from './growingArea.js';
 import { planInForce } from '../condition/plan.js';
 import { stateAt } from '../condition/closure.js';
+import { classificationUnder, orderInForce } from '../condition/emergency.js';
 import { civilDateAt } from '../time/instant.js';
 import { formatCivilDate } from '../time/civil.js';
 
-export function effectiveClassification({ area, plans = [], feed = {}, at, from = null }) {
+export function effectiveClassification({
+  area,
+  plans = [],
+  feed = {},
+  orders = [],
+  at,
+  from = null,
+}) {
   const problems = findings();
   const day = civilDateAt(area.zone, at);
   const paper = classificationOn(area, day);
@@ -42,6 +56,23 @@ export function effectiveClassification({ area, plans = [], feed = {}, at, from 
       },
     );
     return sealed({ area, at, day, paper: null, effective: PROHIBITED, problems });
+  }
+  const order = orderInForce(orders, area.id, at);
+  if (order !== null) {
+    problems.note('area.underOrder', `${area.id} is shut under ${order.number}`, {
+      area: area.id,
+      order: order.number,
+      kind: order.kind,
+    });
+    return sealed({
+      area,
+      at,
+      day,
+      paper,
+      effective: classificationUnder(order),
+      order,
+      problems,
+    });
   }
   const plan = planInForce(plans, area.id, day);
   if (!isConditional(paper)) {
@@ -80,7 +111,17 @@ export function effectiveClassification({ area, plans = [], feed = {}, at, from 
   return sealed({ area, at, day, paper, effective, plan, state, problems });
 }
 
-function sealed({ area, at, day, paper, effective, plan = null, state = null, problems }) {
+function sealed({
+  area,
+  at,
+  day,
+  paper,
+  effective,
+  plan = null,
+  state = null,
+  order = null,
+  problems,
+}) {
   const period = paper === null ? null : periodOn(area, day);
   return Object.freeze({
     area: area.id,
@@ -90,6 +131,7 @@ function sealed({ area, at, day, paper, effective, plan = null, state = null, pr
     effective,
     basis: period === null ? null : period.basis,
     plan,
+    order,
     closed: state === null ? false : state.closed,
     closure: state === null ? null : state.closure,
     problems,
@@ -97,7 +139,7 @@ function sealed({ area, at, day, paper, effective, plan = null, state = null, pr
 }
 
 /** Every area's standing at one moment, in area order. */
-export function standingAt({ areas, plans = [], feed = {}, at, from = null }) {
+export function standingAt({ areas, plans = [], feed = {}, orders = [], at, from = null }) {
   return areas
     .slice()
     .sort((left, right) =>
@@ -107,7 +149,7 @@ export function standingAt({ areas, plans = [], feed = {}, at, from = null }) {
           ? -1
           : 1,
     )
-    .map((area) => effectiveClassification({ area, plans, feed, at, from }));
+    .map((area) => effectiveClassification({ area, plans, feed, orders, at, from }));
 }
 
 /** True when anything at all may lawfully be taken from the water at that moment. */
