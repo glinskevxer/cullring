@@ -17,6 +17,7 @@ import { InputError } from '../core/errors.js';
 import { findings } from '../core/finding.js';
 import { classificationPeriod, growingArea } from '../area/growingArea.js';
 import { station } from '../area/station.js';
+import { emergencyOrder } from '../condition/emergency.js';
 import { managementPlan } from '../condition/plan.js';
 import { afterHours, afterSamples, afterTides, onDate } from '../condition/reopening.js';
 import {
@@ -103,6 +104,24 @@ export function loadReviewHistory(source) {
     }
   }
   return Object.freeze({ built: Object.freeze(out), problems });
+}
+
+/**
+ * The emergency orders. Their times are instants rather than civil dates,
+ * because an order is signed at a moment and a boat that went out an hour
+ * before it was signed did nothing wrong.
+ */
+export function loadOrders(source, { zone = 'eastern' } = {}) {
+  return loadList(source, 'orders', (entry) =>
+    emergencyOrder({
+      ...entry,
+      issuedAt: parseInstant(entry.issuedAt, { zone, field: 'issuedAt' }),
+      liftedAt:
+        entry.liftedAt === undefined || entry.liftedAt === null
+          ? null
+          : parseInstant(entry.liftedAt, { zone, field: 'liftedAt' }),
+    }),
+  );
 }
 
 export function loadSources(source) {

@@ -72,7 +72,7 @@ describe('the rendered chart', () => {
 
   it('counts the areas and the ones under a closure', () => {
     expect(text).toMatch(/Areas:\s+5/);
-    expect(text).toMatch(/Closed under a plan: 1/);
+    expect(text).toMatch(/Shut by a plan or an order: 1/);
   });
 
   it('holds one line per area', () => {

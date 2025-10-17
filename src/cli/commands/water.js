@@ -18,6 +18,7 @@ export function standing(options, io) {
     areas: loaded.areas,
     plans: loaded.plans,
     feed: loaded.feed,
+    orders: loaded.orders,
     at,
     from,
   };

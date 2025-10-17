@@ -26,23 +26,26 @@ const COLUMNS = [
   column('lifts', 'Reopens on', { cap: 26 }),
 ];
 
-export function standingRows({ areas, plans, feed, at, from = null }) {
-  return standingAt({ areas, plans, feed, at, from }).map((entry) => {
+export function standingRows({ areas, plans, feed, orders = [], at, from = null }) {
+  return standingAt({ areas, plans, feed, orders, at, from }).map((entry) => {
     const closed = entry.closed;
     return Object.freeze({
       area: entry.area,
       name: nameOf(areas, entry.area),
       paper: entry.paper === null ? '-' : shortName(entry.paper),
       effective: shortName(entry.effective),
-      shut: closed ? 'yes' : 'no',
-      cause: closed ? causeOf(entry) : '-',
-      lifts: closed && entry.plan !== null ? describeReopening(entry.plan.reopening) : '-',
+      shut: closed || entry.order !== null ? 'yes' : 'no',
+      cause: closed || entry.order !== null ? causeOf(entry) : '-',
+      lifts: liftsOf(entry, closed),
       standing: entry,
     });
   });
 }
 
 function causeOf(entry) {
+  if (entry.order !== null) {
+    return `${entry.order.number}, ${entry.order.kind}`;
+  }
   const fired = entry.closure === null ? null : entry.closure.firedBy;
   if (fired === null) {
     return 'plan';
@@ -53,13 +56,28 @@ function causeOf(entry) {
   return `${decimal(fired.measured, 2)} against ${fired.threshold} ${fired.unit}`;
 }
 
+function liftsOf(entry, closed) {
+  if (entry.order !== null) {
+    return entry.order.needsClearance ? 'on clearance samples' : 'when the order is lifted';
+  }
+  return closed && entry.plan !== null ? describeReopening(entry.plan.reopening) : '-';
+}
+
 function nameOf(areas, id) {
   const area = areas.find((one) => one.id === id);
   return area === undefined ? '-' : area.name;
 }
 
-export function renderStanding({ areas, plans, feed, at, zone = 'eastern', from = null }) {
-  const rows = standingRows({ areas, plans, feed, at, from });
+export function renderStanding({
+  areas,
+  plans,
+  feed,
+  orders = [],
+  at,
+  zone = 'eastern',
+  from = null,
+}) {
+  const rows = standingRows({ areas, plans, feed, orders, at, from });
   const shut = rows.filter((row) => row.shut === 'yes');
   const problems = rows.flatMap((row) => row.standing.problems.list());
   const out = [
@@ -68,7 +86,7 @@ export function renderStanding({ areas, plans, feed, at, zone = 'eastern', from 
     definitionList([
       ['As at', formatInstant(zone, at)],
       ['Areas', String(rows.length)],
-      ['Closed under a plan', String(shut.length)],
+      ['Shut by a plan or an order', String(shut.length)],
     ]),
     '',
     renderTable(COLUMNS, rows),
@@ -86,8 +104,8 @@ export function renderStanding({ areas, plans, feed, at, zone = 'eastern', from 
 }
 
 /** The same thing as data, for anything that has to count rather than read. */
-export function standingSummary({ areas, plans, feed, at, from = null }) {
-  const rows = standingRows({ areas, plans, feed, at, from });
+export function standingSummary({ areas, plans, feed, orders = [], at, from = null }) {
+  const rows = standingRows({ areas, plans, feed, orders, at, from });
   const byClass = new Map();
   for (const row of rows) {
     byClass.set(row.effective, (byClass.get(row.effective) ?? 0) + 1);

@@ -37,7 +37,7 @@ expect_code() {
 
 expect_out "validate" "Findings" $RUN validate -c "$CASE"
 expect_out "standing" "Growing area standing" $RUN standing -c "$CASE" -a "2025-06-11 09:00" -f 2025-06-01
-expect_out "standing shuts two areas" "Closed under a plan: 2" $RUN standing -c "$CASE" -a "2025-06-11 09:00" -f 2025-06-01
+expect_out "standing shuts two areas" "Shut by a plan or an order: 2" $RUN standing -c "$CASE" -a "2025-06-11 09:00" -f 2025-06-01
 expect_out "closures" "Closures for B-14" $RUN closures B-14 -c "$CASE" -a "2025-06-30 00:00" -f 2025-06-01
 expect_out "notice" "Closure lifted" $RUN notice B-12 -c "$CASE" -a "2025-06-20 09:00" -f 2025-06-01
 expect_out "survey" "Supported:" $RUN survey B-12 -c "$CASE" -o 2025-09-30
@@ -52,6 +52,7 @@ expect_out "harvester" "Suspended" $RUN harvester SH-2025-00877 -c "$CASE" -o 20
 expect_out "beds" "B12-BCK" $RUN beds B-12 -c "$CASE"
 expect_out "tide" "Tide station" $RUN tide B12-BCK -c "$CASE" -o 2025-08-14
 expect_out "vibrio" "Time to temperature" $RUN vibrio B-12 -c "$CASE"
+expect_out "an order beats the plan" "EO-2025-05, spill" $RUN standing -c "$CASE" -a "2025-09-05 09:00" -f 2025-09-01
 expect_out "programme" "Programme standing" $RUN programme -c "$CASE" -o 2025-09-30
 expect_out "month" "Programme report" $RUN month -c "$CASE" -o 2025-08-14
 expect_out "walk" "sha256" $RUN walk -c "$CASE" -o 2025-08-31

@@ -335,5 +335,22 @@
       "lastReview": "2021-08-30",
       "lastSurvey": "2019-10-15"
     }
-  }
+  },
+  "orders": [
+    {
+      "number": "EO-2025-04",
+      "kind": "biotoxin",
+      "areas": ["C-3"],
+      "issuedAt": "2025-08-17 08:00",
+      "liftedAt": "2025-08-28 08:00",
+      "reason": "Karenia bloom offshore"
+    },
+    {
+      "number": "EO-2025-05",
+      "kind": "spill",
+      "areas": ["D-2"],
+      "issuedAt": "2025-09-02 14:00",
+      "reason": "fuel spill at the ferry dock"
+    }
+  ]
 }

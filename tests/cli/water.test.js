@@ -63,7 +63,7 @@ describe('standing', () => {
   it('shows them open again once the closures have lifted', () => {
     const io = recorder();
     standing(base({ at: '2025-06-30 09:00', from: '2025-06-01' }), io);
-    expect(io.out).toMatch(/Closed under a plan: 0/);
+    expect(io.out).toMatch(/Shut by a plan or an order: 0/);
   });
 
   it('prints a summary as JSON when asked', () => {
@@ -134,5 +134,33 @@ describe('notice', () => {
   it('refuses an area that is not in the register', () => {
     const io = recorder();
     expect(notice(base({ area: 'Z-9', at: '2025-06-20 09:00' }), io)).toBe(REFUSED);
+  });
+});
+
+describe('an emergency order in the worked example', () => {
+  it('shuts an area the plan says nothing about', () => {
+    const io = recorder();
+    standing(base({ at: '2025-09-05 09:00', from: '2025-09-01' }), io);
+    expect(io.out).toMatch(/D-2 .*EO-2025-05, spill/);
+    expect(io.out).toMatch(/when the order is lifted/);
+  });
+
+  it('names clearance samples where the order is a biotoxin one', () => {
+    const io = recorder();
+    standing(base({ at: '2025-08-20 09:00', from: '2025-08-15' }), io);
+    expect(io.out).toMatch(/C-3 .*EO-2025-04, biotoxin/);
+    expect(io.out).toContain('on clearance samples');
+  });
+
+  it('hands the area back once the order has lifted', () => {
+    const io = recorder();
+    standing(base({ at: '2025-08-29 09:00', from: '2025-08-15' }), io);
+    expect(io.out).not.toContain('EO-2025-04');
+  });
+
+  it('reports the order as a register finding', () => {
+    const io = recorder();
+    standing(base({ at: '2025-09-05 09:00', from: '2025-09-01' }), io);
+    expect(io.out).toContain('area.underOrder');
   });
 });
