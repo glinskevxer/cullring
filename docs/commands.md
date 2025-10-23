@@ -257,3 +257,15 @@ Options:
 - `-z, --zone <zone>` the zone the office keeps (default eastern)
 - `--json` print the answer as JSON
 - `-o, --on <date>` the day to ask about (required)
+
+## orders
+
+the emergency orders, and whether any could be lifted
+
+Options:
+
+- `-c, --case <directory>` the case directory to read (required)
+- `-z, --zone <zone>` the zone the office keeps (default eastern)
+- `--json` print the answer as JSON
+- `-a, --at <stamp>` the moment to ask about (required)
+- `-r, --area <area>` only the orders over one area

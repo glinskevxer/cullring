@@ -13,6 +13,7 @@ import { validate } from './commands/case.js';
 import { landings, lot } from './commands/landings.js';
 import { bedsCommand, dealerCommand, harvesterCommand } from './commands/registers.js';
 import { month, walk } from './commands/month.js';
+import { orders } from './commands/orders.js';
 import { programme } from './commands/programme.js';
 import { survey } from './commands/survey.js';
 import { tideCommand, vibrioCommand } from './commands/tide.js';
@@ -178,6 +179,14 @@ export function build(io) {
     .requiredOption('-o, --on <date>', 'the day to ask about')
     .action((options) => {
       exit(io, () => programme(options, io));
+    });
+
+  common(program.command('orders'))
+    .description('the emergency orders, and whether any could be lifted')
+    .requiredOption('-a, --at <stamp>', 'the moment to ask about')
+    .option('-r, --area <area>', 'only the orders over one area')
+    .action((options) => {
+      exit(io, () => orders(options, io));
     });
 
   return program;
