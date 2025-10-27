@@ -25,6 +25,7 @@
   ],
   "scripts": {
     "check:commands": "node tools/check_commands.js",
+    "check:exports": "node tools/check_exports.js",
     "coverage": "vitest run --coverage",
     "format": "prettier --write .",
     "format:check": "prettier --check .",

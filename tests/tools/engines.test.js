@@ -95,4 +95,9 @@ describe('the CI jobs', () => {
   it('runs the walk out of a script rather than inline in the yaml', () => {
     expect(workflow).toContain('bash tools/walk.sh');
   });
+
+  it('runs both document checks', () => {
+    expect(workflow).toContain('npm run check:commands');
+    expect(workflow).toContain('npm run check:exports');
+  });
 });

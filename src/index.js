@@ -1,4 +1,5 @@
 export * as area from './area/index.js';
+export * as cli from './cli/index.js';
 export * as condition from './condition/index.js';
 export * as core from './core/index.js';
 export * as geo from './geo/index.js';

@@ -71,4 +71,5 @@ fi
 echo "ok: the walk seals to $first twice"
 
 node tools/check_commands.js
+node tools/check_exports.js
 echo "the worked example walk passed"
