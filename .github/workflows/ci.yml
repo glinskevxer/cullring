@@ -69,6 +69,7 @@ jobs:
       - run: npm ci
       - run: npm run check:commands
       - run: npm run check:exports
+      - run: npm run check:findings
 
   worked-example:
     runs-on: ubuntu-latest

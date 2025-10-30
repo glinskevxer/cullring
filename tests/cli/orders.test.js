@@ -1,7 +1,12 @@
 import { describe, expect, it } from 'vitest';
 
 import { orders } from '../../src/cli/commands/orders.js';
-import { historyOver, ordersReport, renderOrders } from '../../src/report/orders.js';
+import {
+  STALE_AFTER_DAYS,
+  historyOver,
+  ordersReport,
+  renderOrders,
+} from '../../src/report/orders.js';
 import { loadCase } from '../../src/cli/context.js';
 import { FOUND, OK, REFUSED } from '../../src/cli/output.js';
 import { parseInstant } from '../../src/time/instant.js';
@@ -118,5 +123,27 @@ describe('the orders command', () => {
   it('refuses an area that is not in the register', () => {
     const io = recorder();
     expect(orders(base({ at: '2025-09-05 09:00', area: 'Z-9' }), io)).toBe(REFUSED);
+  });
+});
+
+describe('an order that has stood a long time', () => {
+  it('is warned about once it passes the interval', () => {
+    const fresh = ordersReport({ orders: loaded.orders, at: at('2025-09-05 09:00') });
+    const stale = ordersReport({ orders: loaded.orders, at: at('2026-01-05 09:00') });
+    expect(fresh.problems.has('order.stale')).toBe(false);
+    expect(stale.problems.has('order.stale')).toBe(true);
+    expect(STALE_AFTER_DAYS).toBe(90);
+  });
+
+  it('counts the days it has stood on the row', () => {
+    const stale = ordersReport({ orders: loaded.orders, at: at('2026-01-05 09:00') });
+    const row = stale.rows.find((one) => one.number === 'EO-2025-05');
+    expect(row.standingDays).toBeGreaterThan(90);
+  });
+
+  it('says nothing about an order that has already been lifted', () => {
+    const stale = ordersReport({ orders: loaded.orders, at: at('2026-01-05 09:00') });
+    const lifted = stale.rows.find((one) => one.number === 'EO-2025-04');
+    expect(lifted.standingDays).toBe(0);
   });
 });

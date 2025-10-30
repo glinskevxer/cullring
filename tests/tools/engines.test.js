@@ -99,5 +99,6 @@ describe('the CI jobs', () => {
   it('runs both document checks', () => {
     expect(workflow).toContain('npm run check:commands');
     expect(workflow).toContain('npm run check:exports');
+    expect(workflow).toContain('npm run check:findings');
   });
 });

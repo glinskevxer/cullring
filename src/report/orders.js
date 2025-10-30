@@ -9,9 +9,17 @@
 
 import { findings } from '../core/finding.js';
 import { clearanceMet, coversArea, inForceAt, ordersFor } from '../condition/emergency.js';
-import { formatInstant } from '../time/instant.js';
+import { formatInstant, hoursBetween } from '../time/instant.js';
 import { joinWords, yesNo } from '../text/format.js';
 import { column, definitionList, heading, renderTable } from '../text/table.js';
+
+/**
+ * An order in force this long with nothing said about it is worth asking
+ * about. It is not unlawful and it is not a defect: orders are meant to be
+ * reviewed, and one nobody has looked at since the spring is the thing this
+ * report exists to surface.
+ */
+export const STALE_AFTER_DAYS = 90;
 
 const COLUMNS = [
   column('number', 'Order', { width: 12 }),
@@ -38,6 +46,14 @@ export function ordersReport({ orders, at, samples = [], zone = 'eastern', areaI
           { order: one.number },
         );
       }
+      const standingDays = live ? hoursBetween(one.issuedAt, at) / 24 : 0;
+      if (standingDays > STALE_AFTER_DAYS) {
+        problems.warn(
+          'order.stale',
+          `${one.number} has stood ${Math.round(standingDays)} days and nobody has lifted it`,
+          { order: one.number, days: Math.round(standingDays) },
+        );
+      }
       return {
         number: one.number,
         kind: one.kind,
@@ -45,6 +61,7 @@ export function ordersReport({ orders, at, samples = [], zone = 'eastern', areaI
         issued: formatInstant(zone, one.issuedAt),
         lifted: one.liftedAt === null ? '-' : formatInstant(zone, one.liftedAt),
         state: live ? 'in force' : 'lifted',
+        standingDays: Math.round(standingDays),
         clearance: cleared === null ? '-' : yesNo(cleared),
         order: one,
       };

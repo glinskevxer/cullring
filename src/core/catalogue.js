@@ -1,0 +1,163 @@
+/**
+ * Every finding code the programme can raise, with a line about each.
+ *
+ * The codes are what a caller matches on and what a report groups by, so they
+ * are an interface and they are written down here as one. A check compares
+ * this list against what the source actually raises, which catches the two
+ * ways a code goes wrong: one raised and never described, and one described
+ * long after the rule that raised it was deleted.
+ */
+
+import { InputError } from './errors.js';
+import { ERROR, NOTE, WARNING } from './finding.js';
+
+const CATALOGUE = new Map(
+  Object.entries({
+    'area.planClosed': [NOTE, 'the area is shut under its own management plan'],
+    'area.planMissing': [ERROR, 'a conditional area has no plan in force'],
+    'area.planWithoutCondition': [WARNING, 'a plan is attached to an unconditional area'],
+    'area.unclassified': [ERROR, 'the register does not reach the day being asked about'],
+    'area.underOrder': [NOTE, 'the area is shut under an emergency order'],
+    'case.badRegister': [ERROR, 'the register file will not parse'],
+    'case.control': [ERROR, 'a row of the temperature control sheet cannot be read'],
+    'case.noFeed': [NOTE, 'a feed is not in the case directory'],
+    'case.noRegister': [ERROR, 'the case directory holds no register'],
+    'csv.empty': [WARNING, 'the sheet holds nothing'],
+    'csv.row': [ERROR, 'a row could not be built into a record'],
+    'csv.width': [ERROR, 'a row has the wrong number of fields'],
+    'depuration.empty': [ERROR, 'a batch holds no lots'],
+    'depuration.mixedAreas': [ERROR, 'a batch holds lots from more than one area'],
+    'depuration.noRelease': [ERROR, 'a batch carries no release sample'],
+    'depuration.notCertified': [ERROR, 'the processor may not depurate on that day'],
+    'depuration.order': [ERROR, 'a cycle ended before it started'],
+    'depuration.releaseOverLimit': [ERROR, 'the release sample is over the approved limit'],
+    'depuration.short': [ERROR, 'the longest unbroken run is under the cycle'],
+    'depuration.time': [ERROR, 'a cycle needs two instants'],
+    'depuration.unknownProcessor': [ERROR, 'the processor is not in the register'],
+    'harvest.closedWater': [ERROR, 'the water was shut when the harvest started'],
+    'harvest.dealerCannotTreat': [ERROR, 'the dealer cannot perform the treatment the lot needs'],
+    'harvest.dealerNotCertified': [ERROR, 'the dealer could not receive on that day'],
+    'harvest.gearNotEndorsed': [ERROR, 'the licence is not endorsed for the gear used'],
+    'harvest.leaseTrespass': [ERROR, 'the ground is leased to somebody else'],
+    'harvest.licenceLapsed': [ERROR, 'the licence was not current on that day'],
+    'harvest.licenceSuspended': [ERROR, 'the licence was suspended on that day'],
+    'harvest.noTreatmentDealer': [ERROR, 'restricted product names no dealer'],
+    'harvest.unknownArea': [ERROR, 'the area is not in the register'],
+    'harvest.unknownDealer': [ERROR, 'the dealer is not in the register'],
+    'harvest.unknownHarvester': [ERROR, 'the licence is not in the register'],
+    'load.absent': [NOTE, 'the register carries no list of that kind'],
+    'load.entry': [ERROR, 'an entry in the register could not be built'],
+    'load.shape': [ERROR, 'something in the register is not the shape it should be'],
+    'order.clearanceMet': [WARNING, 'an order in force has its clearance samples'],
+    'order.stale': [WARNING, 'an order has stood a long time and nobody has lifted it'],
+  }),
+);
+const MORE = new Map(
+  Object.entries({
+    'relay.noPermit': [ERROR, 'a relay was made under no permit'],
+    'relay.notNeeded': [NOTE, 'the product came out of water needing no treatment'],
+    'relay.order': [ERROR, 'a lot was lifted before it was laid'],
+    'relay.tooCold': [ERROR, 'the water is too cold for the shellfish to pump'],
+    'relay.tooShort': [ERROR, 'the relay ran for less than the period'],
+    'relay.unknownWater': [ERROR, 'the receiving water is not in the register'],
+    'relay.waterNotApproved': [ERROR, 'the receiving water was not approved throughout'],
+    'relay.wrongWater': [ERROR, 'the permit names different water'],
+    'review.due': [WARNING, 'a review has come round'],
+    'review.late': [ERROR, 'a review is well past due'],
+    'schedule.due': [WARNING, 'a station is past its sampling interval'],
+    'schedule.neverVisited': [ERROR, 'a station has never been sampled'],
+    'ship.consigneeNotCertified': [ERROR, 'the consignee could not receive on that day'],
+    'ship.consigneeNumber': [ERROR, 'the consignee number is not a certification number'],
+    'ship.interstate': [NOTE, 'the trace ends at the state line'],
+    'ship.repeatedLot': [ERROR, 'a document names a lot twice'],
+    'ship.shipperNotCertified': [ERROR, 'the shipper could not ship on that day'],
+    'ship.stateNotConforming': [ERROR, 'the receiving state does not keep the agreement'],
+    'ship.unknownConsignee': [ERROR, 'the consignee is not in the register'],
+    'ship.unknownShipper': [ERROR, 'the shipper is not in the register'],
+    'survey.overLimit': [ERROR, 'a criterion is over the limit for the class held'],
+    'survey.thin': [WARNING, 'the set is too small to score'],
+  }),
+);
+
+const STILL_MORE = new Map(
+  Object.entries({
+    'tag.comingled': [ERROR, 'a tag names more than one lot'],
+    'tag.dealer': [ERROR, 'a tag carries a certification number that is not one'],
+    'tag.form': [ERROR, 'a tag is written for a form the programme does not know'],
+    'tag.lot': [ERROR, 'a tag carries a lot number that is not one'],
+    'tag.missing': [ERROR, 'a tag is missing a required field'],
+    'tag.statement': [ERROR, 'a shellstock tag does not carry the retention statement'],
+    'trace.loop': [ERROR, 'the ledger sends a lot back to itself'],
+    'trace.noLanding': [ERROR, 'the chain runs out before a landing'],
+    'trace.noRecord': [WARNING, 'the origin lot has no harvest record'],
+    'trace.noShipment': [NOTE, 'nothing was shipped under the lot or anything it became'],
+    'trace.nothingLanded': [NOTE, 'nothing was landed out of the area in the period'],
+    'vibrio.beforeClock': [ERROR, 'a lot went under control before its clock started'],
+    'vibrio.noClock': [ERROR, 'the clock cannot be started for that bed'],
+    'vibrio.noControl': [ERROR, 'no record of the lot going under temperature control'],
+    'vibrio.noRegion': [ERROR, 'the area sits in no temperature region'],
+    'vibrio.outOfSeason': [NOTE, 'the month carries no time to temperature limit'],
+    'vibrio.overTime': [ERROR, 'a lot took longer than the limit to get cold'],
+    'wet.needsTreatment': [ERROR, 'the product needs treating, which wet storage is not'],
+    'wet.noDealer': [ERROR, 'wet storage was done by nobody in particular'],
+    'wet.notPermitted': [ERROR, 'the dealer may not wet store on that day'],
+    'wet.order': [ERROR, 'a lot was taken out before it went in'],
+    'wet.time': [ERROR, 'wet storage needs two instants'],
+    'wet.tooLong': [ERROR, 'a float ran longer than storage is allowed to'],
+    'wet.unknownDealer': [ERROR, 'the dealer is not in the register'],
+    'wet.unknownOrigin': [WARNING, 'nothing records what water the lot came out of'],
+    'wet.unknownWater': [ERROR, 'the water is not in the register'],
+    'wet.waterNotApproved': [ERROR, 'the water was not approved throughout the storage'],
+  }),
+);
+
+for (const source of [MORE, STILL_MORE]) {
+  for (const [code, row] of source) {
+    CATALOGUE.set(code, row);
+  }
+}
+
+export function codes() {
+  return Array.from(CATALOGUE.keys()).sort();
+}
+
+export function describeCode(code) {
+  const row = CATALOGUE.get(code);
+  if (row === undefined) {
+    throw new InputError('catalogue.unknown', `${code} is not a finding this programme raises`, {
+      code,
+    });
+  }
+  return Object.freeze({ code, severity: row[0], description: row[1] });
+}
+
+export function isKnownCode(code) {
+  return CATALOGUE.has(code);
+}
+
+/** The codes in one family, which is how a report groups them. */
+export function family(prefix) {
+  return codes().filter((code) => code.startsWith(`${prefix}.`));
+}
+
+export function families() {
+  return Array.from(new Set(codes().map((code) => code.split('.')[0]))).sort();
+}
+
+export function renderCatalogueDocument() {
+  const lines = ['# Findings', ''];
+  lines.push(
+    'Every code the programme can raise. Generated by `tools/write_findings.js`;',
+    '`tools/check_findings.js` fails the build if the source and this list drift.',
+    '',
+  );
+  for (const prefix of families()) {
+    lines.push(`## ${prefix}`, '');
+    for (const code of family(prefix)) {
+      const row = describeCode(code);
+      lines.push(`- \`${code}\` (${row.severity}) ${row.description}`);
+    }
+    lines.push('');
+  }
+  return `${lines.join('\n').trimEnd()}\n`;
+}
