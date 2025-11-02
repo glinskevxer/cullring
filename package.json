@@ -27,6 +27,7 @@
     "check:commands": "node tools/check_commands.js",
     "check:exports": "node tools/check_exports.js",
     "check:findings": "node tools/check_findings.js",
+    "check:glossary": "node tools/check_glossary.js",
     "coverage": "vitest run --coverage",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
@@ -39,7 +40,8 @@
     "validate": "node bin/cullring.js validate -c examples/core-sound",
     "walk": "node bin/cullring.js walk -c examples/core-sound -o 2025-08-31",
     "write:commands": "node tools/write_commands.js",
-    "write:findings": "node tools/write_findings.js"
+    "write:findings": "node tools/write_findings.js",
+    "write:glossary": "node tools/write_glossary.js"
   },
   "dependencies": {
     "commander": "13.1.0"

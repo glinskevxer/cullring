@@ -70,6 +70,7 @@ jobs:
       - run: npm run check:commands
       - run: npm run check:exports
       - run: npm run check:findings
+      - run: npm run check:glossary
 
   worked-example:
     runs-on: ubuntu-latest
