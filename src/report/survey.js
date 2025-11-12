@@ -16,6 +16,7 @@ import { compareClassification } from '../area/classification.js';
 import { countsByStation, unvisited } from '../area/station.js';
 import { evaluateSurvey } from '../survey/evaluate.js';
 import { areaCap, capped, describeSource, sourcesIn } from '../survey/shoreline.js';
+import { WORSENING, describeTrend, trendFor } from '../survey/trend.js';
 import { FECAL_COLIFORM } from '../survey/standard.js';
 import { SYSTEMATIC_RANDOM, shortNameOf } from '../survey/strategy.js';
 import { formatCivilDate } from '../time/civil.js';
@@ -49,6 +50,7 @@ export function surveyReport({
     stations.filter((one) => one.areaId === area.id),
   );
   const supported = verdict.supported === null ? null : capped(verdict.supported, cap);
+  const trend = trendFor({ samples, on, strategyName: strategy });
   return Object.freeze({
     area: area.id,
     name: area.name,
@@ -62,7 +64,9 @@ export function surveyReport({
     sources: Object.freeze(reaching),
     cap,
     supported,
+    trend,
     proposal: proposalOf(supported, heldTo),
+    watch: watchOf(supported, heldTo, trend),
   });
 }
 
@@ -73,6 +77,26 @@ export function surveyReport({
  * is not a candidate for approved, and a proposal that said otherwise would be
  * the office arguing against its own survey.
  */
+/**
+ * Whether to watch an area that is passing. A proposal answers what to do
+ * about water that has failed; this answers what to do about water that has
+ * not failed yet and is heading that way. The two are kept apart because the
+ * office acts on them differently: a proposal goes to the committee and a
+ * watch goes on the sampling round.
+ */
+function watchOf(supported, heldTo, trend) {
+  if (supported === null || trend.direction !== WORSENING) {
+    return Object.freeze({ watch: false, reason: null });
+  }
+  if (compareClassification(supported, heldTo) > 0) {
+    return Object.freeze({
+      watch: false,
+      reason: 'the water has already failed, so this is a proposal rather than a watch',
+    });
+  }
+  return Object.freeze({ watch: true, reason: describeTrend(trend) });
+}
+
 function proposalOf(supported, heldTo) {
   if (supported === null) {
     return Object.freeze({ kind: 'none', reason: 'the set is too thin to support anything' });
@@ -138,6 +162,10 @@ export function renderSurvey(report) {
   }
   out.push(`Supported: ${report.supported}`);
   out.push(`Proposal: ${report.proposal.kind}, ${report.proposal.reason}.`);
+  out.push(`Trend: ${describeTrend(report.trend)}.`);
+  if (report.watch.watch) {
+    out.push(`Watch: yes, ${report.watch.reason}.`);
+  }
   pushUnvisited(out, report);
   return out.join('\n');
 }

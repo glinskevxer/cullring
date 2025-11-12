@@ -77,6 +77,8 @@ export function survey(options, io) {
         results: selected.length,
         supported: report.supported,
         cap: report.cap,
+        trend: report.trend.direction,
+        watch: report.watch.watch,
         proposal: report.proposal,
         perStation: countsByStation(selected),
       }),
