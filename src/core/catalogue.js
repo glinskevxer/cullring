@@ -22,6 +22,11 @@ const CATALOGUE = new Map(
     'audit.overShipped': [ERROR, 'more containers left a dealer than ever arrived'],
     'audit.receivedUnlanded': [ERROR, 'a lot was received and the ledger holds no landing for it'],
     'audit.shippedUnreceived': [ERROR, 'a lot left a dealer who never received it'],
+    'book.operationNotPermitted': [
+      ERROR,
+      'a dealer recorded a movement their certification does not permit',
+    ],
+    'book.unknownDealer': [ERROR, 'the dealer is not in the register'],
     'case.badRegister': [ERROR, 'the register file will not parse'],
     'case.control': [ERROR, 'a row of the temperature control sheet cannot be read'],
     'case.noFeed': [NOTE, 'a feed is not in the case directory'],

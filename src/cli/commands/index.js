@@ -1,3 +1,4 @@
+export * from './book.js';
 export * from './case.js';
 export * from './landings.js';
 export * from './month.js';

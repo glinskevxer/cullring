@@ -269,3 +269,18 @@ Options:
 - `--json` print the answer as JSON
 - `-a, --at <stamp>` the moment to ask about (required)
 - `-r, --area <area>` only the orders over one area
+
+## book
+
+a dealer book, what it permits, and whether it reconciles
+
+Arguments:
+
+- `dealer` the certification number (required)
+
+Options:
+
+- `-c, --case <directory>` the case directory to read (required)
+- `-z, --zone <zone>` the zone the office keeps (default eastern)
+- `--json` print the answer as JSON
+- `-o, --on <date>` the day to read the certification on (required)

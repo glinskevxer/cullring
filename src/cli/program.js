@@ -10,6 +10,7 @@
 import { Command } from 'commander';
 
 import { validate } from './commands/case.js';
+import { bookCommand } from './commands/book.js';
 import { landings, lot } from './commands/landings.js';
 import { bedsCommand, dealerCommand, harvesterCommand } from './commands/registers.js';
 import { month, walk } from './commands/month.js';
@@ -187,6 +188,14 @@ export function build(io) {
     .option('-r, --area <area>', 'only the orders over one area')
     .action((options) => {
       exit(io, () => orders(options, io));
+    });
+
+  common(program.command('book'))
+    .description('a dealer book, what it permits, and whether it reconciles')
+    .argument('<dealer>', 'the certification number')
+    .requiredOption('-o, --on <date>', 'the day to read the certification on')
+    .action((number, options) => {
+      exit(io, () => bookCommand({ ...options, dealer: number }, io));
     });
 
   return program;
