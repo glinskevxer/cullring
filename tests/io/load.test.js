@@ -6,6 +6,7 @@ import {
   loadAreas,
   loadBeds,
   loadBypasses,
+  loadCertificates,
   loadDealers,
   loadHarvesters,
   loadHarvests,
@@ -237,5 +238,30 @@ describe('a register that leaves a list out entirely', () => {
 
   it('reads a null register as absent throughout', () => {
     expect(loadAreas(null).problems.has('load.absent')).toBe(true);
+  });
+});
+
+describe('the certificate register', () => {
+  it('is noted once when the office keeps none', () => {
+    const answer = loadCertificates({ areas: [] });
+    expect(answer.problems.has('load.absent')).toBe(true);
+    expect(answer.built).toEqual([]);
+  });
+
+  it('loads what is there', () => {
+    const answer = loadCertificates({
+      certificates: [
+        { harvester: 'SH-2025-04412', course: 'shellfish sanitation', sat: '2024-02-19' },
+      ],
+    });
+    expect(answer.built).toHaveLength(1);
+    expect(answer.built[0].expires.year).toBe(2027);
+  });
+
+  it('reports a certificate it cannot build, by index', () => {
+    const answer = loadCertificates({
+      certificates: [{ harvester: 'SP-118', course: 'x', sat: '2024-02-19' }],
+    });
+    expect(answer.problems.has('load.entry')).toBe(true);
   });
 });

@@ -46,6 +46,7 @@ const CATALOGUE = new Map(
     'harvest.closedWater': [ERROR, 'the water was shut when the harvest started'],
     'harvest.dealerCannotTreat': [ERROR, 'the dealer cannot perform the treatment the lot needs'],
     'harvest.dealerNotCertified': [ERROR, 'the dealer could not receive on that day'],
+    'harvest.educationLapsed': [ERROR, 'the harvester certificate has lapsed or was never sat'],
     'harvest.gearNotEndorsed': [ERROR, 'the licence is not endorsed for the gear used'],
     'harvest.leaseTrespass': [ERROR, 'the ground is leased to somebody else'],
     'harvest.licenceLapsed': [ERROR, 'the licence was not current on that day'],

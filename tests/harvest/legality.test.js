@@ -251,3 +251,45 @@ describe('a day of landings', () => {
     expect(answers.map((one) => one.lot)).toEqual(['20250814-B12-001', '20250814-B12-009']);
   });
 });
+
+describe('the education requirement', () => {
+  const CERTIFICATES = [
+    {
+      harvester: 'SH-2025-00877',
+      course: 'shellfish sanitation',
+      sat: { year: 2024, month: 2, day: 19 },
+      expires: { year: 2027, month: 2, day: 19 },
+    },
+  ];
+
+  it('is not checked at all where no register was supplied', () => {
+    const answer = ask(boat({ dealer: 'SS-042' }), CHANNEL);
+    expect(answer.problems.has('harvest.educationLapsed')).toBe(false);
+    expect(answer.lawful).toBe(true);
+  });
+
+  it('says nothing per lot about the absence, because the loader says it once', () => {
+    const answer = ask(boat({ dealer: 'SS-042' }), CHANNEL);
+    expect(answer.problems.codes().every((code) => !code.startsWith('harvest.education'))).toBe(
+      true,
+    );
+  });
+
+  it('passes a harvester whose certificate is current', () => {
+    const answer = ask(boat({ dealer: 'SS-042' }), CHANNEL, { certificates: CERTIFICATES });
+    expect(answer.problems.has('harvest.educationLapsed')).toBe(false);
+  });
+
+  it('fails a harvester with no certificate in a register that is being kept', () => {
+    const answer = ask(waded({ dealer: 'SS-042' }), FLAT, { certificates: CERTIFICATES });
+    expect(answer.problems.has('harvest.educationLapsed')).toBe(true);
+    expect(answer.lawful).toBe(false);
+  });
+
+  it('tells an empty register apart from no register', () => {
+    const empty = ask(boat({ dealer: 'SS-042' }), CHANNEL, { certificates: [] });
+    const absent = ask(boat({ dealer: 'SS-042' }), CHANNEL);
+    expect(empty.problems.has('harvest.educationLapsed')).toBe(true);
+    expect(absent.problems.has('harvest.educationLapsed')).toBe(false);
+  });
+});

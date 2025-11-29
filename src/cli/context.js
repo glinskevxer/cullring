@@ -21,6 +21,7 @@ import {
   loadAreas,
   loadBeds,
   loadBypasses,
+  loadCertificates,
   loadDealers,
   loadHarvesters,
   loadHarvests,
@@ -82,6 +83,7 @@ export function loadCase(directory, { zone = 'eastern' } = {}) {
   const beds = absorb(problems, loadBeds(register));
   const harvesters = absorb(problems, loadHarvesters(register));
   const dealers = absorb(problems, loadDealers(register));
+  const certificates = absorb(problems, loadCertificates(register));
   const sources = absorb(problems, loadSources(register));
   const reviewHistory = absorb(problems, loadReviewHistory(register));
   const orders = absorb(problems, loadOrders(register, { zone }));
@@ -111,6 +113,7 @@ export function loadCase(directory, { zone = 'eastern' } = {}) {
     beds,
     harvesters,
     dealers,
+    certificates,
     sources,
     reviewHistory,
     orders,
@@ -211,6 +214,7 @@ export function contextOf(loaded, { from = null } = {}) {
     feed: { readings: loaded.feed.readings, bypasses: loaded.feed.bypasses },
     harvesters: loaded.harvesters,
     dealers: loaded.dealers,
+    certificates: loaded.certificates,
     sources: loaded.sources,
     orders: loaded.orders,
     tides: loaded.tides,

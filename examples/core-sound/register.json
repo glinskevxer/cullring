@@ -352,5 +352,31 @@
       "issuedAt": "2025-09-02 14:00",
       "reason": "fuel spill at the ferry dock"
     }
+  ],
+  "certificates": [
+    {
+      "harvester": "SH-2025-04412",
+      "course": "shellfish sanitation",
+      "sat": "2024-02-19",
+      "provider": "Carteret Community College"
+    },
+    {
+      "harvester": "SH-2025-00877",
+      "course": "shellfish sanitation",
+      "sat": "2023-11-06",
+      "provider": "Carteret Community College"
+    },
+    {
+      "harvester": "SH-2025-01120",
+      "course": "shellfish sanitation",
+      "sat": "2024-04-12",
+      "provider": "Marine Fisheries"
+    },
+    {
+      "harvester": "SH-2024-03310",
+      "course": "shellfish sanitation",
+      "sat": "2022-06-01",
+      "provider": "Marine Fisheries"
+    }
   ]
 }

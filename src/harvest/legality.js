@@ -21,6 +21,7 @@ import { PROHIBITED, harvestAllowed, treatmentRequired } from '../area/classific
 import { effectiveClassification } from '../area/effective.js';
 import { DEPURATE, RECEIVE, findDealer, mayPerform } from '../licence/dealer.js';
 import { findHarvester, isCurrent, isSuspended, mayHarvestWith } from '../licence/harvester.js';
+import { describeStanding, mayWork as educationAllows, standing } from '../licence/education.js';
 import { civilDateAt } from '../time/instant.js';
 import { formatCivilDate } from '../time/civil.js';
 import { mayWork } from './bed.js';
@@ -33,6 +34,7 @@ export function checkHarvest({
   plans = [],
   feed = {},
   harvesters = [],
+  certificates = null,
   dealers = [],
   tides = [],
   underControlAt = null,
@@ -43,7 +45,7 @@ export function checkHarvest({
   const area = areas.find((one) => one.id === record.areaId) ?? null;
 
   const water = checkWater({ record, area, plans, feed, from, problems });
-  checkPeople({ record, bed, harvesters, day, problems });
+  checkPeople({ record, bed, harvesters, certificates, day, problems });
   checkDestination({ record, dealers, water, day, problems });
   const temperature = vibrioCheck({ record, bed, tides, underControlAt });
   problems.absorb(temperature.problems);
@@ -87,7 +89,7 @@ function checkWater({ record, area, plans, feed, from, problems }) {
   return water;
 }
 
-function checkPeople({ record, bed, harvesters, day, problems }) {
+function checkPeople({ record, bed, harvesters, certificates, day, problems }) {
   const licence = findHarvester(harvesters, record.harvester);
   if (licence === null) {
     problems.error('harvest.unknownHarvester', `${record.harvester} is not in the register`, {
@@ -113,12 +115,40 @@ function checkPeople({ record, bed, harvesters, day, problems }) {
       { lot: record.lot, harvester: record.harvester, gear: record.gear },
     );
   }
+  checkEducation({ record, certificates, day, problems });
   if (!mayWork(bed, record.harvester)) {
     problems.error('harvest.leaseTrespass', `${bed.id} is leased to somebody else`, {
       lot: record.lot,
       bed: bed.id,
       holder: bed.holder,
     });
+  }
+}
+
+/**
+ * The education requirement, checked only where the office keeps the register.
+ *
+ * An empty list and no list at all are different things and the difference
+ * matters here more than anywhere else in the programme: an empty list says
+ * nobody in the state has ever sat the course, which would fail every landing,
+ * and no list says the office is not keeping this register.
+ *
+ * The absent case is not reported here. The loader already notes a register it
+ * was given nothing for, once, when the case is read, and repeating it on
+ * every lot of a four hundred lot month buries the findings that matter. This
+ * is the one place in the programme where a check stays quiet, and it stays
+ * quiet because something else is already speaking.
+ */
+function checkEducation({ record, certificates, day, problems }) {
+  if (certificates === null || certificates === undefined) {
+    return;
+  }
+  if (!educationAllows(certificates, record.harvester, day)) {
+    problems.error(
+      'harvest.educationLapsed',
+      describeStanding(record.harvester, standing(certificates, record.harvester, day)),
+      { lot: record.lot, harvester: record.harvester },
+    );
   }
 }
 
