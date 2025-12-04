@@ -284,3 +284,14 @@ Options:
 - `-z, --zone <zone>` the zone the office keeps (default eastern)
 - `--json` print the answer as JSON
 - `-o, --on <date>` the day to read the certification on (required)
+
+## inspections
+
+the inspection round, and which plant to walk next
+
+Options:
+
+- `-c, --case <directory>` the case directory to read (required)
+- `-z, --zone <zone>` the zone the office keeps (default eastern)
+- `--json` print the answer as JSON
+- `-o, --on <date>` the day to ask about (required)

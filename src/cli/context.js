@@ -24,6 +24,7 @@ import {
   loadCertificates,
   loadDealers,
   loadHarvesters,
+  loadInspections,
   loadHarvests,
   loadMovements,
   loadPlans,
@@ -84,6 +85,7 @@ export function loadCase(directory, { zone = 'eastern' } = {}) {
   const harvesters = absorb(problems, loadHarvesters(register));
   const dealers = absorb(problems, loadDealers(register));
   const certificates = absorb(problems, loadCertificates(register));
+  const inspections = absorb(problems, loadInspections(register));
   const sources = absorb(problems, loadSources(register));
   const reviewHistory = absorb(problems, loadReviewHistory(register));
   const orders = absorb(problems, loadOrders(register, { zone }));
@@ -114,6 +116,7 @@ export function loadCase(directory, { zone = 'eastern' } = {}) {
     harvesters,
     dealers,
     certificates,
+    inspections,
     sources,
     reviewHistory,
     orders,

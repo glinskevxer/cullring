@@ -11,6 +11,7 @@ import { Command } from 'commander';
 
 import { validate } from './commands/case.js';
 import { bookCommand } from './commands/book.js';
+import { inspections } from './commands/inspection.js';
 import { landings, lot } from './commands/landings.js';
 import { bedsCommand, dealerCommand, harvesterCommand } from './commands/registers.js';
 import { month, walk } from './commands/month.js';
@@ -196,6 +197,13 @@ export function build(io) {
     .requiredOption('-o, --on <date>', 'the day to read the certification on')
     .action((number, options) => {
       exit(io, () => bookCommand({ ...options, dealer: number }, io));
+    });
+
+  common(program.command('inspections'))
+    .description('the inspection round, and which plant to walk next')
+    .requiredOption('-o, --on <date>', 'the day to ask about')
+    .action((options) => {
+      exit(io, () => inspections(options, io));
     });
 
   return program;

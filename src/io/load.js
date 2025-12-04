@@ -30,6 +30,7 @@ import { bed } from '../harvest/bed.js';
 import { harvestRecord } from '../harvest/record.js';
 import { dealer } from '../licence/dealer.js';
 import { certificate } from '../licence/education.js';
+import { inspection } from '../licence/inspection.js';
 import { harvester, suspension } from '../licence/harvester.js';
 import { sample } from '../survey/result.js';
 import { pollutionSource } from '../survey/shoreline.js';
@@ -68,6 +69,10 @@ export function loadHarvesters(source) {
 
 export function loadCertificates(source) {
   return loadList(source, 'certificates', (entry) => certificate(entry));
+}
+
+export function loadInspections(source) {
+  return loadList(source, 'inspections', (entry) => inspection(entry));
 }
 
 export function loadDealers(source) {
