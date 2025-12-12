@@ -11,6 +11,7 @@ import { Command } from 'commander';
 
 import { validate } from './commands/case.js';
 import { bookCommand } from './commands/book.js';
+import { exportCase } from './commands/export.js';
 import { inspections } from './commands/inspection.js';
 import { landings, lot } from './commands/landings.js';
 import { bedsCommand, dealerCommand, harvesterCommand } from './commands/registers.js';
@@ -204,6 +205,15 @@ export function build(io) {
     .requiredOption('-o, --on <date>', 'the day to ask about')
     .action((options) => {
       exit(io, () => inspections(options, io));
+    });
+
+  common(program.command('export'))
+    .description('write a case back out, whole or narrowed to one area')
+    .option('-s, --shape <shape>', 'register or landings', 'register')
+    .option('-r, --area <area>', 'only this area')
+    .option('-o, --on <date>', 'only landings on this day')
+    .action((options) => {
+      exit(io, () => exportCase(options, io));
     });
 
   return program;

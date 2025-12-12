@@ -55,6 +55,8 @@ expect_out "vibrio" "Time to temperature" $RUN vibrio B-12 -c "$CASE"
 expect_out "an order beats the plan" "EO-2025-05, spill" $RUN standing -c "$CASE" -a "2025-09-05 09:00" -f 2025-09-01
 expect_out "a lapsed certificate is found" "let the certificate lapse" $RUN landings -c "$CASE" -o 2025-08-18 -f 2025-08-01
 expect_out "book" "Reconciliation" $RUN book SP-118 -c "$CASE" -o 2025-08-14
+expect_out "export" "Broad Creek" $RUN export -c "$CASE" -r B-12
+expect_out "export landings" "20250814-B12-001" $RUN export -c "$CASE" -s landings -o 2025-08-14
 expect_out "inspections" "Inspection round" $RUN inspections -c "$CASE" -o 2025-09-30
 expect_out "a shut plant is found" "shut until it is re-inspected" $RUN inspections -c "$CASE" -o 2025-06-30
 expect_out "and put back on the round" "2026-07-15" $RUN inspections -c "$CASE" -o 2025-09-30

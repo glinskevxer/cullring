@@ -295,3 +295,16 @@ Options:
 - `-z, --zone <zone>` the zone the office keeps (default eastern)
 - `--json` print the answer as JSON
 - `-o, --on <date>` the day to ask about (required)
+
+## export
+
+write a case back out, whole or narrowed to one area
+
+Options:
+
+- `-c, --case <directory>` the case directory to read (required)
+- `-z, --zone <zone>` the zone the office keeps (default eastern)
+- `--json` print the answer as JSON
+- `-s, --shape <shape>` register or landings (default register)
+- `-r, --area <area>` only this area
+- `-o, --on <date>` only landings on this day
