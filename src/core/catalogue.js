@@ -34,6 +34,8 @@ const CATALOGUE = new Map(
     'csv.empty': [WARNING, 'the sheet holds nothing'],
     'csv.row': [ERROR, 'a row could not be built into a record'],
     'csv.width': [ERROR, 'a row has the wrong number of fields'],
+    'cull.overTolerance': [ERROR, 'a sample held more undersize than the tolerance allows'],
+    'cull.smallSample': [NOTE, 'fewer than a hundred were measured'],
     'depuration.empty': [ERROR, 'a batch holds no lots'],
     'depuration.mixedAreas': [ERROR, 'a batch holds lots from more than one area'],
     'depuration.noRelease': [ERROR, 'a batch carries no release sample'],
