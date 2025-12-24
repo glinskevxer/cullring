@@ -307,10 +307,10 @@
       "id": "SW-7",
       "kind": "stormwater outfall",
       "areaId": "C-3",
-      "latitude": 34.95,
-      "longitude": -76.95,
+      "latitude": 34.955,
+      "longitude": -76.885,
       "surveyedOn": "2024-06-01",
-      "note": "well clear of every station"
+      "note": "at the head of the sound, well clear of every station"
     }
   ],
   "reviewHistory": {
@@ -417,6 +417,58 @@
       "failed": [],
       "inspector": "M. Guthrie",
       "note": "cooler repaired and holding"
+    }
+  ],
+  "boundaries": [
+    {
+      "areaId": "B-12",
+      "name": "Broad Creek",
+      "points": [
+        [34.7, -76.73],
+        [34.745, -76.73],
+        [34.745, -76.66],
+        [34.7, -76.66]
+      ]
+    },
+    {
+      "areaId": "B-14",
+      "name": "Cedar Bay",
+      "points": [
+        [34.74, -76.68],
+        [34.77, -76.68],
+        [34.77, -76.65],
+        [34.74, -76.65]
+      ]
+    },
+    {
+      "areaId": "C-3",
+      "name": "Middle Sound",
+      "points": [
+        [34.88, -76.93],
+        [34.96, -76.93],
+        [34.96, -76.88],
+        [34.88, -76.88]
+      ]
+    },
+    {
+      "areaId": "D-2",
+      "name": "Turnagain Bight",
+      "points": [
+        [34.65, -76.57],
+        [34.68, -76.57],
+        [34.68, -76.54],
+        [34.65, -76.54]
+      ]
+    },
+    {
+      "areaId": "D-9",
+      "name": "Outfall Reach",
+      "points": [
+        [34.65, -76.56],
+        [34.675, -76.56],
+        [34.675, -76.535],
+        [34.65, -76.535]
+      ]
     }
   ]
 }

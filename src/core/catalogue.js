@@ -69,6 +69,15 @@ const CATALOGUE = new Map(
 );
 const MORE = new Map(
   Object.entries({
+    'register.bedArea': [ERROR, 'a bed sits in something that is not an area'],
+    'register.bedTide': [WARNING, 'a bed reads a tide station the table does not predict'],
+    'register.boundaryArea': [ERROR, 'a boundary is drawn for something that is not an area'],
+    'register.noPlan': [ERROR, 'a conditional area carries no plan at all'],
+    'register.planArea': [ERROR, 'a plan names something that is not an area'],
+    'register.sourceArea': [ERROR, 'a pollution source sits in something that is not an area'],
+    'register.sourceOutside': [ERROR, 'a pollution source is outside the boundary it claims'],
+    'register.stationArea': [ERROR, 'a station sits in something that is not an area'],
+    'register.stationOutside': [ERROR, 'a station is outside the boundary of its own area'],
     'relay.noPermit': [ERROR, 'a relay was made under no permit'],
     'relay.notNeeded': [NOTE, 'the product came out of water needing no treatment'],
     'relay.order': [ERROR, 'a lot was lifted before it was laid'],

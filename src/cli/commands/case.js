@@ -3,12 +3,32 @@
  * with it before anybody runs a report off it.
  */
 
+import { checkRegister } from '../../area/consistency.js';
+import { civilDateAt } from '../../time/instant.js';
+import { instant } from '../../time/instant.js';
 import { definitionList } from '../../text/table.js';
 import { contextOf, loadCase } from '../context.js';
 import { asJson, countBySeverity, printFindings } from '../output.js';
 
 export function validate(options, io) {
   const loaded = loadCase(options.case, { zone: options.zone });
+  const on = civilDateAt(
+    loaded.zone,
+    options.on === undefined || options.on === null
+      ? instant(Math.floor(Date.parse('2025-09-30T12:00:00Z') / 1000))
+      : instant(Math.floor(Date.parse(`${options.on}T12:00:00Z`) / 1000)),
+  );
+  const register = checkRegister({
+    areas: loaded.areas,
+    stations: loaded.stations,
+    beds: loaded.beds,
+    plans: loaded.plans,
+    sources: loaded.sources,
+    boundaries: loaded.boundaries,
+    tides: loaded.tides,
+    on,
+  });
+  loaded.problems.absorb(register.problems);
   const counts = countBySeverity(loaded.problems);
   if (options.json === true) {
     io.say(
@@ -23,6 +43,8 @@ export function validate(options, io) {
         samples: loaded.samples.length,
         landings: loaded.records.length,
         movements: loaded.book.length,
+        boundaries: loaded.boundaries.length,
+        holds: register.holds,
         findings: loaded.problems.list(),
       }),
     );
@@ -40,6 +62,8 @@ export function validate(options, io) {
       ['Samples', String(loaded.samples.length)],
       ['Landings', String(loaded.records.length)],
       ['Movements', String(loaded.book.length)],
+      ['Boundaries drawn', String(loaded.boundaries.length)],
+      ['Register holds together', register.holds ? 'yes' : 'no'],
       ['Findings', `${counts.total}, of which ${counts.errors} are errors`],
     ]),
   );

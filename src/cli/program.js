@@ -41,6 +41,7 @@ export function build(io) {
   common(program.command('validate'))
     .description('read a case directory and report what is wrong with it')
     .option('-q, --quiet', 'print the counts but not the findings')
+    .option('-o, --on <date>', 'the day the register is checked as at')
     .action((options) => {
       exit(io, () => validate(options, io));
     });

@@ -20,6 +20,7 @@ import { findings } from '../core/finding.js';
 import {
   loadAreas,
   loadBeds,
+  loadBoundaries,
   loadBypasses,
   loadCertificates,
   loadDealers,
@@ -87,6 +88,7 @@ export function loadCase(directory, { zone = 'eastern' } = {}) {
   const certificates = absorb(problems, loadCertificates(register));
   const inspections = absorb(problems, loadInspections(register));
   const sources = absorb(problems, loadSources(register));
+  const boundaries = absorb(problems, loadBoundaries(register));
   const reviewHistory = absorb(problems, loadReviewHistory(register));
   const orders = absorb(problems, loadOrders(register, { zone }));
 
@@ -118,6 +120,7 @@ export function loadCase(directory, { zone = 'eastern' } = {}) {
     certificates,
     inspections,
     sources,
+    boundaries,
     reviewHistory,
     orders,
     samples,

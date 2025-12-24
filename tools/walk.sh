@@ -36,6 +36,7 @@ expect_code() {
 }
 
 expect_out "validate" "Findings" $RUN validate -c "$CASE"
+expect_out "the register holds together" "Register holds together: yes" $RUN validate -c "$CASE"
 expect_out "standing" "Growing area standing" $RUN standing -c "$CASE" -a "2025-06-11 09:00" -f 2025-06-01
 expect_out "standing shuts two areas" "Shut by a plan or an order: 2" $RUN standing -c "$CASE" -a "2025-06-11 09:00" -f 2025-06-01
 expect_out "closures" "Closures for B-14" $RUN closures B-14 -c "$CASE" -a "2025-06-30 00:00" -f 2025-06-01

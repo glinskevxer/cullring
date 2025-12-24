@@ -27,6 +27,7 @@ import {
   stageTrigger,
 } from '../condition/trigger.js';
 import { bed } from '../harvest/bed.js';
+import { boundary } from '../geo/polygon.js';
 import { harvestRecord } from '../harvest/record.js';
 import { dealer } from '../licence/dealer.js';
 import { certificate } from '../licence/education.js';
@@ -132,6 +133,10 @@ export function loadOrders(source, { zone = 'eastern' } = {}) {
           : parseInstant(entry.liftedAt, { zone, field: 'liftedAt' }),
     }),
   );
+}
+
+export function loadBoundaries(source) {
+  return loadList(source, 'boundaries', (entry) => boundary(entry));
 }
 
 export function loadSources(source) {

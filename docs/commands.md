@@ -14,6 +14,7 @@ Options:
 - `-z, --zone <zone>` the zone the office keeps (default eastern)
 - `--json` print the answer as JSON
 - `-q, --quiet` print the counts but not the findings
+- `-o, --on <date>` the day the register is checked as at
 
 ## standing
 
