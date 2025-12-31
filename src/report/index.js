@@ -1,4 +1,5 @@
 export * from './book.js';
+export * from './chart.js';
 export * from './closure.js';
 export * from './inspection.js';
 export * from './landings.js';

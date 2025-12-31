@@ -11,6 +11,7 @@ import { Command } from 'commander';
 
 import { validate } from './commands/case.js';
 import { bookCommand } from './commands/book.js';
+import { chart } from './commands/chart.js';
 import { exportCase } from './commands/export.js';
 import { inspections } from './commands/inspection.js';
 import { landings, lot } from './commands/landings.js';
@@ -215,6 +216,14 @@ export function build(io) {
     .option('-o, --on <date>', 'only landings on this day')
     .action((options) => {
       exit(io, () => exportCase(options, io));
+    });
+
+  common(program.command('chart'))
+    .description('one page about one area: history, plans, stations, beds and the bank')
+    .argument('<area>', 'the area number')
+    .requiredOption('-o, --on <date>', 'the day to read the classification on')
+    .action((area, options) => {
+      exit(io, () => chart({ ...options, area }, io));
     });
 
   return program;

@@ -309,3 +309,18 @@ Options:
 - `-s, --shape <shape>` register or landings (default register)
 - `-r, --area <area>` only this area
 - `-o, --on <date>` only landings on this day
+
+## chart
+
+one page about one area: history, plans, stations, beds and the bank
+
+Arguments:
+
+- `area` the area number (required)
+
+Options:
+
+- `-c, --case <directory>` the case directory to read (required)
+- `-z, --zone <zone>` the zone the office keeps (default eastern)
+- `--json` print the answer as JSON
+- `-o, --on <date>` the day to read the classification on (required)
