@@ -1,3 +1,17 @@
+/**
+ * cullring, the shellfish sanitation programme.
+ *
+ * Every package is exposed as a namespace rather than a flat set of names.
+ * There are well over a hundred exported functions in here and a flat surface
+ * would have collided on contains, standing, latestFor and checkRegister
+ * inside the first year, so the namespace is the interface and
+ * tools/check_exports.js holds it to the tree.
+ *
+ * The order below is alphabetical rather than layered on purpose. The layering
+ * is in docs/design.md, where it can be explained; a list of exports that tried
+ * to show it would only go stale.
+ */
+
 export * as area from './area/index.js';
 export * as cli from './cli/index.js';
 export * as condition from './condition/index.js';

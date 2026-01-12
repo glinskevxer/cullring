@@ -71,6 +71,7 @@ jobs:
       - run: npm run check:exports
       - run: npm run check:findings
       - run: npm run check:glossary
+      - run: npm run check:readme
 
   worked-example:
     runs-on: ubuntu-latest
