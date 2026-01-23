@@ -470,5 +470,20 @@
         [34.65, -76.535]
       ]
     }
+  ],
+  "seasons": [
+    {
+      "species": "bay scallop",
+      "from": "11-01",
+      "to": "03-31",
+      "note": "statewide"
+    },
+    {
+      "species": "oyster",
+      "from": "10-15",
+      "to": "03-31",
+      "areas": ["B-14"],
+      "note": "Cedar Bay only, to protect the spring set"
+    }
   ]
 }

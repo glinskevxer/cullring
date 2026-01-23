@@ -29,11 +29,12 @@ describe('the landings command', () => {
 
   it('exits clean on a day where nothing was found', () => {
     const io = recorder();
-    expect(landings(base({ on: '2025-08-15', from: '2025-08-01' }), io)).toBe(OK);
+    expect(landings(base({ on: '2025-08-20', from: '2025-08-01' }), io)).toBe(OK);
     expect(io.out).toMatch(/With findings: 0/);
   });
 
   it.each([
+    ['2025-08-15', 'was shut on that day'],
     ['2025-08-16', 'D-9 was prohibited when the harvest started'],
     ['2025-08-18', 'was not current on that day'],
     ['2025-08-19', 'is leased to somebody else'],

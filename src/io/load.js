@@ -19,6 +19,7 @@ import { classificationPeriod, growingArea } from '../area/growingArea.js';
 import { station } from '../area/station.js';
 import { emergencyOrder } from '../condition/emergency.js';
 import { managementPlan } from '../condition/plan.js';
+import { season } from '../condition/season.js';
 import { afterHours, afterSamples, afterTides, onDate } from '../condition/reopening.js';
 import {
   bypassTrigger,
@@ -137,6 +138,10 @@ export function loadOrders(source, { zone = 'eastern' } = {}) {
 
 export function loadBoundaries(source) {
   return loadList(source, 'boundaries', (entry) => boundary(entry));
+}
+
+export function loadSeasons(source) {
+  return loadList(source, 'seasons', (entry) => season(entry));
 }
 
 export function loadSources(source) {

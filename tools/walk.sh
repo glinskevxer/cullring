@@ -54,6 +54,7 @@ expect_out "beds" "B12-BCK" $RUN beds B-12 -c "$CASE"
 expect_out "tide" "Tide station" $RUN tide B12-BCK -c "$CASE" -o 2025-08-14
 expect_out "vibrio" "Time to temperature" $RUN vibrio B-12 -c "$CASE"
 expect_out "an order beats the plan" "EO-2025-05, spill" $RUN standing -c "$CASE" -a "2025-09-05 09:00" -f 2025-09-01
+expect_out "a shut season is found" "was shut on that day" $RUN landings -c "$CASE" -o 2025-08-15 -f 2025-08-01
 expect_out "a lapsed certificate is found" "let the certificate lapse" $RUN landings -c "$CASE" -o 2025-08-18 -f 2025-08-01
 expect_out "book" "Reconciliation" $RUN book SP-118 -c "$CASE" -o 2025-08-14
 expect_out "chart" "Classification history" $RUN chart B-12 -c "$CASE" -o 2025-09-30
@@ -68,7 +69,7 @@ expect_out "programme" "Programme standing" $RUN programme -c "$CASE" -o 2025-09
 expect_out "month" "Programme report" $RUN month -c "$CASE" -o 2025-08-14
 expect_out "walk" "sha256" $RUN walk -c "$CASE" -o 2025-08-31
 
-expect_code "a clean day" 0 $RUN landings -c "$CASE" -o 2025-08-15 -f 2025-08-01
+expect_code "a clean day" 0 $RUN landings -c "$CASE" -o 2025-08-20 -f 2025-08-01
 expect_code "a day with findings" 1 $RUN landings -c "$CASE" -o 2025-08-14 -f 2025-08-01
 expect_code "an area that is not there" 2 $RUN beds Z-9 -c "$CASE"
 

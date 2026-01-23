@@ -20,13 +20,13 @@ describe('the month command', () => {
     const io = recorder();
     expect(month(base({ on: '2025-08-14' }), io)).toBe(OK);
     expect(io.out).toContain('Programme report for August 2025');
-    expect(io.out).toMatch(/Lots landed:\s+10/);
+    expect(io.out).toMatch(/Lots landed:\s+11/);
   });
 
   it('counts the lots three ways and shows they add up', () => {
     const io = recorder();
     month(base({ on: '2025-08-14' }), io);
-    expect(io.out).toContain('Lawful and with findings sum to 10 of 10.');
+    expect(io.out).toContain('Lawful and with findings sum to 11 of 11.');
   });
 
   it('counts the closures a month with a storm in it held', () => {
@@ -40,7 +40,7 @@ describe('the month command', () => {
     month(base({ on: '2025-08-14', json: true }), io);
     const answer = JSON.parse(io.out);
     expect(answer.month).toBe(8);
-    expect(answer.landings.lots).toBe(10);
+    expect(answer.landings.lots).toBe(11);
   });
 
   it('prints an empty month without falling over', () => {

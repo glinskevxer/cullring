@@ -24,9 +24,9 @@ describe('the worked example loads clean', () => {
     expect(loaded.feed.readings.length).toBeGreaterThan(50);
     expect(loaded.tides.length).toBeGreaterThan(50);
     expect(loaded.samples.length).toBeGreaterThan(400);
-    expect(loaded.records).toHaveLength(10);
+    expect(loaded.records).toHaveLength(11);
     expect(loaded.book.length).toBeGreaterThan(20);
-    expect(loaded.underControl.size).toBe(10);
+    expect(loaded.underControl.size).toBe(11);
   });
 
   it('has nothing to complain about', () => {

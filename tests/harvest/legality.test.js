@@ -293,3 +293,48 @@ describe('the education requirement', () => {
     expect(absent.problems.has('harvest.educationLapsed')).toBe(false);
   });
 });
+
+describe('the season', () => {
+  const SEASONS = [
+    {
+      species: 'oyster',
+      from: { month: 10, day: 15 },
+      to: { month: 3, day: 31 },
+      wraps: true,
+      areas: ['B-12'],
+      note: null,
+    },
+  ];
+
+  it('shuts a species out of its season, on water that is open', () => {
+    const answer = ask(boat({ dealer: 'SS-042' }), CHANNEL, { seasons: SEASONS });
+    expect(answer.problems.has('harvest.outOfSeason')).toBe(true);
+    expect(answer.effective).toBe(APPROVED);
+  });
+
+  it('opens it again inside the season', () => {
+    const record = boat({
+      dealer: 'SS-042',
+      startedAt: at('2025-11-14 07:00'),
+      landedAt: at('2025-11-14 09:00'),
+      lot: '20251114-B12-002',
+    });
+    const answer = ask(record, CHANNEL, {
+      seasons: SEASONS,
+      underControlAt: at('2025-11-14 12:00'),
+    });
+    expect(answer.problems.has('harvest.outOfSeason')).toBe(false);
+  });
+
+  it('leaves an area the season does not name alone', () => {
+    const elsewhere = [{ ...SEASONS[0], areas: ['C-3'] }];
+    const answer = ask(boat({ dealer: 'SS-042' }), CHANNEL, { seasons: elsewhere });
+    expect(answer.problems.has('harvest.outOfSeason')).toBe(false);
+  });
+
+  it('says nothing at all where no season is written', () => {
+    expect(ask(boat({ dealer: 'SS-042' }), CHANNEL).problems.has('harvest.outOfSeason')).toBe(
+      false,
+    );
+  });
+});

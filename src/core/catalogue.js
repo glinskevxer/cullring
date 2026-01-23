@@ -54,6 +54,7 @@ const CATALOGUE = new Map(
     'harvest.licenceLapsed': [ERROR, 'the licence was not current on that day'],
     'harvest.licenceSuspended': [ERROR, 'the licence was suspended on that day'],
     'harvest.noTreatmentDealer': [ERROR, 'restricted product names no dealer'],
+    'harvest.outOfSeason': [ERROR, 'the species was shut on the day the harvest was made'],
     'harvest.unknownArea': [ERROR, 'the area is not in the register'],
     'harvest.unknownDealer': [ERROR, 'the dealer is not in the register'],
     'harvest.unknownHarvester': [ERROR, 'the licence is not in the register'],

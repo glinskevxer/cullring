@@ -25,6 +25,7 @@ import { describeStanding, mayWork as educationAllows, standing } from '../licen
 import { civilDateAt } from '../time/instant.js';
 import { formatCivilDate } from '../time/civil.js';
 import { mayWork } from './bed.js';
+import { describeSeason, mayTake } from '../condition/season.js';
 import { vibrioCheck } from '../vibrio/compliance.js';
 
 export function checkHarvest({
@@ -35,6 +36,7 @@ export function checkHarvest({
   feed = {},
   harvesters = [],
   certificates = null,
+  seasons = [],
   dealers = [],
   tides = [],
   underControlAt = null,
@@ -45,6 +47,7 @@ export function checkHarvest({
   const area = areas.find((one) => one.id === record.areaId) ?? null;
 
   const water = checkWater({ record, area, plans, feed, from, problems });
+  checkSeason({ record, seasons, day, problems });
   checkPeople({ record, bed, harvesters, certificates, day, problems });
   checkDestination({ record, dealers, water, day, problems });
   const temperature = vibrioCheck({ record, bed, tides, underControlAt });
@@ -60,6 +63,23 @@ export function checkHarvest({
     lawful: problems.isLawful(),
     problems,
   });
+}
+
+/**
+ * The season, which is a rule about the species rather than about the water.
+ * It is checked separately from the classification for that reason: a boat can
+ * be lawfully on open water and unlawfully taking the wrong thing off it.
+ */
+function checkSeason({ record, seasons, day, problems }) {
+  const answer = mayTake(seasons, record.species, record.areaId, day);
+  if (answer.open) {
+    return;
+  }
+  problems.error(
+    'harvest.outOfSeason',
+    `${record.species} was shut on that day: ${describeSeason(answer.season)}`,
+    { lot: record.lot, species: record.species, area: record.areaId },
+  );
 }
 
 function checkWater({ record, area, plans, feed, from, problems }) {
