@@ -68,6 +68,8 @@ const CATALOGUE = new Map(
     'laboratory.order': [ERROR, 'a sample went on the bench before it was collected'],
     'laboratory.overHeld': [ERROR, 'a sample was held longer than the method allows'],
     'laboratory.time': [ERROR, 'a submission needs two instants'],
+    'limit.overArea': [ERROR, 'a licence took more out of one area than its limit allows'],
+    'limit.overDay': [ERROR, 'a licence took more in the day than the general limit allows'],
     'load.absent': [NOTE, 'the register carries no list of that kind'],
     'load.entry': [ERROR, 'an entry in the register could not be built'],
     'load.shape': [ERROR, 'something in the register is not the shape it should be'],
