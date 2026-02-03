@@ -33,6 +33,7 @@ import {
   loadSamples,
   loadOrders,
   loadReviewHistory,
+  loadLimits,
   loadSeasons,
   loadSources,
   loadStations,
@@ -91,6 +92,7 @@ export function loadCase(directory, { zone = 'eastern' } = {}) {
   const sources = absorb(problems, loadSources(register));
   const boundaries = absorb(problems, loadBoundaries(register));
   const seasons = absorb(problems, loadSeasons(register));
+  const limits = absorb(problems, loadLimits(register));
   const reviewHistory = absorb(problems, loadReviewHistory(register));
   const orders = absorb(problems, loadOrders(register, { zone }));
 
@@ -124,6 +126,7 @@ export function loadCase(directory, { zone = 'eastern' } = {}) {
     sources,
     boundaries,
     seasons,
+    limits,
     reviewHistory,
     orders,
     samples,

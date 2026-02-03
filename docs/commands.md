@@ -324,3 +324,14 @@ Options:
 - `-z, --zone <zone>` the zone the office keeps (default eastern)
 - `--json` print the answer as JSON
 - `-o, --on <date>` the day to read the classification on (required)
+
+## take
+
+what each licence landed on a day, against the limits
+
+Options:
+
+- `-c, --case <directory>` the case directory to read (required)
+- `-z, --zone <zone>` the zone the office keeps (default eastern)
+- `--json` print the answer as JSON
+- `-o, --on <date>` the day to look at (required)

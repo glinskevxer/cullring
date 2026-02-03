@@ -57,6 +57,7 @@ expect_out "an order beats the plan" "EO-2025-05, spill" $RUN standing -c "$CASE
 expect_out "a shut season is found" "was shut on that day" $RUN landings -c "$CASE" -o 2025-08-15 -f 2025-08-01
 expect_out "a lapsed certificate is found" "let the certificate lapse" $RUN landings -c "$CASE" -o 2025-08-18 -f 2025-08-01
 expect_out "book" "Reconciliation" $RUN book SP-118 -c "$CASE" -o 2025-08-14
+expect_out "take" "Take against the limits" $RUN take -c "$CASE" -o 2025-08-14
 expect_out "chart" "Classification history" $RUN chart B-12 -c "$CASE" -o 2025-09-30
 expect_out "chart names the bank" "marina" $RUN chart B-12 -c "$CASE" -o 2025-09-30
 expect_out "export" "Broad Creek" $RUN export -c "$CASE" -r B-12

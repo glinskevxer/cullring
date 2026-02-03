@@ -4,6 +4,7 @@ export * from './chart.js';
 export * from './export.js';
 export * from './inspection.js';
 export * from './landings.js';
+export * from './limits.js';
 export * from './month.js';
 export * from './orders.js';
 export * from './programme.js';

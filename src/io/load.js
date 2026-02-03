@@ -30,6 +30,7 @@ import {
 import { bed } from '../harvest/bed.js';
 import { boundary } from '../geo/polygon.js';
 import { harvestRecord } from '../harvest/record.js';
+import { takeLimit } from '../harvest/limit.js';
 import { dealer } from '../licence/dealer.js';
 import { certificate } from '../licence/education.js';
 import { inspection } from '../licence/inspection.js';
@@ -138,6 +139,10 @@ export function loadOrders(source, { zone = 'eastern' } = {}) {
 
 export function loadBoundaries(source) {
   return loadList(source, 'boundaries', (entry) => boundary(entry));
+}
+
+export function loadLimits(source) {
+  return loadList(source, 'limits', (entry) => takeLimit(entry));
 }
 
 export function loadSeasons(source) {

@@ -3,6 +3,7 @@ export * from './chart.js';
 export * from './closure.js';
 export * from './inspection.js';
 export * from './landings.js';
+export * from './limits.js';
 export * from './month.js';
 export * from './orders.js';
 export * from './programme.js';

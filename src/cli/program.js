@@ -15,6 +15,7 @@ import { chart } from './commands/chart.js';
 import { exportCase } from './commands/export.js';
 import { inspections } from './commands/inspection.js';
 import { landings, lot } from './commands/landings.js';
+import { take } from './commands/limits.js';
 import { bedsCommand, dealerCommand, harvesterCommand } from './commands/registers.js';
 import { month, walk } from './commands/month.js';
 import { orders } from './commands/orders.js';
@@ -224,6 +225,13 @@ export function build(io) {
     .requiredOption('-o, --on <date>', 'the day to read the classification on')
     .action((area, options) => {
       exit(io, () => chart({ ...options, area }, io));
+    });
+
+  common(program.command('take'))
+    .description('what each licence landed on a day, against the limits')
+    .requiredOption('-o, --on <date>', 'the day to look at')
+    .action((options) => {
+      exit(io, () => take(options, io));
     });
 
   return program;

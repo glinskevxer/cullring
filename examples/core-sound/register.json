@@ -485,5 +485,22 @@
       "areas": ["B-14"],
       "note": "Cedar Bay only, to protect the spring set"
     }
+  ],
+  "limits": [
+    {
+      "species": "oyster",
+      "bushels": 20,
+      "note": "statewide daily limit"
+    },
+    {
+      "species": "oyster",
+      "bushels": 10,
+      "areas": ["B-12"],
+      "note": "Broad Creek is worked hard"
+    },
+    {
+      "species": "hard clam",
+      "bushels": 6
+    }
   ]
 }
