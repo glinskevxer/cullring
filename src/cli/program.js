@@ -13,6 +13,7 @@ import { validate } from './commands/case.js';
 import { bookCommand } from './commands/book.js';
 import { chart } from './commands/chart.js';
 import { exportCase } from './commands/export.js';
+import { forecastCommand } from './commands/forecast.js';
 import { inspections } from './commands/inspection.js';
 import { landings, lot } from './commands/landings.js';
 import { take } from './commands/limits.js';
@@ -232,6 +233,12 @@ export function build(io) {
     .requiredOption('-o, --on <date>', 'the day to look at')
     .action((options) => {
       exit(io, () => take(options, io));
+    });
+
+  common(program.command('forecast'))
+    .description('which plans the loaded forecast would close, and when')
+    .action((options) => {
+      exit(io, () => forecastCommand(options, io));
     });
 
   return program;

@@ -106,6 +106,7 @@ describe('the file names are the ones the office uses', () => {
     expect(Object.values(FEEDS)).toEqual([
       'gauge.csv',
       'bypass.csv',
+      'forecast.csv',
       'tide.csv',
       'samples.csv',
       'landings.csv',

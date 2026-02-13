@@ -335,3 +335,13 @@ Options:
 - `-z, --zone <zone>` the zone the office keeps (default eastern)
 - `--json` print the answer as JSON
 - `-o, --on <date>` the day to look at (required)
+
+## forecast
+
+which plans the loaded forecast would close, and when
+
+Options:
+
+- `-c, --case <directory>` the case directory to read (required)
+- `-z, --zone <zone>` the zone the office keeps (default eastern)
+- `--json` print the answer as JSON

@@ -40,6 +40,7 @@ import { pollutionSource } from '../survey/shoreline.js';
 import { extreme } from '../tide/table.js';
 import { movement } from '../trace/ledger.js';
 import { reading } from '../weather/gauge.js';
+import { forecastReading } from '../condition/forecast.js';
 import { parseInstant } from '../time/instant.js';
 import { parseCivilDate } from '../time/civil.js';
 import { parseCsv, readRows } from './csv.js';
@@ -239,6 +240,25 @@ export function loadReadings(text, { zone = 'eastern' } = {}) {
       gauge: values.gauge,
       at: parseInstant(values.at, { zone, field: 'at' }),
       value: Number(values.value),
+    }),
+  );
+}
+
+/**
+ * The forecast feed, which is read from its own file and never merged into the
+ * gauge feed by the loader. Keeping them apart on disk is what makes it hard
+ * to issue a closure notice for rain that has not fallen.
+ */
+export function loadForecast(text, { zone = 'eastern' } = {}) {
+  return readRows(parseCsv(text), (values) =>
+    forecastReading({
+      gauge: values.gauge,
+      at: parseInstant(values.at, { zone, field: 'at' }),
+      value: Number(values.value),
+      confidence:
+        values.confidence === undefined || values.confidence === ''
+          ? null
+          : Number(values.confidence),
     }),
   );
 }

@@ -24,6 +24,7 @@ import {
   loadBypasses,
   loadCertificates,
   loadDealers,
+  loadForecast,
   loadHarvesters,
   loadInspections,
   loadHarvests,
@@ -56,6 +57,7 @@ export const SINGLE_SAMPLE_LIMIT = limitsFor(APPROVED, FECAL_COLIFORM).ninetieth
 export const FEEDS = Object.freeze({
   readings: 'gauge.csv',
   bypasses: 'bypass.csv',
+  forecast: 'forecast.csv',
   tides: 'tide.csv',
   samples: 'samples.csv',
   landings: 'landings.csv',
@@ -102,6 +104,9 @@ export function loadCase(directory, { zone = 'eastern' } = {}) {
   const bypasses = feed(problems, directory, FEEDS.bypasses, (text) =>
     loadBypasses(text, { zone }),
   );
+  const forecast = feed(problems, directory, FEEDS.forecast, (text) =>
+    loadForecast(text, { zone }),
+  );
   const tides = feed(problems, directory, FEEDS.tides, (text) => loadTides(text, { zone }));
   const samples = feed(problems, directory, FEEDS.samples, (text) => loadSamples(text));
   const landings = feed(problems, directory, FEEDS.landings, (text) =>
@@ -140,6 +145,7 @@ export function loadCase(directory, { zone = 'eastern' } = {}) {
       samples: conformingSamples(samples, zone),
     }),
     tides,
+    forecast,
     problems,
   });
 }

@@ -2,6 +2,7 @@ export * from './book.js';
 export * from './case.js';
 export * from './chart.js';
 export * from './export.js';
+export * from './forecast.js';
 export * from './inspection.js';
 export * from './landings.js';
 export * from './limits.js';
