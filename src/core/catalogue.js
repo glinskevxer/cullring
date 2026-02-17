@@ -45,6 +45,8 @@ const CATALOGUE = new Map(
     'depuration.short': [ERROR, 'the longest unbroken run is under the cycle'],
     'depuration.time': [ERROR, 'a cycle needs two instants'],
     'depuration.unknownProcessor': [ERROR, 'the processor is not in the register'],
+    'duplicate.outOfControl': [ERROR, 'a split sample disagreed by more than the run allows'],
+    'duplicate.thin': [WARNING, 'a run holds too few pairs to set a control limit'],
     'harvest.closedWater': [ERROR, 'the water was shut when the harvest started'],
     'harvest.dealerCannotTreat': [ERROR, 'the dealer cannot perform the treatment the lot needs'],
     'harvest.dealerNotCertified': [ERROR, 'the dealer could not receive on that day'],
