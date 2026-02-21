@@ -18,7 +18,7 @@ import { formatCivilDate } from '../time/civil.js';
 import { decimal, hours, joinWords, yesNo } from '../text/format.js';
 import { RIGHT, column, definitionList, heading, renderTable } from '../text/table.js';
 
-const COLUMNS = [
+export const COLUMNS = [
   column('lot', 'Lot', { width: 16 }),
   column('bed', 'Bed', { width: 8 }),
   column('water', 'Water', { width: 5 }),
@@ -54,6 +54,7 @@ export function landingsReport({ records, beds, context, underControl = new Map(
     .sort((left, right) => (left.lot < right.lot ? -1 : 1));
   return Object.freeze({
     rows: Object.freeze(rows),
+    columns: COLUMNS,
     lawful: checked.filter((one) => one.lawful).length,
     unlawful: checked.filter((one) => !one.lawful).length,
     checked: Object.freeze(checked),

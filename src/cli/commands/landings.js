@@ -11,6 +11,7 @@ import { checkHarvest } from '../../harvest/legality.js';
 import { tagFor, checkTag } from '../../harvest/tag.js';
 import { findBed } from '../../harvest/bed.js';
 import { landingsReport, landingsSummary, renderLandings } from '../../report/landings.js';
+import { sheetFor } from '../../report/sheet.js';
 import { traceForward } from '../../trace/trace.js';
 import { formatCivilDate, sameCivilDate } from '../../time/civil.js';
 import { civilDateAt, formatInstant } from '../../time/instant.js';
@@ -33,6 +34,10 @@ export function landings(options, io) {
     }),
     underControl: loaded.underControl,
   });
+  if (options.csv === true) {
+    io.say(sheetFor(report).trimEnd());
+    return report.unlawful > 0 ? 1 : OK;
+  }
   if (options.json === true) {
     io.say(asJson({ on: formatCivilDate(on), ...landingsSummary(report) }));
     return report.unlawful > 0 ? 1 : OK;

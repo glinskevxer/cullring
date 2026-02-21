@@ -16,7 +16,7 @@ import { formatInstant } from '../time/instant.js';
 import { decimal } from '../text/format.js';
 import { column, definitionList, heading, renderTable } from '../text/table.js';
 
-const COLUMNS = [
+export const COLUMNS = [
   column('area', 'Area'),
   column('name', 'Name', { cap: 22 }),
   column('paper', 'Class', { width: 5 }),
@@ -104,6 +104,12 @@ export function renderStanding({
 }
 
 /** The same thing as data, for anything that has to count rather than read. */
+/** The standing as a report object, which is what the sheet writer wants. */
+export function standingReport(options) {
+  const rows = standingRows(options);
+  return Object.freeze({ rows: Object.freeze(rows), columns: COLUMNS });
+}
+
 export function standingSummary({ areas, plans, feed, orders = [], at, from = null }) {
   const rows = standingRows({ areas, plans, feed, orders, at, from });
   const byClass = new Map();

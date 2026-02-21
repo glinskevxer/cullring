@@ -13,7 +13,7 @@ import { SHUT, latestFor, outcomeOf } from '../licence/inspection.js';
 import { compareCivilDate, daysBetween, formatCivilDate } from '../time/civil.js';
 import { RIGHT, column, definitionList, heading, renderTable } from '../text/table.js';
 
-const COLUMNS = [
+export const COLUMNS = [
   column('dealer', 'Dealer', { width: 7 }),
   column('name', 'Name', { cap: 26 }),
   column('last', 'Last seen', { width: 10 }),
@@ -79,6 +79,7 @@ export function inspectionRound({ dealers, inspections, on }) {
   return Object.freeze({
     on,
     rows: Object.freeze(rows),
+    columns: COLUMNS,
     neverSeen: rows.filter((one) => one.state === 'never inspected').length,
     overdue: rows.filter((one) => one.state === 'overdue').length,
     problems,

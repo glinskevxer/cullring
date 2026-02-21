@@ -3,6 +3,7 @@
  */
 
 import { renderTake, takeReport } from '../../report/limits.js';
+import { sheetFor } from '../../report/sheet.js';
 import { formatCivilDate } from '../../time/civil.js';
 import { loadCase } from '../context.js';
 import { dayOf } from '../moment.js';
@@ -17,6 +18,10 @@ export function take(options, io) {
     limits: loaded.limits,
     day,
   });
+  if (options.csv === true) {
+    io.say(sheetFor(report).trimEnd());
+    return report.problems.hasError() ? FOUND : OK;
+  }
   if (options.json === true) {
     io.say(
       asJson({

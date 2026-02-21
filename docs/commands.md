@@ -13,6 +13,7 @@ Options:
 - `-c, --case <directory>` the case directory to read (required)
 - `-z, --zone <zone>` the zone the office keeps (default eastern)
 - `--json` print the answer as JSON
+- `--csv` print the rows as a sheet
 - `-q, --quiet` print the counts but not the findings
 - `-o, --on <date>` the day the register is checked as at
 
@@ -25,6 +26,7 @@ Options:
 - `-c, --case <directory>` the case directory to read (required)
 - `-z, --zone <zone>` the zone the office keeps (default eastern)
 - `--json` print the answer as JSON
+- `--csv` print the rows as a sheet
 - `-a, --at <stamp>` the moment to ask about (required)
 - `-f, --from <date>` the day the walk over the feed starts
 
@@ -41,6 +43,7 @@ Options:
 - `-c, --case <directory>` the case directory to read (required)
 - `-z, --zone <zone>` the zone the office keeps (default eastern)
 - `--json` print the answer as JSON
+- `--csv` print the rows as a sheet
 - `-a, --at <stamp>` the end of the period (required)
 - `-f, --from <date>` the day the period starts
 - `-o, --on <date>` the day the plan is read as in force on
@@ -58,6 +61,7 @@ Options:
 - `-c, --case <directory>` the case directory to read (required)
 - `-z, --zone <zone>` the zone the office keeps (default eastern)
 - `--json` print the answer as JSON
+- `--csv` print the rows as a sheet
 - `-a, --at <stamp>` the moment to ask about (required)
 - `-f, --from <date>` the day the walk over the feed starts
 - `-o, --on <date>` the day the plan is read as in force on
@@ -75,6 +79,7 @@ Options:
 - `-c, --case <directory>` the case directory to read (required)
 - `-z, --zone <zone>` the zone the office keeps (default eastern)
 - `--json` print the answer as JSON
+- `--csv` print the rows as a sheet
 - `-o, --on <date>` the day the survey is scored as at (required)
 - `-s, --strategy <name>` systematic random or adverse pollution condition
 - `-n, --analysis <name>` fecal coliform or total coliform
@@ -90,6 +95,7 @@ Options:
 - `-c, --case <directory>` the case directory to read (required)
 - `-z, --zone <zone>` the zone the office keeps (default eastern)
 - `--json` print the answer as JSON
+- `--csv` print the rows as a sheet
 - `-o, --on <date>` the day to look at (required)
 - `-f, --from <date>` the day the walk over the feed starts
 
@@ -106,6 +112,7 @@ Options:
 - `-c, --case <directory>` the case directory to read (required)
 - `-z, --zone <zone>` the zone the office keeps (default eastern)
 - `--json` print the answer as JSON
+- `--csv` print the rows as a sheet
 - `-f, --from <date>` the day the walk over the feed starts
 
 ## trace
@@ -121,6 +128,7 @@ Options:
 - `-c, --case <directory>` the case directory to read (required)
 - `-z, --zone <zone>` the zone the office keeps (default eastern)
 - `--json` print the answer as JSON
+- `--csv` print the rows as a sheet
 
 ## forward
 
@@ -135,6 +143,7 @@ Options:
 - `-c, --case <directory>` the case directory to read (required)
 - `-z, --zone <zone>` the zone the office keeps (default eastern)
 - `--json` print the answer as JSON
+- `--csv` print the rows as a sheet
 
 ## recall
 
@@ -149,6 +158,7 @@ Options:
 - `-c, --case <directory>` the case directory to read (required)
 - `-z, --zone <zone>` the zone the office keeps (default eastern)
 - `--json` print the answer as JSON
+- `--csv` print the rows as a sheet
 - `-o, --on <date>` the first day of the period (required)
 - `-t, --to <date>` the last day of the period
 
@@ -165,6 +175,7 @@ Options:
 - `-c, --case <directory>` the case directory to read (required)
 - `-z, --zone <zone>` the zone the office keeps (default eastern)
 - `--json` print the answer as JSON
+- `--csv` print the rows as a sheet
 - `-o, --on <date>` the day to ask about (required)
 
 ## harvester
@@ -180,6 +191,7 @@ Options:
 - `-c, --case <directory>` the case directory to read (required)
 - `-z, --zone <zone>` the zone the office keeps (default eastern)
 - `--json` print the answer as JSON
+- `--csv` print the rows as a sheet
 - `-o, --on <date>` the day to ask about (required)
 
 ## beds
@@ -195,6 +207,7 @@ Options:
 - `-c, --case <directory>` the case directory to read (required)
 - `-z, --zone <zone>` the zone the office keeps (default eastern)
 - `--json` print the answer as JSON
+- `--csv` print the rows as a sheet
 
 ## tide
 
@@ -209,6 +222,7 @@ Options:
 - `-c, --case <directory>` the case directory to read (required)
 - `-z, --zone <zone>` the zone the office keeps (default eastern)
 - `--json` print the answer as JSON
+- `--csv` print the rows as a sheet
 - `-o, --on <date>` the day to ask about (required)
 
 ## vibrio
@@ -224,6 +238,7 @@ Options:
 - `-c, --case <directory>` the case directory to read (required)
 - `-z, --zone <zone>` the zone the office keeps (default eastern)
 - `--json` print the answer as JSON
+- `--csv` print the rows as a sheet
 
 ## month
 
@@ -234,6 +249,7 @@ Options:
 - `-c, --case <directory>` the case directory to read (required)
 - `-z, --zone <zone>` the zone the office keeps (default eastern)
 - `--json` print the answer as JSON
+- `--csv` print the rows as a sheet
 - `-o, --on <date>` any day in the month (required)
 
 ## walk
@@ -245,6 +261,7 @@ Options:
 - `-c, --case <directory>` the case directory to read (required)
 - `-z, --zone <zone>` the zone the office keeps (default eastern)
 - `--json` print the answer as JSON
+- `--csv` print the rows as a sheet
 - `-o, --on <date>` the day the walk is run as at (required)
 - `--digest-only` print only the seal
 
@@ -257,6 +274,7 @@ Options:
 - `-c, --case <directory>` the case directory to read (required)
 - `-z, --zone <zone>` the zone the office keeps (default eastern)
 - `--json` print the answer as JSON
+- `--csv` print the rows as a sheet
 - `-o, --on <date>` the day to ask about (required)
 
 ## orders
@@ -268,6 +286,7 @@ Options:
 - `-c, --case <directory>` the case directory to read (required)
 - `-z, --zone <zone>` the zone the office keeps (default eastern)
 - `--json` print the answer as JSON
+- `--csv` print the rows as a sheet
 - `-a, --at <stamp>` the moment to ask about (required)
 - `-r, --area <area>` only the orders over one area
 
@@ -284,6 +303,7 @@ Options:
 - `-c, --case <directory>` the case directory to read (required)
 - `-z, --zone <zone>` the zone the office keeps (default eastern)
 - `--json` print the answer as JSON
+- `--csv` print the rows as a sheet
 - `-o, --on <date>` the day to read the certification on (required)
 
 ## inspections
@@ -295,6 +315,7 @@ Options:
 - `-c, --case <directory>` the case directory to read (required)
 - `-z, --zone <zone>` the zone the office keeps (default eastern)
 - `--json` print the answer as JSON
+- `--csv` print the rows as a sheet
 - `-o, --on <date>` the day to ask about (required)
 
 ## export
@@ -306,6 +327,7 @@ Options:
 - `-c, --case <directory>` the case directory to read (required)
 - `-z, --zone <zone>` the zone the office keeps (default eastern)
 - `--json` print the answer as JSON
+- `--csv` print the rows as a sheet
 - `-s, --shape <shape>` register or landings (default register)
 - `-r, --area <area>` only this area
 - `-o, --on <date>` only landings on this day
@@ -323,6 +345,7 @@ Options:
 - `-c, --case <directory>` the case directory to read (required)
 - `-z, --zone <zone>` the zone the office keeps (default eastern)
 - `--json` print the answer as JSON
+- `--csv` print the rows as a sheet
 - `-o, --on <date>` the day to read the classification on (required)
 
 ## take
@@ -334,6 +357,7 @@ Options:
 - `-c, --case <directory>` the case directory to read (required)
 - `-z, --zone <zone>` the zone the office keeps (default eastern)
 - `--json` print the answer as JSON
+- `--csv` print the rows as a sheet
 - `-o, --on <date>` the day to look at (required)
 
 ## forecast
@@ -345,3 +369,4 @@ Options:
 - `-c, --case <directory>` the case directory to read (required)
 - `-z, --zone <zone>` the zone the office keeps (default eastern)
 - `--json` print the answer as JSON
+- `--csv` print the rows as a sheet

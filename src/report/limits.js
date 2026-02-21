@@ -12,7 +12,7 @@ import { checkTake, limitFor } from '../harvest/limit.js';
 import { formatCivilDate, sameCivilDate } from '../time/civil.js';
 import { RIGHT, column, definitionList, heading, renderTable } from '../text/table.js';
 
-const COLUMNS = [
+export const COLUMNS = [
   column('harvester', 'Licence', { width: 14 }),
   column('name', 'Name', { cap: 20 }),
   column('species', 'Species', { width: 12 }),
@@ -59,6 +59,7 @@ export function takeReport({ records, harvesters, limits, day }) {
   return Object.freeze({
     day,
     rows: Object.freeze(rows.sort(compareRow)),
+    columns: COLUMNS,
     licences: holders.length,
     over: rows.filter((one) => one.ok === 'no').length,
     problems,

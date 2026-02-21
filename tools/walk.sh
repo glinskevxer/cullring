@@ -58,6 +58,7 @@ expect_out "a shut season is found" "was shut on that day" $RUN landings -c "$CA
 expect_out "a lapsed certificate is found" "let the certificate lapse" $RUN landings -c "$CASE" -o 2025-08-18 -f 2025-08-01
 expect_out "book" "Reconciliation" $RUN book SP-118 -c "$CASE" -o 2025-08-14
 expect_out "forecast" "What the forecast would close" $RUN forecast -c "$CASE"
+expect_out "take as a sheet" "Licence,Name,Species" $RUN take -c "$CASE" -o 2025-08-14 --csv
 expect_out "take" "Take against the limits" $RUN take -c "$CASE" -o 2025-08-14
 expect_out "chart" "Classification history" $RUN chart B-12 -c "$CASE" -o 2025-09-30
 expect_out "chart names the bank" "marina" $RUN chart B-12 -c "$CASE" -o 2025-09-30

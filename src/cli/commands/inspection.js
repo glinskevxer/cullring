@@ -3,6 +3,7 @@
  */
 
 import { inspectionRound, nextToVisit, renderInspections } from '../../report/inspection.js';
+import { sheetFor } from '../../report/sheet.js';
 import { formatCivilDate } from '../../time/civil.js';
 import { loadCase } from '../context.js';
 import { dayOf } from '../moment.js';
@@ -17,6 +18,10 @@ export function inspections(options, io) {
     on,
   });
   const next = nextToVisit(report);
+  if (options.csv === true) {
+    io.say(sheetFor(report).trimEnd());
+    return report.problems.hasError() ? FOUND : OK;
+  }
   if (options.json === true) {
     io.say(
       asJson({

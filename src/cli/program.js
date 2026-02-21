@@ -39,7 +39,8 @@ export function build(io) {
     command
       .requiredOption('-c, --case <directory>', 'the case directory to read')
       .option('-z, --zone <zone>', 'the zone the office keeps', 'eastern')
-      .option('--json', 'print the answer as JSON');
+      .option('--json', 'print the answer as JSON')
+      .option('--csv', 'print the rows as a sheet');
 
   common(program.command('validate'))
     .description('read a case directory and report what is wrong with it')
