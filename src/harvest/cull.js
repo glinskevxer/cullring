@@ -14,6 +14,11 @@
  * sample is compared against a tolerance that depends on the gear, since a
  * dredge cannot cull as finely as a pair of tongs and the rule has always
  * allowed for that.
+ *
+ * The variance arrives as a number rather than as a register. This module has
+ * no business knowing what a variance is or when it lapsed: it is handed the
+ * size that applies and it applies it, which is what lets the same function
+ * answer a hypothetical question about a size nobody has been granted.
  */
 
 import { InputError } from '../core/errors.js';

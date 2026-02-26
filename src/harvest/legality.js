@@ -25,6 +25,8 @@ import { describeStanding, mayWork as educationAllows, standing } from '../licen
 import { civilDateAt } from '../time/instant.js';
 import { formatCivilDate } from '../time/civil.js';
 import { mayWork } from './bed.js';
+import { checkCull } from './cull.js';
+import { CULL_SIZE, varianceFor } from '../area/variance.js';
 import { describeSeason, mayTake } from '../condition/season.js';
 import { vibrioCheck } from '../vibrio/compliance.js';
 
@@ -37,6 +39,8 @@ export function checkHarvest({
   harvesters = [],
   certificates = null,
   seasons = [],
+  variances = [],
+  measurements = null,
   dealers = [],
   tides = [],
   underControlAt = null,
@@ -50,6 +54,7 @@ export function checkHarvest({
   checkSeason({ record, seasons, day, problems });
   checkPeople({ record, bed, harvesters, certificates, day, problems });
   checkDestination({ record, dealers, water, day, problems });
+  checkSize({ record, variances, measurements, day, problems });
   const temperature = vibrioCheck({ record, bed, tides, underControlAt });
   problems.absorb(temperature.problems);
 
@@ -80,6 +85,31 @@ function checkSeason({ record, seasons, day, problems }) {
     `${record.species} was shut on that day: ${describeSeason(answer.season)}`,
     { lot: record.lot, species: record.species, area: record.areaId },
   );
+}
+
+/**
+ * The cull, checked only where somebody measured a sample. A landing nobody
+ * sampled is not a landing that passed: it is one nobody looked at, and the
+ * report says nothing rather than saying it was fine.
+ */
+function checkSize({ record, variances, measurements, day, problems }) {
+  if (measurements === null || measurements === undefined) {
+    return;
+  }
+  const granted = varianceFor(variances, {
+    area: record.areaId,
+    kind: CULL_SIZE,
+    species: record.species,
+    on: day,
+  });
+  const answer = checkCull({
+    species: record.species,
+    gear: record.gear,
+    measurements,
+    variance: granted === null ? null : granted.value,
+    lot: record.lot,
+  });
+  problems.absorb(answer.problems.of('error'));
 }
 
 function checkWater({ record, area, plans, feed, from, problems }) {

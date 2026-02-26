@@ -502,5 +502,24 @@
       "species": "hard clam",
       "bushels": 6
     }
+  ],
+  "variances": [
+    {
+      "area": "B-14",
+      "kind": "cull size",
+      "value": 2.5,
+      "species": "oyster",
+      "grantedOn": "2024-01-01",
+      "expiresOn": "2026-12-31",
+      "reference": "15A NCAC 18A .0912",
+      "note": "Cedar Bay grows a stunted oyster"
+    },
+    {
+      "area": "D-2",
+      "kind": "sampling interval",
+      "value": 90,
+      "grantedOn": "2024-01-01",
+      "expiresOn": "2026-12-31"
+    }
   ]
 }

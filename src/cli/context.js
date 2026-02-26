@@ -38,6 +38,7 @@ import {
   loadSeasons,
   loadSources,
   loadStations,
+  loadVariances,
   loadTides,
 } from '../io/load.js';
 import { ledger } from '../trace/ledger.js';
@@ -95,6 +96,7 @@ export function loadCase(directory, { zone = 'eastern' } = {}) {
   const boundaries = absorb(problems, loadBoundaries(register));
   const seasons = absorb(problems, loadSeasons(register));
   const limits = absorb(problems, loadLimits(register));
+  const variances = absorb(problems, loadVariances(register));
   const reviewHistory = absorb(problems, loadReviewHistory(register));
   const orders = absorb(problems, loadOrders(register, { zone }));
 
@@ -132,6 +134,7 @@ export function loadCase(directory, { zone = 'eastern' } = {}) {
     boundaries,
     seasons,
     limits,
+    variances,
     reviewHistory,
     orders,
     samples,
@@ -234,6 +237,7 @@ export function contextOf(loaded, { from = null } = {}) {
     dealers: loaded.dealers,
     certificates: loaded.certificates,
     seasons: loaded.seasons,
+    variances: loaded.variances,
     sources: loaded.sources,
     orders: loaded.orders,
     tides: loaded.tides,

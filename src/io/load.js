@@ -17,6 +17,7 @@ import { InputError } from '../core/errors.js';
 import { findings } from '../core/finding.js';
 import { classificationPeriod, growingArea } from '../area/growingArea.js';
 import { station } from '../area/station.js';
+import { variance } from '../area/variance.js';
 import { emergencyOrder } from '../condition/emergency.js';
 import { managementPlan } from '../condition/plan.js';
 import { season } from '../condition/season.js';
@@ -140,6 +141,10 @@ export function loadOrders(source, { zone = 'eastern' } = {}) {
 
 export function loadBoundaries(source) {
   return loadList(source, 'boundaries', (entry) => boundary(entry));
+}
+
+export function loadVariances(source) {
+  return loadList(source, 'variances', (entry) => variance(entry));
 }
 
 export function loadLimits(source) {

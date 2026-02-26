@@ -338,3 +338,65 @@ describe('the season', () => {
     );
   });
 });
+
+describe('the cull, where somebody measured a sample', () => {
+  const VARIANCES = [
+    {
+      area: 'B-12',
+      kind: 'cull size',
+      value: 2.5,
+      field: 'inches',
+      species: 'oyster',
+      grantedOn: { year: 2024, month: 1, day: 1 },
+      expiresOn: { year: 2026, month: 12, day: 31 },
+      reference: null,
+    },
+  ];
+
+  const shorts = Array.from({ length: 100 }, () => 2.7);
+
+  it('says nothing at all where nobody measured', () => {
+    const answer = ask(boat({ dealer: 'SS-042' }), CHANNEL);
+    expect(answer.problems.has('cull.overTolerance')).toBe(false);
+  });
+
+  it('fails a sample of undersize against the standard size', () => {
+    const answer = ask(boat({ dealer: 'SS-042' }), CHANNEL, { measurements: shorts });
+    expect(answer.problems.has('cull.overTolerance')).toBe(true);
+  });
+
+  it('passes the same sample where the area holds a variance', () => {
+    const answer = ask(boat({ dealer: 'SS-042' }), CHANNEL, {
+      measurements: shorts,
+      variances: VARIANCES,
+    });
+    expect(answer.problems.has('cull.overTolerance')).toBe(false);
+  });
+
+  it('does not take a variance granted for another species', () => {
+    const clams = [{ ...VARIANCES[0], species: 'hard clam' }];
+    const answer = ask(boat({ dealer: 'SS-042' }), CHANNEL, {
+      measurements: shorts,
+      variances: clams,
+    });
+    expect(answer.problems.has('cull.overTolerance')).toBe(true);
+  });
+
+  it('does not take a variance granted for another area', () => {
+    const elsewhere = [{ ...VARIANCES[0], area: 'C-3' }];
+    const answer = ask(boat({ dealer: 'SS-042' }), CHANNEL, {
+      measurements: shorts,
+      variances: elsewhere,
+    });
+    expect(answer.problems.has('cull.overTolerance')).toBe(true);
+  });
+
+  it('passes a sample of market size with or without the variance', () => {
+    const market = Array.from({ length: 100 }, () => 3.4);
+    expect(
+      ask(boat({ dealer: 'SS-042' }), CHANNEL, { measurements: market }).problems.has(
+        'cull.overTolerance',
+      ),
+    ).toBe(false);
+  });
+});
