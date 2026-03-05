@@ -370,3 +370,18 @@ Options:
 - `-z, --zone <zone>` the zone the office keeps (default eastern)
 - `--json` print the answer as JSON
 - `--csv` print the rows as a sheet
+
+## annual
+
+the annual report, counted from the registers rather than kept running
+
+Arguments:
+
+- `year` the programme year (required)
+
+Options:
+
+- `-c, --case <directory>` the case directory to read (required)
+- `-z, --zone <zone>` the zone the office keeps (default eastern)
+- `--json` print the answer as JSON
+- `--csv` print the rows as a sheet

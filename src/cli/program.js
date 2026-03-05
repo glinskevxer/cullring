@@ -10,6 +10,7 @@
 import { Command } from 'commander';
 
 import { validate } from './commands/case.js';
+import { annual } from './commands/annual.js';
 import { bookCommand } from './commands/book.js';
 import { chart } from './commands/chart.js';
 import { exportCase } from './commands/export.js';
@@ -240,6 +241,13 @@ export function build(io) {
     .description('which plans the loaded forecast would close, and when')
     .action((options) => {
       exit(io, () => forecastCommand(options, io));
+    });
+
+  common(program.command('annual'))
+    .description('the annual report, counted from the registers rather than kept running')
+    .argument('<year>', 'the programme year')
+    .action((year, options) => {
+      exit(io, () => annual({ ...options, year }, io));
     });
 
   return program;
