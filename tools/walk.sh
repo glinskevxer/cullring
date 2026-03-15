@@ -70,6 +70,7 @@ expect_out "and put back on the round" "2026-07-15" $RUN inspections -c "$CASE" 
 expect_out "orders" "Emergency orders" $RUN orders -c "$CASE" -a "2025-09-05 09:00"
 expect_out "programme" "Programme standing" $RUN programme -c "$CASE" -o 2025-09-30
 expect_out "annual" "Acres by classification" $RUN annual 2025 -c "$CASE"
+expect_out "where" "Settled by" $RUN where 34.66,-76.55 -c "$CASE" -a "2025-06-11 09:00" -f 2025-06-01
 expect_out "month" "Programme report" $RUN month -c "$CASE" -o 2025-08-14
 expect_out "walk" "sha256" $RUN walk -c "$CASE" -o 2025-08-31
 

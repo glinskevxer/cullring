@@ -19,7 +19,7 @@ import { findings } from '../core/finding.js';
 import { classificationOn, findArea } from '../area/growingArea.js';
 import { rankOf } from '../area/classification.js';
 import { toPoint } from './point.js';
-import { contains, nearestCornerMetres } from './polygon.js';
+import { contains, nearestCornerMetres, onEdge } from './polygon.js';
 
 /** How far outside a line a position may sit and still be called inside it. */
 export const EDGE_METRES = 25;
@@ -95,6 +95,11 @@ function settlement(ranked) {
  * shapes can cross without either one's corner falling inside the other. It is
  * said out loud in the result, because a coverage report that quietly implies
  * it looked at the whole plane is worse than one that says what it tried.
+ *
+ * A corner that lands on the other boundary's line does not count. Two areas
+ * that share a line are adjacent, which is what most of the register is, and a
+ * check that called every neighbour an overlap would fire on nearly every pair
+ * and be read by nobody.
  */
 export function overlappingPairs(boundaries, { edgeMetres = EDGE_METRES } = {}) {
   const pairs = [];
@@ -103,10 +108,10 @@ export function overlappingPairs(boundaries, { edgeMetres = EDGE_METRES } = {}) 
       const left = boundaries[i];
       const right = boundaries[j];
       const inRight = left.vertices.filter((corner) =>
-        contains(right, corner, { edgeMetres }),
+        strictlyInside(right, corner, edgeMetres),
       ).length;
       const inLeft = right.vertices.filter((corner) =>
-        contains(left, corner, { edgeMetres }),
+        strictlyInside(left, corner, edgeMetres),
       ).length;
       if (inRight > 0 || inLeft > 0) {
         pairs.push(
@@ -188,4 +193,9 @@ export function overlapFindings(boundaries, { edgeMetres = EDGE_METRES } = {}) {
     );
   }
   return problems;
+}
+
+/** Inside the line rather than on it, which is the difference between an overlap and a neighbour. */
+function strictlyInside(shape, corner, edgeMetres) {
+  return contains(shape, corner, { edgeMetres }) && !onEdge(shape, corner, edgeMetres);
 }

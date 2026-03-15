@@ -15,3 +15,4 @@ export * from './survey.js';
 export * from './tide.js';
 export * from './trace.js';
 export * from './water.js';
+export * from './where.js';

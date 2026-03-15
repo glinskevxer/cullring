@@ -11,6 +11,7 @@ import { Command } from 'commander';
 
 import { validate } from './commands/case.js';
 import { annual } from './commands/annual.js';
+import { where } from './commands/where.js';
 import { bookCommand } from './commands/book.js';
 import { chart } from './commands/chart.js';
 import { exportCase } from './commands/export.js';
@@ -248,6 +249,15 @@ export function build(io) {
     .argument('<year>', 'the programme year')
     .action((year, options) => {
       exit(io, () => annual({ ...options, year }, io));
+    });
+
+  common(program.command('where'))
+    .description('which water a position is in, and whether it is open')
+    .argument('<position>', 'latitude and longitude, written 34.7112,-76.6841')
+    .requiredOption('-a, --at <stamp>', 'the moment to ask about')
+    .option('-f, --from <date>', 'the day the walk over the feed starts')
+    .action((position, options) => {
+      exit(io, () => where({ ...options, position }, io));
     });
 
   return program;

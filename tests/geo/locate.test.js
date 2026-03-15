@@ -14,14 +14,14 @@ import { boundary } from '../../src/geo/polygon.js';
 import { classificationPeriod, growingArea } from '../../src/area/growingArea.js';
 import { civilDate } from '../../src/time/civil.js';
 
-const square = (areaId, west, east) =>
+const square = (areaId, west, east, south = 34.7, north = 34.8) =>
   boundary({
     areaId,
     points: [
-      [34.7, west],
-      [34.8, west],
-      [34.8, east],
-      [34.7, east],
+      [south, west],
+      [north, west],
+      [north, east],
+      [south, east],
     ],
   });
 
@@ -34,13 +34,13 @@ const area = (id, name) =>
 
 const ON = civilDate(2025, 6, 1);
 
-const BOUNDARIES = [square('A-01', -76.8, -76.6), square('A-02', -76.7, -76.5)];
+const BOUNDARIES = [square('A-01', -76.8, -76.6), square('A-02', -76.7, -76.5, 34.75, 34.85)];
 const AREAS = [area('A-01', 'approved'), area('A-02', 'restricted')];
 
 describe('claimants', () => {
   it('names every boundary that holds the position', () => {
-    expect(claimants(BOUNDARIES, [34.75, -76.75])).toEqual(['A-01']);
-    expect(claimants(BOUNDARIES, [34.75, -76.65])).toEqual(['A-01', 'A-02']);
+    expect(claimants(BOUNDARIES, [34.72, -76.75])).toEqual(['A-01']);
+    expect(claimants(BOUNDARIES, [34.78, -76.65])).toEqual(['A-01', 'A-02']);
     expect(claimants(BOUNDARIES, [34.9, -76.65])).toEqual([]);
   });
 
@@ -51,7 +51,7 @@ describe('claimants', () => {
 
 describe('locate', () => {
   it('places a position that only one area claims', () => {
-    const placed = locate([34.75, -76.75], { boundaries: BOUNDARIES, areas: AREAS, on: ON });
+    const placed = locate([34.72, -76.75], { boundaries: BOUNDARIES, areas: AREAS, on: ON });
     expect(placed.verdict).toBe(IN_ONE);
     expect(placed.areaId).toBe('A-01');
     expect(placed.classification).toBe('approved');
@@ -59,7 +59,7 @@ describe('locate', () => {
   });
 
   it('gives contested ground to the stricter classification, not to the first line drawn', () => {
-    const placed = locate([34.75, -76.65], { boundaries: BOUNDARIES, areas: AREAS, on: ON });
+    const placed = locate([34.78, -76.65], { boundaries: BOUNDARIES, areas: AREAS, on: ON });
     expect(placed.verdict).toBe(CONTESTED);
     expect(placed.claimed).toEqual(['A-01', 'A-02']);
     expect(placed.areaId).toBe('A-02');
@@ -68,7 +68,7 @@ describe('locate', () => {
 
   it('moves the answer when the register reclassifies, because the rule is not geometric', () => {
     const opened = [area('A-01', 'approved'), area('A-02', 'approved')];
-    const placed = locate([34.75, -76.65], { boundaries: BOUNDARIES, areas: opened, on: ON });
+    const placed = locate([34.78, -76.65], { boundaries: BOUNDARIES, areas: opened, on: ON });
     expect(placed.areaId).toBe('A-01');
     expect(placed.settledBy).toBe('the lower area id, because the classifications tie');
   });
@@ -82,7 +82,7 @@ describe('locate', () => {
 
   it('treats an area the register cannot classify as the weakest claim', () => {
     const thin = [area('A-01', 'approved')];
-    const placed = locate([34.75, -76.65], { boundaries: BOUNDARIES, areas: thin, on: ON });
+    const placed = locate([34.78, -76.65], { boundaries: BOUNDARIES, areas: thin, on: ON });
     expect(placed.areaId).toBe('A-01');
   });
 });
@@ -101,6 +101,12 @@ describe('overlappingPairs', () => {
     );
   });
 
+  it('does not call two areas that share a line an overlap, because that is most of them', () => {
+    const neighbours = [square('A-01', -76.8, -76.7), square('A-04', -76.7, -76.6)];
+    expect(overlappingPairs(neighbours)).toEqual([]);
+    expect(claimants(neighbours, [34.75, -76.7])).toEqual(['A-01', 'A-04']);
+  });
+
   it('raises one warning per overlapping pair', () => {
     const problems = overlapFindings(BOUNDARIES);
     expect(problems.codes()).toEqual(['locate.overlap']);
@@ -112,7 +118,7 @@ describe('misplacedStations', () => {
   const station = (id, areaId, longitude) => ({
     id,
     areaId,
-    latitude: 34.75,
+    latitude: 34.78,
     longitude,
   });
 

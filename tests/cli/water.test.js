@@ -8,12 +8,20 @@ import { base, recorder } from '../support/cli.js';
 const june = { at: '2025-06-11 09:00', from: '2025-06-01' };
 
 describe('validate', () => {
-  it('prints the counts and says nothing is wrong with the worked example', () => {
+  it('prints the counts, and a warning does not make the run a failure', () => {
     const io = recorder();
     expect(validate(base(), io)).toBe(OK);
     expect(io.out).toMatch(/Areas:\s+5/);
-    expect(io.out).toMatch(/Findings:\s+0, of which 0 are errors/);
-    expect(io.err).toBe('');
+    expect(io.out).toMatch(/Findings:\s+2, of which 0 are errors/);
+    expect(io.out).toMatch(/Register holds together: yes/);
+  });
+
+  it('names the overlap, and the station standing on the ground it contests', () => {
+    const io = recorder();
+    validate(base(), io);
+    expect(io.err).toContain('locate.overlap');
+    expect(io.err).toContain('D-2 and D-9');
+    expect(io.err).toContain('station D2-01 is claimed by D-2 and D-9, and D-9 governs');
   });
 
   it('prints the same counts as JSON when asked', () => {
@@ -21,7 +29,7 @@ describe('validate', () => {
     expect(validate(base({ json: true }), io)).toBe(OK);
     const answer = JSON.parse(io.out);
     expect(answer.areas).toBe(5);
-    expect(answer.findings).toEqual([]);
+    expect(answer.findings.map((one) => one.code)).toEqual(['locate.overlap', 'locate.contested']);
   });
 
   it('says what is wrong with a directory that has no register', () => {
@@ -33,7 +41,14 @@ describe('validate', () => {
   it('keeps quiet about the findings when told to', () => {
     const io = recorder();
     validate(base({ case: 'examples', quiet: true }), io);
-    expect(io.err).toBe('');
+    expect(io.out).toMatch(/Register holds together: yes/);
+  });
+
+  it('names the one thing the worked example carries, a drawing overlap', () => {
+    const io = recorder();
+    validate(base(), io);
+    expect(io.err).toContain('locate.overlap');
+    expect(io.err).toContain('D-2 and D-9');
   });
 });
 

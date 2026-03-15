@@ -385,3 +385,20 @@ Options:
 - `-z, --zone <zone>` the zone the office keeps (default eastern)
 - `--json` print the answer as JSON
 - `--csv` print the rows as a sheet
+
+## where
+
+which water a position is in, and whether it is open
+
+Arguments:
+
+- `position` latitude and longitude, written 34.7112,-76.6841 (required)
+
+Options:
+
+- `-c, --case <directory>` the case directory to read (required)
+- `-z, --zone <zone>` the zone the office keeps (default eastern)
+- `--json` print the answer as JSON
+- `--csv` print the rows as a sheet
+- `-a, --at <stamp>` the moment to ask about (required)
+- `-f, --from <date>` the day the walk over the feed starts

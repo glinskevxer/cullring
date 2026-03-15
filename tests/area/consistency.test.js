@@ -32,7 +32,15 @@ describe('the worked example register', () => {
   it('holds together', () => {
     const answer = check();
     expect(answer.holds).toBe(true);
-    expect(answer.problems.list()).toEqual([]);
+    expect(answer.problems.of('error')).toEqual([]);
+  });
+
+  it('reports the one place two lines were drawn over each other', () => {
+    const overlaps = check()
+      .problems.list()
+      .filter((one) => one.code === 'locate.overlap');
+    expect(overlaps).toHaveLength(1);
+    expect(overlaps[0].detail).toMatchObject({ left: 'D-2', right: 'D-9' });
   });
 
   it('checked every station, bed and source', () => {

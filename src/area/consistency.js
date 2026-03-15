@@ -17,6 +17,7 @@ import { findings } from '../core/finding.js';
 import { parseAreaId } from '../core/identity.js';
 import { boundaryFor, contains, nearestCornerMetres } from '../geo/polygon.js';
 import { metresToFeet } from '../geo/point.js';
+import { misplacedStations, overlapFindings } from '../geo/locate.js';
 import { classificationOn } from './growingArea.js';
 import { isConditional } from './classification.js';
 
@@ -118,6 +119,17 @@ export function checkRegister({
       );
     }
   }
+
+  problems.absorb(overlapFindings(boundaries, { edgeMetres: EDGE_TOLERANCE_METRES }));
+  problems.absorb(
+    misplacedStations({
+      stations,
+      boundaries,
+      areas,
+      on,
+      edgeMetres: EDGE_TOLERANCE_METRES,
+    }),
+  );
 
   return Object.freeze({
     on,
