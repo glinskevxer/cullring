@@ -2,6 +2,7 @@ export * from './duplicate.js';
 export * from './evaluate.js';
 export * from './laboratory.js';
 export * from './result.js';
+export * from './rotation.js';
 export * from './schedule.js';
 export * from './shoreline.js';
 export * from './standard.js';

@@ -104,6 +104,8 @@ const MORE = new Map(
     'relay.wrongWater': [ERROR, 'the permit names different water'],
     'review.due': [WARNING, 'a review has come round'],
     'review.late': [ERROR, 'a review is well past due'],
+    'rotation.abandoned': [ERROR, 'a station a year past due was left off the round'],
+    'rotation.neverVisited': [WARNING, 'a station has never been sampled at all'],
     'schedule.due': [WARNING, 'a station is past its sampling interval'],
     'schedule.neverVisited': [ERROR, 'a station has never been sampled'],
     'seed.noPermit': [ERROR, 'seed was moved under no permit'],
