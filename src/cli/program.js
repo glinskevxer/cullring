@@ -11,6 +11,7 @@ import { Command } from 'commander';
 
 import { validate } from './commands/case.js';
 import { annual } from './commands/annual.js';
+import { round } from './commands/round.js';
 import { where } from './commands/where.js';
 import { bookCommand } from './commands/book.js';
 import { chart } from './commands/chart.js';
@@ -258,6 +259,14 @@ export function build(io) {
     .option('-f, --from <date>', 'the day the walk over the feed starts')
     .action((position, options) => {
       exit(io, () => where({ ...options, position }, io));
+    });
+
+  common(program.command('round'))
+    .description('which stations the boat works next, out of everything that is due')
+    .requiredOption('-o, --on <date>', 'the day the round is planned for')
+    .option('-b, --boat <count>', 'how many stations a day on the water is worth')
+    .action((options) => {
+      exit(io, () => round(options, io));
     });
 
   return program;

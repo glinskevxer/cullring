@@ -402,3 +402,16 @@ Options:
 - `--csv` print the rows as a sheet
 - `-a, --at <stamp>` the moment to ask about (required)
 - `-f, --from <date>` the day the walk over the feed starts
+
+## round
+
+which stations the boat works next, out of everything that is due
+
+Options:
+
+- `-c, --case <directory>` the case directory to read (required)
+- `-z, --zone <zone>` the zone the office keeps (default eastern)
+- `--json` print the answer as JSON
+- `--csv` print the rows as a sheet
+- `-o, --on <date>` the day the round is planned for (required)
+- `-b, --boat <count>` how many stations a day on the water is worth
