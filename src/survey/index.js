@@ -1,3 +1,4 @@
+export * from './conditions.js';
 export * from './duplicate.js';
 export * from './evaluate.js';
 export * from './laboratory.js';

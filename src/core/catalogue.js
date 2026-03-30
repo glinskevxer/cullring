@@ -31,6 +31,19 @@ const CATALOGUE = new Map(
     'case.control': [ERROR, 'a row of the temperature control sheet cannot be read'],
     'case.noFeed': [NOTE, 'a feed is not in the case directory'],
     'case.noRegister': [ERROR, 'the case directory holds no register'],
+    'conditions.noPlan': [
+      ERROR,
+      'an area surveyed as adverse carries no plan saying what adverse means',
+    ],
+    'conditions.noneQualified': [
+      ERROR,
+      'not one sample in an adverse survey was taken under the condition',
+    ],
+    'conditions.quietDay': [
+      WARNING,
+      'adverse samples were collected on days the trigger was not firing',
+    ],
+    'conditions.unmeasured': [NOTE, 'adverse samples fall on days the instrument reported nothing'],
     'csv.empty': [WARNING, 'the sheet holds nothing'],
     'csv.row': [ERROR, 'a row could not be built into a record'],
     'csv.width': [ERROR, 'a row has the wrong number of fields'],
