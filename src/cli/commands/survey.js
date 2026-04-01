@@ -64,6 +64,9 @@ export function survey(options, io) {
     samples: selected,
     stations: loaded.stations,
     sources: loaded.sources,
+    plans: loaded.plans,
+    feed: loaded.feed,
+    zone: loaded.zone,
     on,
   });
   if (options.json === true) {
@@ -75,6 +78,7 @@ export function survey(options, io) {
         strategy: strategyName,
         on: formatCivilDate(on),
         results: selected.length,
+        dropped: report.conditioned.dropped.length,
         supported: report.supported,
         cap: report.cap,
         trend: report.trend.direction,

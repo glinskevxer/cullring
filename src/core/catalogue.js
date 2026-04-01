@@ -39,6 +39,10 @@ const CATALOGUE = new Map(
       ERROR,
       'not one sample in an adverse survey was taken under the condition',
     ],
+    'conditions.notChecked': [
+      NOTE,
+      'an adverse survey was read without anything to check the condition against',
+    ],
     'conditions.quietDay': [
       WARNING,
       'adverse samples were collected on days the trigger was not firing',

@@ -14,6 +14,7 @@
 
 import { compareClassification } from '../area/classification.js';
 import { countsByStation, unvisited } from '../area/station.js';
+import { conditionFindings, conditionedSet } from '../survey/conditions.js';
 import { evaluateSurvey } from '../survey/evaluate.js';
 import { areaCap, capped, describeSource, sourcesIn } from '../survey/shoreline.js';
 import { WORSENING, describeTrend, trendFor } from '../survey/trend.js';
@@ -39,18 +40,39 @@ export function surveyReport({
   samples = [],
   stations = [],
   sources = [],
+  plans = [],
+  feed = {},
+  zone = 'eastern',
   on,
 }) {
-  const perStation = samples.length > 0 ? countsByStation(samples) : {};
-  const verdict = evaluateSurvey({ results, heldTo, analysis, strategy, perStation });
-  const missed = stations.length > 0 ? unvisited(stations, area.id, samples, on) : [];
+  // The condition is enforced before anything is counted, because a sample the
+  // survey may not read is not a sample the sufficiency floor may count either.
+  const conditioned = conditionedSet(samples, {
+    strategy,
+    plans,
+    area: area.id,
+    feed,
+    zone,
+  });
+  const kept = conditioned.enforced ? conditioned.kept : samples;
+  const scored = conditioned.enforced ? kept.map((one) => one.result) : results;
+  const perStation = kept.length > 0 ? countsByStation(kept) : {};
+  const verdict = evaluateSurvey({
+    results: scored,
+    heldTo,
+    analysis,
+    strategy,
+    perStation,
+  });
+  verdict.problems.absorb(conditionFindings(conditioned, { area: area.id }));
+  const missed = stations.length > 0 ? unvisited(stations, area.id, kept, on) : [];
   const reaching = sourcesIn(sources, area.id);
   const cap = areaCap(
     reaching,
     stations.filter((one) => one.areaId === area.id),
   );
   const supported = verdict.supported === null ? null : capped(verdict.supported, cap);
-  const trend = trendFor({ samples, on, strategyName: strategy });
+  const trend = trendFor({ samples: kept, on, strategyName: strategy });
   return Object.freeze({
     area: area.id,
     name: area.name,
@@ -59,6 +81,7 @@ export function surveyReport({
     strategy,
     on,
     verdict,
+    conditioned,
     perStation,
     unvisited: Object.freeze(missed),
     sources: Object.freeze(reaching),
@@ -127,9 +150,18 @@ export function renderSurvey(report) {
       ['Strategy', `${report.strategy} (${shortNameOf(report.strategy)})`],
       ['As at', formatCivilDate(report.on)],
       ['Results', String(report.verdict.sufficiency.total)],
+      ...(report.conditioned.enforced
+        ? [['Dropped as not adverse', String(report.conditioned.dropped.length)]]
+        : []),
     ]),
     '',
   ];
+  if (report.conditioned.enforced && report.conditioned.dropped.length > 0) {
+    out.push(
+      `${report.conditioned.dropped.length} samples were not taken under the condition the plan closes on, so the standard does not read them.`,
+      '',
+    );
+  }
   if (!report.verdict.sufficiency.sufficient) {
     out.push(
       `The set holds ${report.verdict.sufficiency.total} results against a floor of ${report.verdict.sufficiency.required}.`,

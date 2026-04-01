@@ -124,16 +124,36 @@ export function qualifiedSamples(samples, options) {
  */
 export function conditionedSet(
   samples,
-  { strategy: name, plans = [], area, feed = {}, zone = 'eastern' },
+  { strategy: name, plans = [], area, feed = {}, zone = 'eastern', enforce = null },
 ) {
   if (name !== ADVERSE_POLLUTION) {
     return Object.freeze({
       strategy: name,
       enforced: false,
+      checked: false,
+      applicable: false,
       kept: Object.freeze(samples.slice()),
       dropped: Object.freeze([]),
       verdicts: Object.freeze([]),
       because: 'the weather has no say in when a systematic survey goes out',
+    });
+  }
+  // Enforcement needs a plan to read the condition off. A caller that supplies
+  // none is asking what this set would say read as adverse, which is a fair
+  // question and a different one, so the set comes back whole and carrying a
+  // flag that says the condition was never checked. The flag is what stops
+  // that reading being mistaken later for a survey that passed the check.
+  const possible = enforce === null ? plans.length > 0 : enforce === true;
+  if (!possible) {
+    return Object.freeze({
+      strategy: name,
+      enforced: false,
+      checked: false,
+      applicable: true,
+      kept: Object.freeze(samples.slice()),
+      dropped: Object.freeze([]),
+      verdicts: Object.freeze([]),
+      because: 'nothing was supplied to check the condition against',
     });
   }
   const verdicts = qualifySet(samples, { plans, area, feed, zone });
@@ -149,6 +169,8 @@ export function conditionedSet(
   return Object.freeze({
     strategy: name,
     enforced: true,
+    checked: true,
+    applicable: true,
     kept: Object.freeze(kept),
     dropped: Object.freeze(dropped),
     verdicts: Object.freeze(verdicts),
@@ -164,6 +186,14 @@ export function conditionedSet(
  */
 export function conditionFindings(conditioned, { area }) {
   const problems = findings();
+  if (conditioned.applicable && !conditioned.checked) {
+    problems.note(
+      'conditions.notChecked',
+      `the results for ${area} are read as adverse without anything to check the condition against`,
+      { area, samples: conditioned.kept.length },
+    );
+    return problems;
+  }
   if (!conditioned.enforced) {
     return problems;
   }

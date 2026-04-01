@@ -138,10 +138,11 @@ describe('conditionedSet', () => {
 });
 
 describe('conditionFindings', () => {
-  const findingsFor = (strategy, samples, plans = [PLAN]) =>
-    conditionFindings(conditionedSet(samples, { strategy, plans, area: 'B-12', feed: FEED }), {
-      area: 'B-12',
-    });
+  const findingsFor = (strategy, samples, plans = [PLAN], extra = {}) =>
+    conditionFindings(
+      conditionedSet(samples, { strategy, plans, area: 'B-12', feed: FEED, ...extra }),
+      { area: 'B-12' },
+    );
 
   it('says nothing at all about a systematic survey', () => {
     expect(findingsFor(SYSTEMATIC_RANDOM, [dry, blank]).isClean()).toBe(true);
@@ -168,12 +169,56 @@ describe('conditionFindings', () => {
     expect(problems.hasError()).toBe(true);
   });
 
-  it('refuses an adverse survey of an area with no plan', () => {
-    const problems = findingsFor(ADVERSE_POLLUTION, [wet], []);
+  it('refuses an adverse survey of an area with no plan in force that day', () => {
+    const problems = findingsFor(ADVERSE_POLLUTION, [wet], [], { enforce: true });
     expect(problems.codes()).toContain('conditions.noPlan');
+  });
+
+  it('says the condition was never checked rather than passing it quietly', () => {
+    const problems = findingsFor(ADVERSE_POLLUTION, [dry, wet], []);
+    expect(problems.codes()).toEqual(['conditions.notChecked']);
+    expect(problems.hasError()).toBe(false);
   });
 
   it('has nothing to say about an empty set', () => {
     expect(findingsFor(ADVERSE_POLLUTION, []).isClean()).toBe(true);
+  });
+});
+
+describe('whether the condition is checked at all', () => {
+  it('does not check what it was given no plan to check against', () => {
+    const answer = conditionedSet([dry, wet], {
+      strategy: ADVERSE_POLLUTION,
+      plans: [],
+      area: 'B-12',
+      feed: FEED,
+    });
+    expect(answer.checked).toBe(false);
+    expect(answer.applicable).toBe(true);
+    expect(answer.kept).toHaveLength(2);
+    expect(answer.because).toContain('nothing was supplied');
+  });
+
+  it('checks when a caller insists, and then drops what does not qualify', () => {
+    const answer = conditionedSet([dry, wet], {
+      strategy: ADVERSE_POLLUTION,
+      plans: [PLAN],
+      area: 'B-12',
+      feed: FEED,
+      enforce: true,
+    });
+    expect(answer.checked).toBe(true);
+    expect(answer.kept).toEqual([wet]);
+  });
+
+  it('never calls a systematic survey applicable, which is a different thing from unchecked', () => {
+    const answer = conditionedSet([dry], {
+      strategy: SYSTEMATIC_RANDOM,
+      plans: [PLAN],
+      area: 'B-12',
+      feed: FEED,
+    });
+    expect(answer.applicable).toBe(false);
+    expect(answer.checked).toBe(false);
   });
 });

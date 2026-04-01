@@ -13,6 +13,9 @@ import { civilDate } from '../../src/time/civil.js';
 import { station } from '../../src/area/station.js';
 import { sample } from '../../src/survey/result.js';
 import { B12 } from '../support/register.js';
+import { findArea } from '../../src/area/growingArea.js';
+import { loadCase } from '../../src/cli/context.js';
+import { CASE } from '../support/cli.js';
 import { CLEAN_THIRTY, FOUL_THIRTY, MIDDLING_THIRTY, flat } from '../support/sets.js';
 
 const on = civilDate(2025, 9, 30);
@@ -188,5 +191,54 @@ describe('the stations the survey missed are printed either way', () => {
     const text = renderSurvey(report);
     expect(text).toContain('Supported: restricted');
     expect(text).toContain('Not visited this period: B12-04.');
+  });
+});
+
+describe('the condition, once the report is given the means to check it', () => {
+  const loaded = loadCase(CASE);
+  const area = findArea(loaded.areas, 'B-12');
+  const selected = loaded.samples.filter((one) => one.areaId === 'B-12');
+
+  const built = (extra) =>
+    surveyReport({
+      area,
+      results: selected.map((one) => one.result),
+      heldTo: 'conditionally approved',
+      strategy: ADVERSE_POLLUTION,
+      samples: selected,
+      on: civilDate(2025, 8, 31),
+      ...extra,
+    });
+
+  it('reads the set whole when it has no plan to check against', () => {
+    const report = built({});
+    expect(report.conditioned.checked).toBe(false);
+    expect(report.verdict.sufficiency.total).toBe(selected.length);
+  });
+
+  it('says out loud that it never checked', () => {
+    expect(built({}).verdict.problems.codes()).toContain('conditions.notChecked');
+  });
+
+  it('drops what was not taken under the condition once the plans are handed over', () => {
+    const report = built({ plans: loaded.plans, feed: loaded.feed, zone: loaded.zone });
+    expect(report.conditioned.checked).toBe(true);
+    expect(report.conditioned.dropped.length).toBeGreaterThan(0);
+    expect(renderSurvey(report)).toContain('Dropped as not adverse');
+  });
+
+  it('leaves a systematic reading of the same set untouched', () => {
+    const report = surveyReport({
+      area,
+      results: selected.map((one) => one.result),
+      heldTo: 'conditionally approved',
+      strategy: SYSTEMATIC_RANDOM,
+      samples: selected,
+      plans: loaded.plans,
+      feed: loaded.feed,
+      on: civilDate(2025, 8, 31),
+    });
+    expect(report.conditioned.enforced).toBe(false);
+    expect(report.verdict.sufficiency.total).toBe(selected.length);
   });
 });
