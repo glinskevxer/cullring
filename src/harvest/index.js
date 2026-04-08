@@ -1,5 +1,6 @@
 export * from './bed.js';
 export * from './cull.js';
+export * from './embargo.js';
 export * from './legality.js';
 export * from './limit.js';
 export * from './record.js';

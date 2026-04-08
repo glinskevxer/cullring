@@ -64,6 +64,8 @@ const CATALOGUE = new Map(
     'depuration.unknownProcessor': [ERROR, 'the processor is not in the register'],
     'duplicate.outOfControl': [ERROR, 'a split sample disagreed by more than the run allows'],
     'duplicate.thin': [WARNING, 'a run holds too few pairs to set a control limit'],
+    'embargo.moved': [ERROR, 'product moved while an embargo stood over it'],
+    'embargo.stale': [WARNING, 'an embargo has stood a long time with nobody releasing it'],
     'harvest.closedWater': [ERROR, 'the water was shut when the harvest started'],
     'harvest.dealerCannotTreat': [ERROR, 'the dealer cannot perform the treatment the lot needs'],
     'harvest.dealerNotCertified': [ERROR, 'the dealer could not receive on that day'],
