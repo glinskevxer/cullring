@@ -521,5 +521,27 @@
       "grantedOn": "2024-01-01",
       "expiresOn": "2026-12-31"
     }
+  ],
+  "embargoes": [
+    {
+      "number": "EMB-2025-11",
+      "reach": "by lot",
+      "lots": ["20250814-D2-001"],
+      "issuedAt": "2025-09-02 16:00",
+      "reason": "landed out of D-2 the day of the spill"
+    },
+    {
+      "number": "EMB-2025-12",
+      "reach": "by water",
+      "area": "D-2",
+      "span": {
+        "from": "2025-08-10 00:00",
+        "to": "2025-08-20 00:00"
+      },
+      "issuedAt": "2025-09-02 16:30",
+      "releasedAt": "2025-09-08 09:00",
+      "releasedBy": "D Meekins",
+      "reason": "everything taken out of the bight in the week of the reported case"
+    }
   ]
 }

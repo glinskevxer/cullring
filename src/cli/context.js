@@ -33,6 +33,7 @@ import {
   loadReadings,
   loadSamples,
   loadOrders,
+  loadEmbargoes,
   loadReviewHistory,
   loadLimits,
   loadSeasons,
@@ -99,6 +100,7 @@ export function loadCase(directory, { zone = 'eastern' } = {}) {
   const variances = absorb(problems, loadVariances(register));
   const reviewHistory = absorb(problems, loadReviewHistory(register));
   const orders = absorb(problems, loadOrders(register, { zone }));
+  const embargoes = absorb(problems, loadEmbargoes(register, { zone }));
 
   const readings = feed(problems, directory, FEEDS.readings, (text) =>
     loadReadings(text, { zone }),
@@ -137,6 +139,7 @@ export function loadCase(directory, { zone = 'eastern' } = {}) {
     variances,
     reviewHistory,
     orders,
+    embargoes,
     samples,
     records: landings,
     book: ledger(movements),
@@ -240,6 +243,7 @@ export function contextOf(loaded, { from = null } = {}) {
     variances: loaded.variances,
     sources: loaded.sources,
     orders: loaded.orders,
+    embargoes: loaded.embargoes,
     tides: loaded.tides,
     beds: loaded.beds,
     from,

@@ -19,6 +19,8 @@ import { classificationPeriod, growingArea } from '../area/growingArea.js';
 import { station } from '../area/station.js';
 import { variance } from '../area/variance.js';
 import { emergencyOrder } from '../condition/emergency.js';
+import { embargo } from '../harvest/embargo.js';
+import { window } from '../time/window.js';
 import { managementPlan } from '../condition/plan.js';
 import { season } from '../condition/season.js';
 import { afterHours, afterSamples, afterTides, onDate } from '../condition/reopening.js';
@@ -135,6 +137,31 @@ export function loadOrders(source, { zone = 'eastern' } = {}) {
         entry.liftedAt === undefined || entry.liftedAt === null
           ? null
           : parseInstant(entry.liftedAt, { zone, field: 'liftedAt' }),
+    }),
+  );
+}
+
+/**
+ * The embargoes. A water embargo carries a period, and the period is written
+ * as two instants rather than two dates because the boats that went out that
+ * morning are the whole question.
+ */
+export function loadEmbargoes(source, { zone = 'eastern' } = {}) {
+  return loadList(source, 'embargoes', (entry) =>
+    embargo({
+      ...entry,
+      issuedAt: parseInstant(entry.issuedAt, { zone, field: 'issuedAt' }),
+      releasedAt:
+        entry.releasedAt === undefined || entry.releasedAt === null
+          ? null
+          : parseInstant(entry.releasedAt, { zone, field: 'releasedAt' }),
+      span:
+        entry.span === undefined || entry.span === null
+          ? null
+          : window(
+              parseInstant(entry.span.from, { zone, field: 'span.from' }),
+              parseInstant(entry.span.to, { zone, field: 'span.to' }),
+            ),
     }),
   );
 }

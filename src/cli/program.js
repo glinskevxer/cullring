@@ -11,6 +11,7 @@ import { Command } from 'commander';
 
 import { validate } from './commands/case.js';
 import { annual } from './commands/annual.js';
+import { embargoes } from './commands/embargo.js';
 import { round } from './commands/round.js';
 import { where } from './commands/where.js';
 import { bookCommand } from './commands/book.js';
@@ -267,6 +268,14 @@ export function build(io) {
     .option('-b, --boat <count>', 'how many stations a day on the water is worth')
     .action((options) => {
       exit(io, () => round(options, io));
+    });
+
+  common(program.command('embargoes'))
+    .description('what product is held, what each embargo reaches, and what moved anyway')
+    .requiredOption('-a, --at <stamp>', 'the moment to ask about')
+    .option('-n, --number <number>', 'one embargo rather than the standing list')
+    .action((options) => {
+      exit(io, () => embargoes(options, io));
     });
 
   return program;
