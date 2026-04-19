@@ -13,6 +13,11 @@ import { ERROR, NOTE, WARNING } from './finding.js';
 
 const CATALOGUE = new Map(
   Object.entries({
+    'advisory.nowhereToSend': [
+      WARNING,
+      'an advisory names lots the book never shows shipped anywhere',
+    ],
+    'advisory.stale': [NOTE, 'every lot named is past the shelf life'],
     'area.planClosed': [NOTE, 'the area is shut under its own management plan'],
     'area.planMissing': [ERROR, 'a conditional area has no plan in force'],
     'area.planWithoutCondition': [WARNING, 'a plan is attached to an unconditional area'],
