@@ -428,3 +428,23 @@ Options:
 - `--csv` print the rows as a sheet
 - `-a, --at <stamp>` the moment to ask about (required)
 - `-n, --number <number>` one embargo rather than the standing list
+
+## advisory
+
+the consumer advisory for everything landed out of one area in a period
+
+Arguments:
+
+- `area` the area the product came out of (required)
+
+Options:
+
+- `-c, --case <directory>` the case directory to read (required)
+- `-z, --zone <zone>` the zone the office keeps (default eastern)
+- `--json` print the answer as JSON
+- `--csv` print the rows as a sheet
+- `-f, --from <date>` the first day of the period (required)
+- `-r, --reason <reason>` why the advisory is going out (required)
+- `-a, --at <stamp>` the moment it is issued (required)
+- `-t, --to <date>` the last day of the period
+- `-l, --list` print who has to be told underneath

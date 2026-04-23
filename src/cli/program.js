@@ -11,6 +11,7 @@ import { Command } from 'commander';
 
 import { validate } from './commands/case.js';
 import { annual } from './commands/annual.js';
+import { advisoryCommand } from './commands/advisory.js';
 import { embargoes } from './commands/embargo.js';
 import { round } from './commands/round.js';
 import { where } from './commands/where.js';
@@ -276,6 +277,18 @@ export function build(io) {
     .option('-n, --number <number>', 'one embargo rather than the standing list')
     .action((options) => {
       exit(io, () => embargoes(options, io));
+    });
+
+  common(program.command('advisory'))
+    .description('the consumer advisory for everything landed out of one area in a period')
+    .argument('<area>', 'the area the product came out of')
+    .requiredOption('-f, --from <date>', 'the first day of the period')
+    .requiredOption('-r, --reason <reason>', 'why the advisory is going out')
+    .requiredOption('-a, --at <stamp>', 'the moment it is issued')
+    .option('-t, --to <date>', 'the last day of the period')
+    .option('-l, --list', 'print who has to be told underneath')
+    .action((area, options) => {
+      exit(io, () => advisoryCommand({ ...options, area }, io));
     });
 
   return program;
