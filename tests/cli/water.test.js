@@ -3,7 +3,9 @@ import { describe, expect, it } from 'vitest';
 import { closures, notice, standing } from '../../src/cli/commands/water.js';
 import { validate } from '../../src/cli/commands/case.js';
 import { OK, REFUSED } from '../../src/cli/output.js';
-import { base, recorder } from '../support/cli.js';
+import { CASE, base, recorder } from '../support/cli.js';
+import { loadCase } from '../../src/cli/context.js';
+import { SCHEMA_VERSION } from '../../src/io/schema.js';
 
 const june = { at: '2025-06-11 09:00', from: '2025-06-01' };
 
@@ -177,5 +179,18 @@ describe('an emergency order in the worked example', () => {
     const io = recorder();
     standing(base({ at: '2025-09-05 09:00', from: '2025-09-01' }), io);
     expect(io.out).toContain('area.underOrder');
+  });
+});
+
+describe('the register version', () => {
+  it('is declared by the worked example, so nothing is read as version one', () => {
+    const io = recorder();
+    validate(base(), io);
+    expect(io.err).not.toContain('schema.unversioned');
+    expect(io.err).not.toContain('schema.aheadOfVersion');
+  });
+
+  it('is carried on the loaded case where a report can read it', () => {
+    expect(loadCase(CASE).schema.version).toBe(SCHEMA_VERSION);
   });
 });

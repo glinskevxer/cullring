@@ -24,24 +24,25 @@ import {
   loadBypasses,
   loadCertificates,
   loadDealers,
+  loadEmbargoes,
   loadForecast,
   loadHarvesters,
-  loadInspections,
   loadHarvests,
+  loadInspections,
+  loadLimits,
   loadMovements,
+  loadOrders,
   loadPlans,
   loadReadings,
-  loadSamples,
-  loadOrders,
-  loadEmbargoes,
   loadReviewHistory,
-  loadLimits,
+  loadSamples,
   loadSeasons,
   loadSources,
   loadStations,
-  loadVariances,
   loadTides,
+  loadVariances,
 } from '../io/load.js';
+import { checkSchema } from '../io/schema.js';
 import { ledger } from '../trace/ledger.js';
 import { parseCsv } from '../io/csv.js';
 import { instantFromCivil, parseInstant } from '../time/instant.js';
@@ -84,6 +85,11 @@ export function loadCase(directory, { zone = 'eastern' } = {}) {
       });
     }
   }
+
+  // The schema check runs before anything is built, so a mistyped key is a
+  // finding rather than a list that quietly came back empty.
+  const schema = checkSchema(register);
+  problems.absorb(schema.problems);
 
   const areas = absorb(problems, loadAreas(register));
   const plans = absorb(problems, loadPlans(register));
@@ -140,6 +146,7 @@ export function loadCase(directory, { zone = 'eastern' } = {}) {
     reviewHistory,
     orders,
     embargoes,
+    schema,
     samples,
     records: landings,
     book: ledger(movements),

@@ -132,6 +132,13 @@ const MORE = new Map(
     'rotation.neverVisited': [WARNING, 'a station has never been sampled at all'],
     'schedule.due': [WARNING, 'a station is past its sampling interval'],
     'schedule.neverVisited': [ERROR, 'a station has never been sampled'],
+    'schema.aheadOfVersion': [
+      WARNING,
+      'a register carries keys from a later version than it declares',
+    ],
+    'schema.unknownKey': [ERROR, 'a register carries a key nothing reads'],
+    'schema.unversioned': [NOTE, 'a register declares no version and is read as the first'],
+    'schema.version': [ERROR, 'a register declares a version this programme does not keep'],
     'seed.noPermit': [ERROR, 'seed was moved under no permit'],
     'seed.oversize': [ERROR, 'what was moved is at or over the seed size, so it is not seed'],
     'seed.permitLapsed': [ERROR, 'the seed permit was not in force on the day'],
