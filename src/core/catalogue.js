@@ -103,6 +103,8 @@ const CATALOGUE = new Map(
     'load.absent': [NOTE, 'the register carries no list of that kind'],
     'load.entry': [ERROR, 'an entry in the register could not be built'],
     'load.shape': [ERROR, 'something in the register is not the shape it should be'],
+    'migrate.current': [NOTE, 'a register is already at the current version'],
+    'migrate.reopening': [NOTE, 'a bare reopening number was written out as hours'],
     'order.clearanceMet': [WARNING, 'an order in force has its clearance samples'],
     'order.stale': [WARNING, 'an order has stood a long time and nobody has lifted it'],
   }),

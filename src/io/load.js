@@ -215,6 +215,13 @@ export function buildTrigger(spec) {
 }
 
 export function buildReopening(spec) {
+  if (typeof spec === 'number') {
+    throw new InputError(
+      'load.reopening',
+      'a reopening written as a bare number is a version 1 register; run migrate on it',
+      { was: spec },
+    );
+  }
   if (spec === undefined || spec === null || typeof spec.kind !== 'string') {
     throw new InputError('load.reopening', 'a plan carries a reopening rule with a kind', {});
   }

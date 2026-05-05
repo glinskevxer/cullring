@@ -448,3 +448,15 @@ Options:
 - `-a, --at <stamp>` the moment it is issued (required)
 - `-t, --to <date>` the last day of the period
 - `-l, --list` print who has to be told underneath
+
+## migrate
+
+read an older register file and write it out at the current version
+
+Options:
+
+- `-c, --case <directory>` the case directory to read (required)
+- `-z, --zone <zone>` the zone the office keeps (default eastern)
+- `--json` print the answer as JSON
+- `--csv` print the rows as a sheet
+- `-w, --write` replace the file rather than only saying what would change

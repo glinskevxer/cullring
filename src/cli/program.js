@@ -12,6 +12,7 @@ import { Command } from 'commander';
 import { validate } from './commands/case.js';
 import { annual } from './commands/annual.js';
 import { advisoryCommand } from './commands/advisory.js';
+import { migrateCommand } from './commands/migrate.js';
 import { embargoes } from './commands/embargo.js';
 import { round } from './commands/round.js';
 import { where } from './commands/where.js';
@@ -289,6 +290,13 @@ export function build(io) {
     .option('-l, --list', 'print who has to be told underneath')
     .action((area, options) => {
       exit(io, () => advisoryCommand({ ...options, area }, io));
+    });
+
+  common(program.command('migrate'))
+    .description('read an older register file and write it out at the current version')
+    .option('-w, --write', 'replace the file rather than only saying what would change')
+    .action((options) => {
+      exit(io, () => migrateCommand(options, io));
     });
 
   return program;
