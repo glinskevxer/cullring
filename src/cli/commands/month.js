@@ -9,8 +9,6 @@
  * or something in here is reading the clock.
  */
 
-import { createHash } from 'node:crypto';
-
 import { monthReport, renderMonth } from '../../report/month.js';
 import { renderStanding } from '../../report/standing.js';
 import { renderSurvey, surveyReport } from '../../report/survey.js';
@@ -21,6 +19,7 @@ import { FECAL_COLIFORM } from '../../survey/standard.js';
 import { MIDNIGHT, civilDate, parseCivilDate } from '../../time/civil.js';
 import { instantFromCivil } from '../../time/instant.js';
 import { loadCase, contextOf } from '../context.js';
+import { seal } from '../../core/seal.js';
 import { OK, asJson } from '../output.js';
 import { heading } from '../../text/table.js';
 
@@ -70,8 +69,9 @@ export function walk(options, io) {
   const on = parseCivilDate(options.on, 'on');
   const pieces = [];
 
-  pieces.push(
-    renderStanding({
+  pieces.push({
+    name: 'standing',
+    text: renderStanding({
       areas: loaded.areas,
       plans: loaded.plans,
       feed: loaded.feed,
@@ -79,7 +79,7 @@ export function walk(options, io) {
       zone: loaded.zone,
       from: momentOfDay(loaded, civilDate(on.year, on.month, 1)),
     }),
-  );
+  });
 
   for (const area of loaded.areas) {
     const heldTo = classificationOn(area, on);
@@ -92,8 +92,9 @@ export function walk(options, io) {
       strategyName: SYSTEMATIC_RANDOM,
       analysisName: FECAL_COLIFORM,
     });
-    pieces.push(
-      renderSurvey(
+    pieces.push({
+      name: `survey ${area.id}`,
+      text: renderSurvey(
         surveyReport({
           area,
           results: selected.map((one) => one.result),
@@ -101,10 +102,13 @@ export function walk(options, io) {
           samples: selected,
           stations: loaded.stations,
           sources: loaded.sources,
+          plans: loaded.plans,
+          feed: loaded.feed,
+          zone: loaded.zone,
           on,
         }),
       ),
-    );
+    });
   }
 
   const report = monthReport({
@@ -119,19 +123,22 @@ export function walk(options, io) {
     underControl: loaded.underControl,
     zone: loaded.zone,
   });
-  pieces.push(renderMonth(report));
+  pieces.push({ name: 'month', text: renderMonth(report) });
 
-  const text = pieces.join('\n\n');
-  const digest = createHash('sha256').update(text, 'utf8').digest('hex');
+  const sealed = seal(pieces);
   if (options.digestOnly === true) {
-    io.say(digest);
+    io.say(sealed.digest);
     return OK;
   }
-  io.say(text);
+  io.say(pieces.map((piece) => piece.text).join('\n\n'));
   io.say('');
   io.say(heading('Seal', { underline: '-' }));
   io.say('');
-  io.say(`sha256 ${digest}`);
+  for (const piece of sealed.pieces) {
+    io.say(`${piece.digest.slice(0, 12)}  ${piece.name}`);
+  }
+  io.say('');
+  io.say(`${sealed.algorithm} ${sealed.digest}`);
   return OK;
 }
 
