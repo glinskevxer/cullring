@@ -12,6 +12,7 @@ import { Command } from 'commander';
 import { validate } from './commands/case.js';
 import { annual } from './commands/annual.js';
 import { advisoryCommand } from './commands/advisory.js';
+import { diff } from './commands/diff.js';
 import { migrateCommand } from './commands/migrate.js';
 import { embargoes } from './commands/embargo.js';
 import { round } from './commands/round.js';
@@ -297,6 +298,17 @@ export function build(io) {
     .option('-w, --write', 'replace the file rather than only saying what would change')
     .action((options) => {
       exit(io, () => migrateCommand(options, io));
+    });
+
+  common(program.command('diff'))
+    .description('walk one case at two days and say what moved between them')
+    .requiredOption('-a, --after <date>', 'the later day')
+    .option('-b, --before <date>', 'the earlier day')
+    .option('-s, --seal <file>', 'a filed seal to stand in for the earlier walk')
+    .option('--save <file>', 'write the later walk out as a seal')
+    .option('--context <lines>', 'how many unchanged lines to show around each change')
+    .action((options) => {
+      exit(io, () => diff(options, io));
     });
 
   return program;

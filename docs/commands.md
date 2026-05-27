@@ -460,3 +460,19 @@ Options:
 - `--json` print the answer as JSON
 - `--csv` print the rows as a sheet
 - `-w, --write` replace the file rather than only saying what would change
+
+## diff
+
+walk one case at two days and say what moved between them
+
+Options:
+
+- `-c, --case <directory>` the case directory to read (required)
+- `-z, --zone <zone>` the zone the office keeps (default eastern)
+- `--json` print the answer as JSON
+- `--csv` print the rows as a sheet
+- `-a, --after <date>` the later day (required)
+- `-b, --before <date>` the earlier day
+- `-s, --seal <file>` a filed seal to stand in for the earlier walk
+- `--save <file>` write the later walk out as a seal
+- `--context <lines>` how many unchanged lines to show around each change

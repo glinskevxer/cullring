@@ -64,9 +64,12 @@ export function readMonth(options) {
  * at the end is the cheapest possible test that nothing in here reads the
  * clock or a hash seed.
  */
-export function walk(options, io) {
-  const loaded = loadCase(options.case, { zone: options.zone });
-  const on = parseCivilDate(options.on, 'on');
+/**
+ * The pieces of a walk, named, before anything is printed or hashed. It is
+ * split out so that two walks can be compared without either of them being
+ * printed, which is what the diff command does.
+ */
+export function walkPieces(loaded, on) {
   const pieces = [];
 
   pieces.push({
@@ -124,6 +127,19 @@ export function walk(options, io) {
     zone: loaded.zone,
   });
   pieces.push({ name: 'month', text: renderMonth(report) });
+
+  return pieces;
+}
+
+/**
+ * Every report the programme writes, over one case, at one moment. The seal
+ * at the end is the cheapest possible test that nothing in here reads the
+ * clock or a hash seed.
+ */
+export function walk(options, io) {
+  const loaded = loadCase(options.case, { zone: options.zone });
+  const on = parseCivilDate(options.on, 'on');
+  const pieces = walkPieces(loaded, on);
 
   const sealed = seal(pieces);
   if (options.digestOnly === true) {
