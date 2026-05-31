@@ -17,8 +17,9 @@
  */
 
 import { findings } from '../core/finding.js';
+import { indexLedger } from './lookup.js';
 import { parseLotId } from '../core/identity.js';
-import { LANDED, SHIPPED, childrenOf, parentOf } from './ledger.js';
+import { LANDED, SHIPPED } from './ledger.js';
 import { formatCivilDate } from '../time/civil.js';
 
 export const AT_LANDING = 'landing';
@@ -29,7 +30,8 @@ export const AT_LOOP = 'loop';
  * Walk back to the landing. The chain is returned oldest first, the way the
  * story reads, and the stop reason names why the walk ended.
  */
-export function traceBack(book, lot, { records = [] } = {}) {
+export function traceBack(book, lot, { records = [], index = null } = {}) {
+  const lookup = index ?? indexLedger(book);
   const problems = findings();
   const start = parseLotId(lot, 'lot').id;
   const chain = [start];
@@ -38,7 +40,7 @@ export function traceBack(book, lot, { records = [] } = {}) {
   let stoppedAt = AT_LANDING;
 
   for (;;) {
-    const parent = parentOf(book, cursor);
+    const parent = lookup.parentOf(cursor);
     if (parent === null) {
       break;
     }
@@ -53,7 +55,7 @@ export function traceBack(book, lot, { records = [] } = {}) {
   }
 
   const origin = chain[chain.length - 1];
-  const landing = book.forLot(origin).find((one) => one.kind === LANDED) ?? null;
+  const landing = lookup.forLot(origin).find((one) => one.kind === LANDED) ?? null;
   if (landing === null && stoppedAt === AT_LANDING) {
     stoppedAt = AT_BROKEN_LINK;
     problems.error(
@@ -86,7 +88,8 @@ export function traceBack(book, lot, { records = [] } = {}) {
  * then repacked appears once in the chain and its shipments appear under the
  * number they went out on, because that is the number the consignee has.
  */
-export function traceForward(book, lot) {
+export function traceForward(book, lot, { index = null } = {}) {
+  const lookup = index ?? indexLedger(book);
   const problems = findings();
   const start = parseLotId(lot, 'lot').id;
   const reached = [];
@@ -101,7 +104,7 @@ export function traceForward(book, lot) {
     }
     seen.add(current);
     reached.push(current);
-    for (const child of childrenOf(book, current)) {
+    for (const child of lookup.childrenOf(current)) {
       queue.push(child);
     }
   }
@@ -132,7 +135,8 @@ export function traceForward(book, lot) {
  * The recall question. Everything landed out of an area inside a window, and
  * everywhere all of it went.
  */
-export function recall(book, { areaId, span, records = [] }) {
+export function recall(book, { areaId, span, records = [], index = null }) {
+  const lookup = index ?? indexLedger(book);
   const problems = findings();
   const landings = book
     .all()
@@ -143,7 +147,7 @@ export function recall(book, { areaId, span, records = [] }) {
         one.at.epochSecond >= span.start.epochSecond &&
         one.at.epochSecond < span.end.epochSecond,
     );
-  const forward = landings.map((one) => traceForward(book, one.lot));
+  const forward = landings.map((one) => traceForward(book, one.lot, { index: lookup }));
   for (const walk of forward) {
     problems.absorb(walk.problems.of('error'));
   }
