@@ -420,6 +420,35 @@
       "note": "cooler repaired and holding"
     }
   ],
+  "leases": [
+    {
+      "id": "SL-1104",
+      "bed": "C3-MSL",
+      "holder": "SH-2025-04412",
+      "from": "2019-04-01",
+      "to": "2029-03-31",
+      "acres": 12,
+      "rentPaidThrough": "2025-12-31"
+    },
+    {
+      "id": "SL-0871",
+      "bed": "D2-TGB",
+      "holder": "SH-2024-01188",
+      "from": "2016-07-01",
+      "to": "2025-06-30",
+      "acres": 9,
+      "rentPaidThrough": "2025-06-30"
+    },
+    {
+      "id": "SL-1163",
+      "bed": "D2-TGB",
+      "holder": "SH-2025-04412",
+      "from": "2025-07-01",
+      "to": "2035-06-30",
+      "acres": 9,
+      "rentPaidThrough": "2025-03-31"
+    }
+  ],
   "boundaries": [
     {
       "areaId": "B-12",

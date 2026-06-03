@@ -20,6 +20,7 @@ import { station } from '../area/station.js';
 import { variance } from '../area/variance.js';
 import { emergencyOrder } from '../condition/emergency.js';
 import { embargo } from '../harvest/embargo.js';
+import { lease } from '../area/lease.js';
 import { window } from '../time/window.js';
 import { managementPlan } from '../condition/plan.js';
 import { season } from '../condition/season.js';
@@ -164,6 +165,10 @@ export function loadEmbargoes(source, { zone = 'eastern' } = {}) {
             ),
     }),
   );
+}
+
+export function loadLeases(source) {
+  return loadList(source, 'leases', (entry) => lease(entry));
 }
 
 export function loadBoundaries(source) {

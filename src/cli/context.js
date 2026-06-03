@@ -29,6 +29,7 @@ import {
   loadHarvesters,
   loadHarvests,
   loadInspections,
+  loadLeases,
   loadLimits,
   loadMovements,
   loadOrders,
@@ -107,6 +108,7 @@ export function loadCase(directory, { zone = 'eastern' } = {}) {
   const reviewHistory = absorb(problems, loadReviewHistory(register));
   const orders = absorb(problems, loadOrders(register, { zone }));
   const embargoes = absorb(problems, loadEmbargoes(register, { zone }));
+  const leases = absorb(problems, loadLeases(register));
 
   const readings = feed(problems, directory, FEEDS.readings, (text) =>
     loadReadings(text, { zone }),
@@ -146,6 +148,7 @@ export function loadCase(directory, { zone = 'eastern' } = {}) {
     reviewHistory,
     orders,
     embargoes,
+    leases,
     schema,
     samples,
     records: landings,
@@ -251,6 +254,7 @@ export function contextOf(loaded, { from = null } = {}) {
     sources: loaded.sources,
     orders: loaded.orders,
     embargoes: loaded.embargoes,
+    leases: loaded.leases,
     tides: loaded.tides,
     beds: loaded.beds,
     from,

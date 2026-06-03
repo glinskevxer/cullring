@@ -9,6 +9,7 @@ export * from './export.js';
 export * from './forecast.js';
 export * from './inspection.js';
 export * from './landings.js';
+export * from './lease.js';
 export * from './limits.js';
 export * from './migrate.js';
 export * from './month.js';

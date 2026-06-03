@@ -13,6 +13,7 @@ import { validate } from './commands/case.js';
 import { annual } from './commands/annual.js';
 import { advisoryCommand } from './commands/advisory.js';
 import { diff } from './commands/diff.js';
+import { leases } from './commands/lease.js';
 import { migrateCommand } from './commands/migrate.js';
 import { embargoes } from './commands/embargo.js';
 import { round } from './commands/round.js';
@@ -309,6 +310,14 @@ export function build(io) {
     .option('--context <lines>', 'how many unchanged lines to show around each change')
     .action((options) => {
       exit(io, () => diff(options, io));
+    });
+
+  common(program.command('leases'))
+    .description('who holds what ground on a day, and what the office has to chase')
+    .requiredOption('-o, --on <date>', 'the day to read the register as at')
+    .option('-r, --holder <harvester>', 'only the leases one grower holds')
+    .action((options) => {
+      exit(io, () => leases(options, io));
     });
 
   return program;

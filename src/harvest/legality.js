@@ -24,7 +24,9 @@ import { findHarvester, isCurrent, isSuspended, mayHarvestWith } from '../licenc
 import { describeStanding, mayWork as educationAllows, standing } from '../licence/education.js';
 import { civilDateAt } from '../time/instant.js';
 import { formatCivilDate } from '../time/civil.js';
-import { mayWork } from './bed.js';
+import { LEASE } from './bed.js';
+import { parseHarvesterId } from '../core/identity.js';
+import { holderOn } from '../area/lease.js';
 import { checkCull } from './cull.js';
 import { CULL_SIZE, varianceFor } from '../area/variance.js';
 import { describeSeason, mayTake } from '../condition/season.js';
@@ -41,6 +43,7 @@ export function checkHarvest({
   seasons = [],
   variances = [],
   measurements = null,
+  leases = [],
   dealers = [],
   tides = [],
   underControlAt = null,
@@ -52,7 +55,7 @@ export function checkHarvest({
 
   const water = checkWater({ record, area, plans, feed, from, problems });
   checkSeason({ record, seasons, day, problems });
-  checkPeople({ record, bed, harvesters, certificates, day, problems });
+  checkPeople({ record, bed, leases, harvesters, certificates, day, problems });
   checkDestination({ record, dealers, water, day, problems });
   checkSize({ record, variances, measurements, day, problems });
   const temperature = vibrioCheck({ record, bed, tides, underControlAt });
@@ -139,7 +142,7 @@ function checkWater({ record, area, plans, feed, from, problems }) {
   return water;
 }
 
-function checkPeople({ record, bed, harvesters, certificates, day, problems }) {
+function checkPeople({ record, bed, leases, harvesters, certificates, day, problems }) {
   const licence = findHarvester(harvesters, record.harvester);
   if (licence === null) {
     problems.error('harvest.unknownHarvester', `${record.harvester} is not in the register`, {
@@ -166,11 +169,43 @@ function checkPeople({ record, bed, harvesters, certificates, day, problems }) {
     );
   }
   checkEducation({ record, certificates, day, problems });
-  if (!mayWork(bed, record.harvester)) {
-    problems.error('harvest.leaseTrespass', `${bed.id} is leased to somebody else`, {
+  checkGround({ record, bed, leases, day, problems });
+}
+
+/**
+ * Whether this licence may work this ground on the day of the harvest.
+ *
+ * Where the office keeps a lease register, the holder is read off it for that
+ * day, because leases turn over and a harvest is judged against the day it was
+ * made. Where it does not, the bed's own holder is used, which is the holder
+ * now, and the finding says which of the two answered so that nobody argues
+ * with the wrong one.
+ */
+function checkGround({ record, bed, leases, day, problems }) {
+  if (bed.tenure !== LEASE) {
+    return;
+  }
+  const onTheDay = leases.length > 0 ? holderOn(leases, bed.id, day) : null;
+  const holder = onTheDay ?? bed.holder;
+  const read = onTheDay === null ? 'the bed register, which holds today' : 'the lease register';
+  if (holder === null) {
+    problems.warn(
+      'harvest.groundUnleased',
+      `${bed.id} is leased ground the register gives no holder for`,
+      {
+        lot: record.lot,
+        bed: bed.id,
+        read,
+      },
+    );
+    return;
+  }
+  if (holder !== parseHarvesterId(record.harvester, 'harvester').id) {
+    problems.error('harvest.leaseTrespass', `${bed.id} was held by ${holder} that day`, {
       lot: record.lot,
       bed: bed.id,
-      holder: bed.holder,
+      holder,
+      read,
     });
   }
 }

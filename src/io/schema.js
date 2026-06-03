@@ -42,7 +42,7 @@ const VERSIONS = new Map([
       'reviewHistory',
     ]),
   ],
-  [2, Object.freeze(['seasons', 'limits', 'variances', 'embargoes'])],
+  [2, Object.freeze(['seasons', 'limits', 'variances', 'embargoes', 'leases'])],
 ]);
 
 /**

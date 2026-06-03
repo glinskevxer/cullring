@@ -37,7 +37,7 @@ describe('the landings command', () => {
     ['2025-08-15', 'was shut on that day'],
     ['2025-08-16', 'D-9 was prohibited when the harvest started'],
     ['2025-08-18', 'was not current on that day'],
-    ['2025-08-19', 'is leased to somebody else'],
+    ['2025-08-19', 'C3-MSL was held by SH-2025-04412 that day'],
   ])('finds what is wrong with %s', (day, message) => {
     const io = recorder();
     expect(landings(base({ on: day, from: '2025-08-01' }), io)).toBe(FOUND);

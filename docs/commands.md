@@ -476,3 +476,16 @@ Options:
 - `-s, --seal <file>` a filed seal to stand in for the earlier walk
 - `--save <file>` write the later walk out as a seal
 - `--context <lines>` how many unchanged lines to show around each change
+
+## leases
+
+who holds what ground on a day, and what the office has to chase
+
+Options:
+
+- `-c, --case <directory>` the case directory to read (required)
+- `-z, --zone <zone>` the zone the office keeps (default eastern)
+- `--json` print the answer as JSON
+- `--csv` print the rows as a sheet
+- `-o, --on <date>` the day to read the register as at (required)
+- `-r, --holder <harvester>` only the leases one grower holds

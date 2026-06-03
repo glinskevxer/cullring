@@ -76,6 +76,7 @@ const CATALOGUE = new Map(
     'harvest.dealerNotCertified': [ERROR, 'the dealer could not receive on that day'],
     'harvest.educationLapsed': [ERROR, 'the harvester certificate has lapsed or was never sat'],
     'harvest.gearNotEndorsed': [ERROR, 'the licence is not endorsed for the gear used'],
+    'harvest.groundUnleased': [WARNING, 'leased ground the register gives no holder for'],
     'harvest.leaseTrespass': [ERROR, 'the ground is leased to somebody else'],
     'harvest.licenceLapsed': [ERROR, 'the licence was not current on that day'],
     'harvest.licenceSuspended': [ERROR, 'the licence was suspended on that day'],
