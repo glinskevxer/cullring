@@ -489,3 +489,17 @@ Options:
 - `--csv` print the rows as a sheet
 - `-o, --on <date>` the day to read the register as at (required)
 - `-r, --holder <harvester>` only the leases one grower holds
+
+## renewals
+
+who has to be written to about renewing, and whether they can
+
+Options:
+
+- `-c, --case <directory>` the case directory to read (required)
+- `-z, --zone <zone>` the zone the office keeps (default eastern)
+- `--json` print the answer as JSON
+- `--csv` print the rows as a sheet
+- `-o, --on <date>` the day to read the registers as at (required)
+- `-r, --harvester <licence>` one grower rather than the round
+- `-n, --notice <days>` how far ahead the office writes

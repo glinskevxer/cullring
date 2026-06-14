@@ -16,6 +16,7 @@ export * from './month.js';
 export * from './orders.js';
 export * from './programme.js';
 export * from './registers.js';
+export * from './renewal.js';
 export * from './round.js';
 export * from './survey.js';
 export * from './tide.js';

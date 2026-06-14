@@ -14,6 +14,7 @@ import { annual } from './commands/annual.js';
 import { advisoryCommand } from './commands/advisory.js';
 import { diff } from './commands/diff.js';
 import { leases } from './commands/lease.js';
+import { renewals } from './commands/renewal.js';
 import { migrateCommand } from './commands/migrate.js';
 import { embargoes } from './commands/embargo.js';
 import { round } from './commands/round.js';
@@ -318,6 +319,15 @@ export function build(io) {
     .option('-r, --holder <harvester>', 'only the leases one grower holds')
     .action((options) => {
       exit(io, () => leases(options, io));
+    });
+
+  common(program.command('renewals'))
+    .description('who has to be written to about renewing, and whether they can')
+    .requiredOption('-o, --on <date>', 'the day to read the registers as at')
+    .option('-r, --harvester <licence>', 'one grower rather than the round')
+    .option('-n, --notice <days>', 'how far ahead the office writes')
+    .action((options) => {
+      exit(io, () => renewals(options, io));
     });
 
   return program;
