@@ -3,6 +3,7 @@ export * from './book.js';
 export * from './chart.js';
 export * from './closure.js';
 export * from './diff.js';
+export * from './exception.js';
 export * from './inspection.js';
 export * from './landings.js';
 export * from './limits.js';
