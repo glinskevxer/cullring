@@ -5,6 +5,7 @@ export * from './case.js';
 export * from './chart.js';
 export * from './diff.js';
 export * from './embargo.js';
+export * from './exception.js';
 export * from './export.js';
 export * from './forecast.js';
 export * from './inspection.js';

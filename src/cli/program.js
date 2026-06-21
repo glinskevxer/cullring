@@ -14,6 +14,7 @@ import { annual } from './commands/annual.js';
 import { advisoryCommand } from './commands/advisory.js';
 import { diff } from './commands/diff.js';
 import { leases } from './commands/lease.js';
+import { exceptions } from './commands/exception.js';
 import { renewals } from './commands/renewal.js';
 import { migrateCommand } from './commands/migrate.js';
 import { embargoes } from './commands/embargo.js';
@@ -328,6 +329,14 @@ export function build(io) {
     .option('-n, --notice <days>', 'how far ahead the office writes')
     .action((options) => {
       exit(io, () => renewals(options, io));
+    });
+
+  common(program.command('exceptions'))
+    .description('everything wrong with one case, grouped by family and by code')
+    .requiredOption('-o, --on <date>', 'the day to run every check as at')
+    .option('--codes <count>', 'how many codes to print')
+    .action((options) => {
+      exit(io, () => exceptions(options, io));
     });
 
   return program;

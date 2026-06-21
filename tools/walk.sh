@@ -77,6 +77,7 @@ expect_out "advisory" "HEALTH ADVISORY" $RUN advisory C-3 -c "$CASE" -f 2025-08-
 expect_out "diff" "Pieces that moved" $RUN diff -c "$CASE" -b 2025-07-31 -a 2025-08-31
 expect_out "leases" "Acres under lease" $RUN leases -c "$CASE" -o 2025-08-15
 expect_out "renewals" "Letters to write" $RUN renewals -c "$CASE" -o 2025-12-01
+expect_out "exceptions" "Families touched" $RUN exceptions -c "$CASE" -o 2025-08-31
 expect_out "month" "Programme report" $RUN month -c "$CASE" -o 2025-08-14
 expect_out "walk" "sha256" $RUN walk -c "$CASE" -o 2025-08-31
 
