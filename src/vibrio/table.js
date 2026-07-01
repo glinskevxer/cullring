@@ -27,13 +27,28 @@ export const COOL = 'cool';
 /** The two temperature regions the program keeps, which are not the area regions. */
 export const REGIONS = Object.freeze([WARM, COOL]);
 
+/**
+ * The temperature region of each area region the register can hold. Every
+ * letter the area id parser accepts has to be in here, because an area in a
+ * region this table does not cover cannot be given a limit at all, and the
+ * programme would refuse a lawful harvest for a reason that is really a hole
+ * in a table. The second worked example found exactly that: the White Oak
+ * areas are in F, and F was not here.
+ */
 const REGION_OF = new Map([
   ['A', COOL],
   ['B', WARM],
   ['C', WARM],
   ['D', COOL],
   ['E', COOL],
+  ['F', WARM],
+  ['G', WARM],
 ]);
+
+/** The area region letters this table covers, for a check that it covers them all. */
+export function coveredRegions() {
+  return Array.from(REGION_OF.keys()).sort();
+}
 
 const LIMITS = new Map([
   [`${WARM}|5`, { plain: 10, iced: 12 }],

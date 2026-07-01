@@ -1,0 +1,352 @@
+{
+  "version": 2,
+  "programme": "White Oak River",
+  "zone": "eastern",
+  "areas": [
+    {
+      "id": "E-4",
+      "name": "Stevens Creek",
+      "acres": 318,
+      "history": [
+        {
+          "classification": "approved",
+          "from": "2014-01-01",
+          "to": "2021-09-30",
+          "basis": "survey"
+        },
+        {
+          "classification": "conditionally approved",
+          "from": "2021-10-01",
+          "basis": "shoreline"
+        }
+      ]
+    },
+    {
+      "id": "E-7",
+      "name": "Queens Creek",
+      "acres": 205,
+      "history": [
+        {
+          "classification": "conditionally restricted",
+          "from": "2019-05-01",
+          "basis": "shoreline"
+        }
+      ]
+    },
+    {
+      "id": "F-2",
+      "name": "Bogue Inlet",
+      "acres": 640,
+      "history": [
+        {
+          "classification": "approved",
+          "from": "2011-06-01",
+          "basis": "survey"
+        }
+      ]
+    },
+    {
+      "id": "F-11",
+      "name": "Hadnot Landing",
+      "acres": 74,
+      "history": [
+        {
+          "classification": "prohibited",
+          "from": "2008-01-01",
+          "basis": "shoreline"
+        }
+      ]
+    }
+  ],
+  "plans": [
+    {
+      "area": "E-4",
+      "trigger": {
+        "kind": "stage crossing",
+        "gauge": "WOK",
+        "feet": 6.5,
+        "overHours": 24
+      },
+      "reopening": {
+        "kind": "after tides",
+        "cycles": 4
+      },
+      "effectiveFrom": "2021-10-01",
+      "reference": "WO-CMP-2021-4"
+    },
+    {
+      "area": "E-7",
+      "trigger": {
+        "kind": "bypass",
+        "facility": "SWANSBORO-1",
+        "withinHours": 72
+      },
+      "reopening": {
+        "kind": "after samples",
+        "count": 3
+      },
+      "effectiveFrom": "2019-05-01",
+      "reference": "WO-CMP-2019-7"
+    }
+  ],
+  "stations": [
+    {
+      "id": "E4-01",
+      "latitude": 34.735,
+      "longitude": -77.09,
+      "openedOn": "2014-02-01",
+      "description": "creek mouth"
+    },
+    {
+      "id": "E4-02",
+      "latitude": 34.742,
+      "longitude": -77.101,
+      "openedOn": "2014-02-01",
+      "description": "above the bend"
+    },
+    {
+      "id": "E7-01",
+      "latitude": 34.688,
+      "longitude": -77.118,
+      "openedOn": "2019-05-15",
+      "description": "off the marina"
+    },
+    {
+      "id": "F2-01",
+      "latitude": 34.663,
+      "longitude": -77.045,
+      "openedOn": "2011-07-01",
+      "description": "inlet channel"
+    },
+    {
+      "id": "F2-02",
+      "latitude": 34.671,
+      "longitude": -77.031,
+      "openedOn": "2011-07-01",
+      "description": "east bar"
+    }
+  ],
+  "beds": [
+    {
+      "id": "E4-STV",
+      "name": "Stevens flat",
+      "tideStation": "SWB",
+      "elevation": 1.2,
+      "acres": 18
+    },
+    {
+      "id": "E7-QNC",
+      "name": "Queens Creek rock",
+      "tideStation": "SWB",
+      "elevation": -0.4,
+      "acres": 26
+    },
+    {
+      "id": "F2-BGI",
+      "name": "Bogue Inlet rock",
+      "tideStation": "SWB",
+      "elevation": -1.1,
+      "acres": 96
+    },
+    {
+      "id": "F2-LSE",
+      "name": "Bogue lease",
+      "tideStation": "SWB",
+      "elevation": 0.3,
+      "tenure": "lease",
+      "holder": "SH-2025-07701",
+      "acres": 11
+    }
+  ],
+  "leases": [
+    {
+      "id": "SL-2201",
+      "bed": "F2-LSE",
+      "holder": "SH-2025-07701",
+      "from": "2022-01-01",
+      "to": "2032-12-31",
+      "acres": 11,
+      "rentPaidThrough": "2025-12-31"
+    }
+  ],
+  "harvesters": [
+    {
+      "id": "SH-2025-07701",
+      "name": "Junius Pettiford",
+      "gears": ["tongs", "hand"],
+      "issuedOn": "2025-01-01",
+      "expiresOn": "2025-12-31"
+    },
+    {
+      "id": "SH-2025-07733",
+      "name": "Maree Canady",
+      "gears": ["dredge", "tongs"],
+      "issuedOn": "2025-01-01",
+      "expiresOn": "2025-12-31"
+    }
+  ],
+  "dealers": [
+    {
+      "id": "SS-311",
+      "name": "Swansboro Shellfish",
+      "address": "4 Water Street, Swansboro",
+      "certifiedOn": "2025-01-01",
+      "expiresOn": "2025-12-31"
+    },
+    {
+      "id": "DP-014",
+      "name": "White Oak Depuration",
+      "address": "88 Hammocks Beach Road, Swansboro",
+      "certifiedOn": "2025-01-01",
+      "expiresOn": "2025-12-31"
+    }
+  ],
+  "certificates": [
+    {
+      "harvester": "SH-2025-07701",
+      "course": "harvester",
+      "sat": "2024-03-04",
+      "provider": "division"
+    },
+    {
+      "harvester": "SH-2025-07733",
+      "course": "harvester",
+      "sat": "2023-02-20",
+      "provider": "division"
+    }
+  ],
+  "inspections": [
+    {
+      "dealer": "SS-311",
+      "on": "2025-05-12",
+      "failed": [],
+      "inspector": "L. Meekins"
+    },
+    {
+      "dealer": "DP-014",
+      "on": "2025-02-03",
+      "failed": [],
+      "inspector": "L. Meekins"
+    }
+  ],
+  "sources": [
+    {
+      "id": "WO-SRC-1",
+      "kind": "wastewater outfall",
+      "areaId": "E-7",
+      "latitude": 34.686,
+      "longitude": -77.122,
+      "size": 220000,
+      "surveyedOn": "2024-04-01",
+      "note": "the plant the plan closes on"
+    },
+    {
+      "id": "WO-SRC-2",
+      "kind": "marina",
+      "areaId": "F-11",
+      "latitude": 34.706,
+      "longitude": -77.084,
+      "size": 84,
+      "surveyedOn": "2024-04-01"
+    },
+    {
+      "id": "WO-SRC-3",
+      "kind": "stormwater outfall",
+      "areaId": "E-4",
+      "latitude": 34.744,
+      "longitude": -77.104,
+      "surveyedOn": "2024-04-01"
+    }
+  ],
+  "boundaries": [
+    {
+      "areaId": "E-4",
+      "name": "Stevens Creek",
+      "points": [
+        [34.73, -77.11],
+        [34.75, -77.11],
+        [34.75, -77.08],
+        [34.73, -77.08]
+      ]
+    },
+    {
+      "areaId": "E-7",
+      "name": "Queens Creek",
+      "points": [
+        [34.68, -77.13],
+        [34.7, -77.13],
+        [34.7, -77.1],
+        [34.68, -77.1]
+      ]
+    },
+    {
+      "areaId": "F-2",
+      "name": "Bogue Inlet",
+      "points": [
+        [34.65, -77.06],
+        [34.68, -77.06],
+        [34.68, -77.02],
+        [34.65, -77.02]
+      ]
+    },
+    {
+      "areaId": "F-11",
+      "name": "Hadnot Landing",
+      "points": [
+        [34.7, -77.09],
+        [34.715, -77.09],
+        [34.715, -77.075],
+        [34.7, -77.075]
+      ]
+    }
+  ],
+  "seasons": [
+    {
+      "species": "oyster",
+      "from": "10-15",
+      "to": "03-31",
+      "note": "statewide"
+    },
+    {
+      "species": "bay scallop",
+      "from": "11-01",
+      "to": "03-31",
+      "areas": ["F-2"],
+      "note": "Bogue Inlet only"
+    }
+  ],
+  "limits": [
+    {
+      "species": "oyster",
+      "bushels": 20,
+      "note": "statewide daily limit"
+    },
+    {
+      "species": "hard clam",
+      "bushels": 6
+    }
+  ],
+  "orders": [],
+  "variances": [],
+  "embargoes": [],
+  "reviewHistory": {
+    "E-4": {
+      "lastReview": "2025-02-10",
+      "lastSurvey": "2021-09-01",
+      "lastPlanReview": "2025-01-20"
+    },
+    "E-7": {
+      "lastReview": "2024-11-05",
+      "lastSurvey": "2019-04-01",
+      "lastPlanReview": "2024-11-05"
+    },
+    "F-2": {
+      "lastReview": "2025-03-18",
+      "lastSurvey": "2022-08-01"
+    },
+    "F-11": {
+      "lastReview": "2023-06-01",
+      "lastSurvey": "2008-01-01"
+    }
+  }
+}
