@@ -25,6 +25,7 @@
   ],
   "scripts": {
     "check:commands": "node tools/check_commands.js",
+    "check:examples": "node tools/check_examples.js",
     "check:exports": "node tools/check_exports.js",
     "check:findings": "node tools/check_findings.js",
     "check:glossary": "node tools/check_glossary.js",

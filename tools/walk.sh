@@ -93,9 +93,38 @@ if [ "$first" != "$second" ]; then
 fi
 echo "ok: the walk seals to $first twice"
 
+# The second case is walked too, and it is walked differently on purpose. Its
+# plans close on a river stage and a plant bypass and reopen on tide cycles and
+# conforming samples, so a bug in a clock the first case never uses shows up
+# here and nowhere else.
+SECOND=examples/white-oak
+
+expect_out "the second case validates" "Register holds together: yes" $RUN validate -c "$SECOND"
+expect_out "the second standing" "after 4 tide cycles" $RUN standing -c "$SECOND" -a "2025-11-06 09:00" -f 2025-11-01
+expect_out "the second reopening" "after 3 conforming samples" $RUN standing -c "$SECOND" -a "2025-11-06 09:00" -f 2025-11-01
+expect_out "the second survey" "Capped by the shoreline" $RUN survey E-7 -c "$SECOND" -o 2025-10-31
+expect_out "the second take" "against 20" $RUN take -c "$SECOND" -o 2025-11-21
+expect_out "the second walk" "sha256" $RUN walk -c "$SECOND" -o 2025-11-30
+
+expect_code "a clean day in the second case" 0 $RUN landings -c "$SECOND" -o 2025-11-17
+expect_code "a day with findings in the second case" 1 $RUN landings -c "$SECOND" -o 2025-11-05
+
+third="$($RUN walk -c "$SECOND" -o 2025-11-30 --digest-only)"
+fourth="$($RUN walk -c "$SECOND" -o 2025-11-30 --digest-only)"
+if [ "$third" != "$fourth" ]; then
+  echo "FAIL: the second walk did not seal to the same digest twice"
+  exit 1
+fi
+if [ "$third" = "$first" ]; then
+  echo "FAIL: two different cases sealed to the same digest"
+  exit 1
+fi
+echo "ok: the second walk seals to $third twice"
+
 node tools/check_commands.js
+node tools/check_examples.js
 node tools/check_exports.js
 node tools/check_findings.js
 node tools/check_glossary.js
 node tools/check_readme.js
-echo "the worked example walk passed"
+echo "both worked examples walked"

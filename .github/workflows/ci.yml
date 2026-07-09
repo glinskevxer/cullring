@@ -68,6 +68,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check:commands
+      - run: npm run check:examples
       - run: npm run check:exports
       - run: npm run check:findings
       - run: npm run check:glossary
