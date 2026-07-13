@@ -73,6 +73,7 @@ jobs:
       - run: npm run check:findings
       - run: npm run check:glossary
       - run: npm run check:readme
+      - run: npm run check:rules
 
   worked-example:
     runs-on: ubuntu-latest

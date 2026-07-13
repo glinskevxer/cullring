@@ -81,11 +81,13 @@ build if the two drift apart.
 
 ## Documents that are generated
 
-Three files under `docs/` are written from the source and checked against it:
+Four files under `docs/` are written from the source and checked against it:
 [commands.md](docs/commands.md) from the command tree,
 [findings.md](docs/findings.md) from the finding catalogue, and
-[glossary.md](docs/glossary.md) from the glossary. Run `npm run write:commands`,
-`npm run write:findings` or `npm run write:glossary` after changing any of them.
+[glossary.md](docs/glossary.md) from the glossary, and [rules.md](docs/rules.md)
+from the rule registry, which is the only place that says which rules decide
+what the others measure. Run the matching write script after changing any of
+them.
 
 ## Words
 

@@ -127,4 +127,5 @@ node tools/check_exports.js
 node tools/check_findings.js
 node tools/check_glossary.js
 node tools/check_readme.js
+node tools/check_rules.js
 echo "both worked examples walked"
