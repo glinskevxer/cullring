@@ -33,6 +33,7 @@ const CATALOGUE = new Map(
     ],
     'book.unknownDealer': [ERROR, 'the dealer is not in the register'],
     'case.badRegister': [ERROR, 'the register file will not parse'],
+    'case.unreadable': [ERROR, 'a file is too big or too deep for the programme to read'],
     'case.control': [ERROR, 'a row of the temperature control sheet cannot be read'],
     'case.noFeed': [NOTE, 'a feed is not in the case directory'],
     'case.noRegister': [ERROR, 'the case directory holds no register'],

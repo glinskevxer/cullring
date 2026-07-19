@@ -1,4 +1,5 @@
 export * from './csv.js';
+export * from './guard.js';
 export * from './load.js';
 export * from './migrate.js';
 export * from './schema.js';

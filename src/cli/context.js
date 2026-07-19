@@ -44,6 +44,7 @@ import {
   loadVariances,
 } from '../io/load.js';
 import { checkSchema } from '../io/schema.js';
+import { guardFeed, guardRegister } from '../io/guard.js';
 import { ledger } from '../trace/ledger.js';
 import { parseCsv } from '../io/csv.js';
 import { instantFromCivil, parseInstant } from '../time/instant.js';
@@ -79,7 +80,7 @@ export function loadCase(directory, { zone = 'eastern' } = {}) {
     });
   } else {
     try {
-      register = JSON.parse(readFileSync(registerPath, 'utf8'));
+      register = guardRegister(readFileSync(registerPath, 'utf8'));
     } catch (error) {
       problems.error('case.badRegister', `${REGISTER_FILE} is not readable: ${error.message}`, {
         path: registerPath,
@@ -228,7 +229,21 @@ function feed(problems, directory, name, build) {
     problems.note('case.noFeed', `${name} is not in the case directory`, { file: name });
     return [];
   }
-  const answer = build(readFileSync(path, 'utf8'));
+  // The guard runs on the text before anything parses it, so a sheet exported
+  // with a million blank rows is refused with a sentence rather than read.
+  let answer;
+  try {
+    answer = build(guardFeed(readFileSync(path, 'utf8'), name));
+  } catch (error) {
+    // A guard refusal is reported under one code rather than its own, because
+    // the catalogue holds finding codes and a guard raises an error. What the
+    // reader needs is the sentence, and the sentence is carried through.
+    problems.error('case.unreadable', `${name}: ${error.message}`, {
+      file: name,
+      cause: error.code ?? 'unknown',
+    });
+    return [];
+  }
   for (const finding of answer.problems.list()) {
     problems.add({ ...finding, message: `${name}: ${finding.message}` });
   }

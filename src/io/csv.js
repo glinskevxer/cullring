@@ -17,6 +17,7 @@
 
 import { InputError } from '../core/errors.js';
 import { findings } from '../core/finding.js';
+import { guardField, guardRows } from './guard.js';
 
 export function parseCsv(text, { headers = null, skipBlank = true } = {}) {
   if (typeof text !== 'string') {
@@ -28,6 +29,7 @@ export function parseCsv(text, { headers = null, skipBlank = true } = {}) {
     problems.warn('csv.empty', 'the sheet is empty', {});
     return Object.freeze({ headers: [], rows: Object.freeze([]), problems });
   }
+  guardRows(lines.length, { what: 'the sheet' });
   const columns = headers ?? lines[0].fields.map((field) => field.trim());
   const start = headers === null ? 1 : 0;
   const rows = [];
@@ -35,6 +37,9 @@ export function parseCsv(text, { headers = null, skipBlank = true } = {}) {
     const line = lines[index];
     if (skipBlank && line.fields.length === 1 && line.fields[0].trim() === '') {
       continue;
+    }
+    for (const field of line.fields) {
+      guardField(field, { what: 'the sheet', line: line.line });
     }
     if (line.fields.length !== columns.length) {
       problems.error(
