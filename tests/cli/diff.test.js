@@ -24,7 +24,8 @@ describe('walkPieces', () => {
     const pieces = walkPieces(loadCase(CASE), civilDate(2025, 8, 31));
     expect(pieces[0].name).toBe('standing');
     expect(pieces.map((one) => one.name)).toContain('survey B-12');
-    expect(pieces[pieces.length - 1].name).toBe('month');
+    expect(pieces.map((one) => one.name)).toContain('month');
+    expect(pieces[pieces.length - 1].name).toBe('provenance');
   });
 
   it('gives the same pieces twice, which is what the walk seals', () => {

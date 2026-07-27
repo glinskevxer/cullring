@@ -11,6 +11,7 @@ import { Command } from 'commander';
 
 import { validate } from './commands/case.js';
 import { annual } from './commands/annual.js';
+import { VERSION } from '../core/version.js';
 import { advisoryCommand } from './commands/advisory.js';
 import { diff } from './commands/diff.js';
 import { leases } from './commands/lease.js';
@@ -42,7 +43,7 @@ export function build(io) {
   program
     .name('cullring')
     .description('shellfish sanitation: classification, closures, landings and trace')
-    .version('1.0.0')
+    .version(VERSION)
     .showHelpAfterError();
 
   const common = (command) =>

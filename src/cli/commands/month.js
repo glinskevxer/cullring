@@ -20,6 +20,7 @@ import { MIDNIGHT, civilDate, parseCivilDate } from '../../time/civil.js';
 import { instantFromCivil } from '../../time/instant.js';
 import { loadCase, contextOf } from '../context.js';
 import { seal } from '../../core/seal.js';
+import { provenanceLine } from '../../core/version.js';
 import { OK, asJson } from '../output.js';
 import { heading } from '../../text/table.js';
 
@@ -127,6 +128,9 @@ export function walkPieces(loaded, on) {
     zone: loaded.zone,
   });
   pieces.push({ name: 'month', text: renderMonth(report) });
+  // Sealed like any other piece, so two walks written by different releases
+  // of the programme differ in a way the diff can name.
+  pieces.push({ name: 'provenance', text: provenanceLine() });
 
   return pieces;
 }
