@@ -155,3 +155,11 @@ how long a lot had, counted from where the gear says the clock starts
 - Lives in `src/vibrio/compliance.js`
 - Raises `vibrio.*`
 - Decided by nothing else
+
+## what the case can answer
+
+which reports are narrower than they look because a register is not there
+
+- Lives in `src/report/coverage.js`
+- Raises `coverage.*`
+- Decided by the register is readable

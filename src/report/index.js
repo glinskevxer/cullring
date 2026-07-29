@@ -2,6 +2,7 @@ export * from './annual.js';
 export * from './book.js';
 export * from './chart.js';
 export * from './closure.js';
+export * from './coverage.js';
 export * from './diff.js';
 export * from './exception.js';
 export * from './inspection.js';

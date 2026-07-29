@@ -54,6 +54,11 @@ const CATALOGUE = new Map(
       'adverse samples were collected on days the trigger was not firing',
     ],
     'conditions.unmeasured': [NOTE, 'adverse samples fall on days the instrument reported nothing'],
+    'coverage.blocked': [ERROR, 'a report cannot run at all over this case'],
+    'coverage.narrowed': [
+      WARNING,
+      'a report is narrower than it looks because a register is absent',
+    ],
     'csv.empty': [WARNING, 'the sheet holds nothing'],
     'csv.row': [ERROR, 'a row could not be built into a record'],
     'csv.width': [ERROR, 'a row has the wrong number of fields'],

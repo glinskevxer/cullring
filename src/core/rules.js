@@ -135,6 +135,12 @@ const RULES = new Map(
       raises: ['trace', 'audit', 'advisory'],
       decidedBy: ['the tag'],
     },
+    'what the case can answer': {
+      module: 'src/report/coverage.js',
+      says: 'which reports are narrower than they look because a register is not there',
+      raises: ['coverage'],
+      decidedBy: ['the register is readable'],
+    },
     'the embargo': {
       module: 'src/harvest/embargo.js',
       says: 'product named by an embargo does not move until somebody signs a release',
