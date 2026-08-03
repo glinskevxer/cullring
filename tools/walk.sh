@@ -78,6 +78,7 @@ expect_out "diff" "Pieces that moved" $RUN diff -c "$CASE" -b 2025-07-31 -a 2025
 expect_out "leases" "Acres under lease" $RUN leases -c "$CASE" -o 2025-08-15
 expect_out "renewals" "Letters to write" $RUN renewals -c "$CASE" -o 2025-12-01
 expect_out "exceptions" "Families touched" $RUN exceptions -c "$CASE" -o 2025-08-31
+expect_out "coverage" "Reports that are complete" $RUN coverage -c "$CASE"
 expect_out "month" "Programme report" $RUN month -c "$CASE" -o 2025-08-14
 expect_out "walk" "sha256" $RUN walk -c "$CASE" -o 2025-08-31
 
@@ -105,6 +106,7 @@ expect_out "the second reopening" "after 3 conforming samples" $RUN standing -c 
 expect_out "the second survey" "Capped by the shoreline" $RUN survey E-7 -c "$SECOND" -o 2025-10-31
 expect_out "the second take" "against 20" $RUN take -c "$SECOND" -o 2025-11-21
 expect_out "the second walk" "sha256" $RUN walk -c "$SECOND" -o 2025-11-30
+expect_out "the second case is thinner" "narrower than they look" $RUN coverage -c "$SECOND"
 
 expect_code "a clean day in the second case" 0 $RUN landings -c "$SECOND" -o 2025-11-17
 expect_code "a day with findings in the second case" 1 $RUN landings -c "$SECOND" -o 2025-11-05

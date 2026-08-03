@@ -516,3 +516,14 @@ Options:
 - `--csv` print the rows as a sheet
 - `-o, --on <date>` the day to run every check as at (required)
 - `--codes <count>` how many codes to print
+
+## coverage
+
+which reports over this case are narrower than they look, and why
+
+Options:
+
+- `-c, --case <directory>` the case directory to read (required)
+- `-z, --zone <zone>` the zone the office keeps (default eastern)
+- `--json` print the answer as JSON
+- `--csv` print the rows as a sheet

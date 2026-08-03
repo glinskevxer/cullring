@@ -7,6 +7,7 @@ import { checkRegister } from '../../area/consistency.js';
 import { civilDateAt } from '../../time/instant.js';
 import { instant } from '../../time/instant.js';
 import { definitionList } from '../../text/table.js';
+import { caveat, coverageReport } from '../../report/coverage.js';
 import { contextOf, loadCase } from '../context.js';
 import { asJson, countBySeverity, printFindings } from '../output.js';
 
@@ -67,6 +68,13 @@ export function validate(options, io) {
       ['Findings', `${counts.total}, of which ${counts.errors} are errors`],
     ]),
   );
+  // A case can hold together and still not be able to answer what is asked of
+  // it, and that reads as a clean validate unless it is said here.
+  const narrower = caveat(coverageReport(loaded));
+  if (narrower !== null) {
+    io.say('');
+    io.say(`${narrower} Run coverage for the list.`);
+  }
   return printFindings(loaded.problems, io, { quiet: options.quiet === true });
 }
 

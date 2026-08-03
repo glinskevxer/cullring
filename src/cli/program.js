@@ -15,6 +15,7 @@ import { VERSION } from '../core/version.js';
 import { advisoryCommand } from './commands/advisory.js';
 import { diff } from './commands/diff.js';
 import { leases } from './commands/lease.js';
+import { coverage } from './commands/coverage.js';
 import { exceptions } from './commands/exception.js';
 import { renewals } from './commands/renewal.js';
 import { migrateCommand } from './commands/migrate.js';
@@ -338,6 +339,12 @@ export function build(io) {
     .option('--codes <count>', 'how many codes to print')
     .action((options) => {
       exit(io, () => exceptions(options, io));
+    });
+
+  common(program.command('coverage'))
+    .description('which reports over this case are narrower than they look, and why')
+    .action((options) => {
+      exit(io, () => coverage(options, io));
     });
 
   return program;

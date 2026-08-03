@@ -3,6 +3,7 @@ export * from './annual.js';
 export * from './book.js';
 export * from './case.js';
 export * from './chart.js';
+export * from './coverage.js';
 export * from './diff.js';
 export * from './embargo.js';
 export * from './exception.js';
