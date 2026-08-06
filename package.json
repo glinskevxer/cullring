@@ -16,12 +16,12 @@
     "cullring": "./bin/cullring.js"
   },
   "files": [
+    "bin",
+    "src",
+    "docs",
+    "examples",
     "README.md",
-    "bin/",
-    "docs/",
-    "examples/",
-    "src/",
-    "tools/"
+    "CHANGELOG.md"
   ],
   "scripts": {
     "check:commands": "node tools/check_commands.js",
@@ -37,6 +37,7 @@
     "lint": "eslint .",
     "month": "node bin/cullring.js month -c examples/core-sound -o 2025-08-14",
     "notice": "node bin/cullring.js notice B-12 -c examples/core-sound -a \"2025-06-20 09:00\" -f 2025-06-01",
+    "smoke": "bash tools/smoke.sh",
     "standing": "node bin/cullring.js standing -c examples/core-sound -a \"2025-06-11 09:00\" -f 2025-06-01",
     "test": "vitest run",
     "test:watch": "vitest",

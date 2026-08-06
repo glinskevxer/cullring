@@ -26,7 +26,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: ['20.18.2', '22.13.1']
+        node: ['20.18.2', '22.13.1', '24.0.0']
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -87,9 +87,23 @@ jobs:
       - name: run every command against the worked example
         run: bash tools/walk.sh
 
+  packed:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.13.1
+          cache: npm
+      - run: npm ci
+      - name: pack, install elsewhere, and run it from there
+        run: bash tools/smoke.sh
+
   image:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - run: docker build -t cullring:ci .
       - run: docker run --rm cullring:ci validate -c examples/core-sound
+      - run: docker run --rm cullring:ci coverage -c examples/core-sound
+      - run: docker run --rm cullring:ci walk -c examples/core-sound -o 2025-08-31 --digest-only
