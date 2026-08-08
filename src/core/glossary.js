@@ -82,6 +82,46 @@ const WORDS = new Map(
       RULE_BOOK,
       'holding shellstock in water to keep it alive, which is not a treatment',
     ],
+    'the round': [
+      OURS,
+      'one day of sampling: the stations the boat works next, out of everything that is due',
+    ],
+    embargo: [
+      RULE_BOOK,
+      'an order holding named product where it stands, lifted only by a person signing a release',
+    ],
+    'consumer advisory': [
+      RULE_BOOK,
+      'the notice a recall produces, worded from what shut the water and stopping at the dealer',
+    ],
+    lease: [
+      RULE_BOOK,
+      'ground let to a grower for a term, suspended rather than cancelled when the water goes prohibited',
+    ],
+    'the grace period': [
+      RULE_BOOK,
+      'the days after a licence lapses in which it can still be renewed as the same licence',
+    ],
+    seal: [
+      OURS,
+      'the hash of a report and of each of its named pieces, so two runs compare to a list of names',
+    ],
+    provenance: [
+      OURS,
+      'the version, schema, rule count and code count that decide what a report says',
+    ],
+    coverage: [
+      OURS,
+      'which reports over a case are narrower than they look because a register is not there',
+    ],
+    'the qualification': [
+      OURS,
+      'whether an adverse sample was taken while the plan trigger was actually firing',
+    ],
+    'contested ground': [
+      OURS,
+      'a position two boundaries both claim, settled by the stricter classification in force',
+    ],
   }),
 );
 

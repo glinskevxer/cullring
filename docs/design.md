@@ -70,3 +70,50 @@ the only claim the seal is making.
 - No retail or restaurant records. The chain stops at the dealer, and the trace
   says so rather than guessing.
 - No enforcement case management. The programme reports; it does not prosecute.
+
+## What the programme grew into
+
+The five questions above are still the shape of it. Four things were added
+that the first sketch did not have, and each of them exists because a report
+that looked complete was not.
+
+**Ground is contested and boundaries overlap.** Two areas both claim a
+position often enough that the geometry cannot settle it, so the stricter
+classification does, which means the answer moves when either area is
+reclassified. The worked example carries a real instance: a station filed
+against one area standing on ground another one governs.
+
+**An adverse survey has to be adverse.** The strategy chooses the criteria,
+and until the samples are qualified against the plan's own trigger, a set of
+bottles drawn on quiet days can be filed as the strictest reading there is.
+Where the caller cannot supply the plans, the survey says the condition was
+never checked rather than passing it.
+
+**Product is held separately from water.** An embargo names lots, or a dealer,
+or a stretch of water and a period, and those reach product through three
+different registers. A lot caught by two of them needs two releases.
+
+**A case that holds together may still not be able to answer.** Every report
+works with what it is given, and each one is honest alone: the pile of them is
+not, because nothing in it says the tide table was absent and so every
+intertidal clock that month was the generous reading. The coverage report says
+it once, at the top.
+
+## The documents that are generated and checked
+
+Four, and the fourth is the one worth arguing with. `docs/rules.md` is written
+from a registry that names every rule, the finding families it raises, and the
+rules that decide what it measures. None of that can be derived from the
+source, which is exactly why it is checked against it: a rule claiming a
+family the catalogue no longer holds, two rules claiming the same family, or a
+rule decided by one that has been renamed all fail the build.
+
+## What is still deliberately not here
+
+The four exclusions above stand. Two more have been added since.
+
+- No scheduling of the boat beyond one day. The round says what to work next
+  and what it left behind; a week's plan is a person's job.
+- No opinion about which finding to fix first. The exception report ranks by
+  severity and by count because both are arithmetic. A programme that ranked
+  by judgement would be read as having one.
