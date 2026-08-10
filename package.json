@@ -24,6 +24,7 @@
     "CHANGELOG.md"
   ],
   "scripts": {
+    "check:changelog": "node tools/check_changelog.js",
     "check:commands": "node tools/check_commands.js",
     "check:examples": "node tools/check_examples.js",
     "check:exports": "node tools/check_exports.js",

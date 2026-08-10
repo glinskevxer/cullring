@@ -67,6 +67,7 @@ jobs:
           node-version: 22.13.1
           cache: npm
       - run: npm ci
+      - run: npm run check:changelog
       - run: npm run check:commands
       - run: npm run check:examples
       - run: npm run check:exports
