@@ -27,6 +27,7 @@ import { InputError } from '../core/errors.js';
 import { findings } from '../core/finding.js';
 import { requireArray, requireString } from '../core/assert.js';
 import { compareInstant, isInstant } from '../time/instant.js';
+import { DESTROYED, LANDED } from '../trace/ledger.js';
 import { parseAreaId } from '../core/identity.js';
 import { parseBedId } from './bed.js';
 
@@ -207,7 +208,7 @@ export function checkMovements(embargoes, { book, records = [], beds = [] }) {
     return problems;
   }
   for (const move of book.all()) {
-    if (move.kind === 'destroyed' || move.kind === 'landed') {
+    if (move.kind === DESTROYED || move.kind === LANDED) {
       continue;
     }
     const context = { book, records, beds, at: move.at };

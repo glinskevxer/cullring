@@ -16,7 +16,7 @@
  * nobody reads it as the programme having an opinion about their week.
  */
 
-import { ERROR, WARNING, tallyByCode } from '../core/finding.js';
+import { ERROR, NOTE, WARNING, tallyByCode } from '../core/finding.js';
 import { RIGHT, column, definitionList, heading, renderTable } from '../text/table.js';
 import { describeCode, isKnownCode } from '../core/catalogue.js';
 
@@ -122,7 +122,7 @@ export function exceptionReport({ on, findings: list, counts = {} }) {
     total: held.length,
     errors: held.filter((one) => one.severity === ERROR).length,
     warnings: held.filter((one) => one.severity === WARNING).length,
-    notes: held.filter((one) => one.severity === 'note').length,
+    notes: held.filter((one) => one.severity === NOTE).length,
     families: Object.freeze(families),
     codes: Object.freeze(codes),
     counts: Object.freeze({ ...counts }),

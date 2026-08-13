@@ -227,21 +227,37 @@ export function registryProblems() {
 
 /**
  * The chain behind one rule, deepest first, which is what an appeal is argued
- * over. A rule that reaches itself through the chain is a design mistake and
- * the walk says so rather than looping.
+ * over.
+ *
+ * Two things that look alike have to be told apart here. A rule reached twice
+ * by two different routes is a diamond, and diamonds are everywhere in this
+ * programme: the lease and the harvest check are both decided by the
+ * classification. That is not a loop and reporting it as one made the chain
+ * behind harvest legality read as broken when it is merely joined up.
+ *
+ * A rule reached again while it is still on the branch being walked is a real
+ * loop, and there is one on purpose: the classification decides the plan and
+ * the plan decides the effective classification. The walk names it rather than
+ * running forever, because that loop is the design and somebody reading the
+ * chain has to see it.
+ *
+ * So the ancestors on the current branch and the rules already written out are
+ * two different sets.
  */
-export function chainFor(name, seen = new Set()) {
-  if (seen.has(name)) {
-    return [`${name} (already reached, so the chain loops)`];
+export function chainFor(name, { path = [], written = new Set() } = {}) {
+  if (path.includes(name)) {
+    return [`${name} (already on this chain, so these two decide each other)`];
   }
-  seen.add(name);
-  const one = rule(name);
+  if (written.has(name)) {
+    return [];
+  }
   const out = [];
-  for (const dependency of one.decidedBy) {
-    out.push(...chainFor(dependency, seen));
+  for (const dependency of rule(name).decidedBy) {
+    out.push(...chainFor(dependency, { path: [...path, name], written }));
   }
+  written.add(name);
   out.push(name);
-  return Array.from(new Set(out));
+  return out;
 }
 
 /** The document under docs/, written from the registry and checked against it. */

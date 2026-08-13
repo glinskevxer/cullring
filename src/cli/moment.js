@@ -11,7 +11,7 @@
 
 import { InputError } from '../core/errors.js';
 import { MIDNIGHT, parseCivilDate } from '../time/civil.js';
-import { civilDateAt, instantFromCivil, parseInstant } from '../time/instant.js';
+import { civilDateAt, instant, instantFromCivil, parseInstant } from '../time/instant.js';
 
 export function momentOf(options, zone) {
   if (options.at === undefined || options.at === null) {
@@ -36,7 +36,7 @@ export function walkStart(options, zone, at) {
   if (options.from !== undefined && options.from !== null) {
     return instantFromCivil(zone, parseCivilDate(options.from, 'from'), MIDNIGHT);
   }
-  return { epochSecond: at.epochSecond - 30 * 86400 };
+  return instant(at.epochSecond - 30 * 86400);
 }
 
 export function spanOf(options, zone) {

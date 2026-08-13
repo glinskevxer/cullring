@@ -59,7 +59,7 @@ describe('chainFor', () => {
     expect(chain).toContain('emergency orders');
   });
 
-  it('reaches the plan through the classification, which is the loop the design names', () => {
+  it('reaches the plan through the classification', () => {
     const chain = chainFor('the adverse condition');
     expect(chain).toContain('the management plan');
     expect(chain).toContain('the classification in force');
@@ -69,10 +69,34 @@ describe('chainFor', () => {
     expect(chainFor('emergency orders')).toEqual(['emergency orders']);
   });
 
-  it('says so rather than looping', () => {
+  it('writes each rule out once however many routes reach it', () => {
+    const chain = chainFor('harvest legality');
+    const plain = chain.filter((one) => !one.includes('('));
+    expect(new Set(plain).size).toBe(plain.length);
+  });
+
+  it('does not call a diamond a loop, which is what the lease and the check are', () => {
+    // Both the lease and harvest legality are decided by the classification, so
+    // the classification is reached twice by two different routes. That is a
+    // join, not a cycle, and it read as a cycle until it did not.
+    const chain = chainFor('harvest legality');
+    expect(chain).toContain('the lease');
+    expect(chain).toContain('the classification in force');
+    expect(chain.filter((one) => one.includes('decide each other'))).toHaveLength(1);
+  });
+
+  it('names the one loop the design puts there on purpose', () => {
     const chain = chainFor('the classification in force');
-    expect(chain.join(' ')).not.toContain('undefined');
-    expect(chain.filter((one) => one.includes('loops')).length).toBeLessThanOrEqual(1);
+    expect(chain[0]).toContain('these two decide each other');
+    expect(chain).toContain('the management plan');
+    expect(chain[chain.length - 1]).toBe('the classification in force');
+  });
+
+  it('settles for every rule rather than running forever', () => {
+    for (const name of ruleNames()) {
+      expect(() => chainFor(name)).not.toThrow();
+      expect(chainFor(name).length).toBeLessThan(ruleNames().length + 4);
+    }
   });
 });
 
