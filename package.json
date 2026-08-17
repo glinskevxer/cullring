@@ -44,6 +44,7 @@
     "test:watch": "vitest",
     "validate": "node bin/cullring.js validate -c examples/core-sound",
     "walk": "node bin/cullring.js walk -c examples/core-sound -o 2025-08-31",
+    "walk:all": "bash tools/walk.sh",
     "write:commands": "node tools/write_commands.js",
     "write:findings": "node tools/write_findings.js",
     "write:glossary": "node tools/write_glossary.js",

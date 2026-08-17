@@ -36,18 +36,30 @@ npm test
 npm run walk
 ```
 
-`npm run walk` runs every report over the worked example in `examples/core-sound`
-and seals what it printed. The example is deliberately dirty: ten landings over
-six days, five of which break a different rule.
+`npm run walk` runs every report over both worked examples and seals what it
+printed. Each is deliberately dirty, and they are dirty in different ways:
+`core-sound` breaks rules about water, people and temperature, and
+`white-oak` breaks a river-stage closure, a treatment that the dealer is not
+certified for, and a daily limit taken across two trips.
+
+`npm run smoke` packs the tarball, installs it into a directory of its own and
+runs it from there, which is the only check that sees a file left out of the
+package.
 
 ## The command line
 
 ```
 node bin/cullring.js --help
+node bin/cullring.js coverage -c examples/core-sound
 node bin/cullring.js standing -c examples/core-sound -a "2025-06-11 09:00" -f 2025-06-01
+node bin/cullring.js where 34.66,-76.55 -c examples/core-sound -a "2025-06-11 09:00"
 node bin/cullring.js lot 20250814-D2-001 -c examples/core-sound -f 2025-08-01
 node bin/cullring.js trace 20250815-C3-101 -c examples/core-sound
+node bin/cullring.js exceptions -c examples/core-sound -o 2025-08-31
 ```
+
+Start with `coverage`. It is the one that says which reports over a case are
+narrower than they look, and every other report reads better once you know.
 
 Every command takes a case directory, a zone and a moment, prints its report to
 standard output and its findings to standard error, and exits 0 for nothing to
@@ -78,6 +90,13 @@ build if the two drift apart.
 | `src/cli`       | the command bodies and the tree                                    |
 | `src/io`        | reading and writing the registers and the feeds                    |
 | `src/text`      | tables, wrapping and the words numbers are printed in              |
+
+## The four rules that decide what the others measure
+
+If you read one file, read [docs/rules.md](docs/rules.md). It is generated from
+a registry of every rule in the programme, and the part worth having is the
+last line of each entry: which other rules decide what that one measures. The
+build fails if it stops being true.
 
 ## Documents that are generated
 
