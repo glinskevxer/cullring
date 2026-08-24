@@ -26,6 +26,7 @@
   "scripts": {
     "check:changelog": "node tools/check_changelog.js",
     "check:commands": "node tools/check_commands.js",
+    "check:endings": "node tools/check_line_endings.js",
     "check:examples": "node tools/check_examples.js",
     "check:exports": "node tools/check_exports.js",
     "check:findings": "node tools/check_findings.js",

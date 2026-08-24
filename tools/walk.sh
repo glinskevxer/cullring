@@ -124,6 +124,7 @@ fi
 echo "ok: the second walk seals to $third twice"
 
 node tools/check_changelog.js
+node tools/check_line_endings.js
 node tools/check_commands.js
 node tools/check_examples.js
 node tools/check_exports.js

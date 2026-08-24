@@ -1,0 +1,22 @@
+# Every text file is LF in the working tree, on every platform.
+#
+# Without this, a clone on a machine where core.autocrlf is true — which is the
+# default the Git for Windows installer sets — checks every file out with CRLF
+# endings. Nothing in the repository has changed and the format check fails on
+# all of it, along with any test that compares a file against text it built.
+#
+# The fix has to live here rather than in anybody's git config, because the
+# person it breaks for is the person who has just cloned it and has not read
+# anything yet.
+* text=auto eol=lf
+
+# The lockfile and the generated documents are text too, and are checked byte
+# for byte against what the tools write, so they are the ones this matters most
+# for.
+*.js text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.csv text eol=lf
+*.sh text eol=lf
+Dockerfile text eol=lf

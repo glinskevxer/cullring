@@ -68,6 +68,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check:changelog
+      - run: npm run check:endings
       - run: npm run check:commands
       - run: npm run check:examples
       - run: npm run check:exports
@@ -87,6 +88,22 @@ jobs:
       - run: npm ci
       - name: run every command against the worked example
         run: bash tools/walk.sh
+
+  windows-checkout:
+    # The one job that would have caught the CRLF checkout. It has to be a
+    # Windows runner, because that is where core.autocrlf is true by default and
+    # nowhere else reproduces it.
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.13.1
+          cache: npm
+      - run: npm ci
+      - run: npm run check:endings
+      - run: npm run format:check
+      - run: npm test
 
   packed:
     runs-on: ubuntu-latest
